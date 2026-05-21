@@ -1,1089 +1,1227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Patterns and Numbers in Nature — TEDx NUFV</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Rajdhani:wght@500;700&family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Josefin+Sans:wght@300;600&family=EB+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patterns & Numbers in Nature</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--nav-h:60px;--trans:280ms cubic-bezier(.4,0,.2,1)}
+:root{--nav-h:64px}
 html,body{height:100%;overflow:hidden}
-body{font-family:'DM Sans',sans-serif;background:#080810}
+body{font-family:'Space Grotesk',sans-serif;background:#000;color:#fff}
 
 /* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  height:var(--nav-h);
-  background:rgba(6,6,14,0.92);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  display:flex;align-items:center;
-  padding:0 10px;overflow-x:auto;scrollbar-width:none;gap:2px;
-}
-nav::-webkit-scrollbar{display:none}
-.nav-brand{
-  font-family:'Space Mono',monospace;font-size:9px;
-  color:rgba(255,255,255,0.25);letter-spacing:0.1em;
-  white-space:nowrap;padding-right:14px;
-  border-right:1px solid rgba(255,255,255,0.06);
-  margin-right:6px;line-height:1.4;min-width:fit-content;
-}
-.tab-btn{
-  display:flex;flex-direction:column;align-items:center;
-  padding:5px 12px;border-radius:7px;cursor:pointer;
-  border:none;background:transparent;gap:1px;
-  min-width:90px;position:relative;
-  transition:background var(--trans);
-}
-.tab-btn:hover{background:rgba(255,255,255,0.04)}
-.tab-btn.active{background:var(--tc-dim)}
-.tab-btn::after{
-  content:'';position:absolute;bottom:-1px;left:10px;right:10px;
-  height:2px;background:var(--tc,transparent);
-  border-radius:2px 2px 0 0;opacity:0;
-  transition:opacity var(--trans);
-}
-.tab-btn.active::after{opacity:1}
-.tab-btn.active .tf{color:var(--tc)}
-.ti{font-size:15px;line-height:1}
-.tf{font-size:10px;font-weight:500;color:rgba(255,255,255,0.65);white-space:nowrap}
-.tt{font-size:8px;color:rgba(255,255,255,0.28);letter-spacing:0.04em;white-space:nowrap}
+#nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:100;display:flex;align-items:center;padding:0 12px;gap:4px;background:rgba(0,0,0,.7);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08);overflow-x:auto;scrollbar-width:none}
+#nav::-webkit-scrollbar{display:none}
+.ntab{display:flex;flex-direction:column;align-items:center;padding:6px 14px;border:none;background:transparent;color:rgba(255,255,255,.5);cursor:pointer;border-radius:8px;transition:all .2s;white-space:nowrap;font-family:'Space Grotesk',sans-serif;border-bottom:2px solid transparent;flex-shrink:0}
+.ntab .icon{font-size:1.3rem;margin-bottom:2px}
+.ntab .label{font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.ntab .sub{font-size:.6rem;opacity:.6}
+.ntab:hover{color:#fff;background:rgba(255,255,255,.07)}
+.ntab.active{color:var(--acc);border-bottom-color:var(--acc)}
 
-/* APP SCROLL CONTAINER */
-#app{
-  position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
-  overflow-y:auto;overflow-x:hidden;
-  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.08) transparent;
-}
+/* CONTENT */
+#content{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;overflow:hidden}
+.tab-panel{position:absolute;inset:0;overflow-y:auto;display:none;opacity:0;transition:opacity .3s ease}
+.tab-panel.active{display:block;opacity:1}
+.tab-panel.fading{opacity:0}
 
-/* PANELS */
-.panel{display:none;min-height:100%;padding:32px 20px 60px}
-.panel.active{display:block;animation:fu .3s ease forwards}
-@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.inner{max-width:860px;margin:0 auto}
+/* SHARED PANEL STYLES */
+.sim-wrap{display:flex;flex-direction:column;align-items:center;padding:20px;gap:16px;min-height:100%}
+canvas{border-radius:10px;max-width:100%}
+.btn{padding:8px 20px;border-radius:6px;border:1.5px solid var(--acc);background:transparent;color:var(--acc);font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.04em}
+.btn:hover{background:var(--acc);color:#000}
+.btn.active{background:var(--acc);color:#000}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.ctrl-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+label{font-size:.78rem;opacity:.7}
+input[type=range]{accent-color:var(--acc);width:140px}
+input[type=number]{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 10px;border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:.85rem;width:110px}
 
-/* HEADER */
-.stag{
-  display:inline-flex;align-items:center;
-  font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
-  font-weight:600;padding:3px 10px;border-radius:20px;
-  margin-bottom:10px;border:1px solid currentColor;opacity:0.6;
-}
-.ptitle{
-  font-size:clamp(32px,7vw,64px);font-weight:700;
-  line-height:0.92;margin-bottom:6px;letter-spacing:-0.02em;
-}
-.psub{font-size:12px;opacity:0.35;margin-bottom:18px;font-style:italic}
+/* QUIZ */
+.quiz-box{max-width:560px;width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:20px}
+.quiz-q{font-size:.92rem;font-weight:600;margin-bottom:14px;line-height:1.4}
+.quiz-opts{display:grid;gap:8px}
+.qbtn{padding:10px 16px;border-radius:8px;border:1.5px solid rgba(255,255,255,.2);background:transparent;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:.82rem;text-align:left;cursor:pointer;transition:all .2s}
+.qbtn:hover{border-color:var(--acc);color:var(--acc)}
+.qbtn.correct{background:#16a34a;border-color:#16a34a;color:#fff}
+.qbtn.wrong{background:#dc2626;border-color:#dc2626;color:#fff}
+.quiz-msg{margin-top:12px;font-size:.82rem;opacity:.9;min-height:20px}
+.quiz-retry{margin-top:8px;font-size:.78rem;text-decoration:underline;cursor:pointer;opacity:.6}
 
-/* SHORT CONCEPT TEXT */
-.ctext{
-  font-size:13px;line-height:1.75;opacity:0.65;
-  margin-bottom:24px;max-width:640px;
-}
-.ctext strong{font-weight:600;opacity:1}
+/* TAG */
+.tag{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;opacity:.5;font-weight:600}
 
-/* SIM AREA */
-.slabel{
-  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
-  opacity:0.3;margin-bottom:8px;font-family:'Space Mono',monospace;
-}
-.swrap{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);margin-bottom:12px;position:relative}
-canvas{display:block;width:100%}
+/* ============ TAB 1 MARINE ============ */
+#t1{--acc:#00d4ff;--bg:#050f1f}
+#t1{background:radial-gradient(ellipse at 20% 80%,#002244 0%,#050f1f 60%)}
+#t1-bg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bubble{position:absolute;border-radius:50%;background:rgba(0,212,255,.15);animation:rise linear infinite}
+@keyframes rise{0%{transform:translateY(0) scale(1);opacity:.4}100%{transform:translateY(-110vh) scale(1.4);opacity:0}}
 
-/* CONTROLS */
-.brow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.btn{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:7px 16px;border-radius:7px;font-size:12px;
-  font-weight:500;cursor:pointer;border:1px solid currentColor;
-  background:transparent;font-family:'DM Sans',sans-serif;
-  transition:all .18s;letter-spacing:0.02em;
-}
-.btn:hover{background:rgba(255,255,255,0.07)}
-.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:12px}
-.sbox{
-  border-radius:10px;border:1px solid rgba(255,255,255,0.05);
-  background:rgba(255,255,255,0.015);padding:14px;
-}
-.sbox-title{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:8px;font-family:'Space Mono',monospace}
+/* ============ TAB 2 METEOR ============ */
+#t2{--acc:#c8a2ff;--bg:#08050f}
+#t2{background:#08050f}
 
-.slw{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.slw label{font-size:11px;opacity:0.55;white-space:nowrap;min-width:110px}
-input[type=range]{
-  flex:1;-webkit-appearance:none;appearance:none;
-  height:2px;border-radius:2px;outline:none;
-  background:rgba(255,255,255,0.12);cursor:pointer;
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:13px;height:13px;
-  border-radius:50%;background:currentColor;cursor:pointer;
-}
-.sv{font-size:11px;font-family:'Space Mono',monospace;opacity:0.6;min-width:28px;text-align:right}
+/* ============ TAB 3 ASTRO ============ */
+#t3{--acc:#ffd700;--bg:#020008}
+#t3{background:radial-gradient(ellipse at 50% 50%,#0a0030 0%,#020008 70%)}
 
-.prow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.pbtn{
-  padding:5px 14px;border-radius:20px;font-size:11px;
-  cursor:pointer;border:1px solid rgba(255,255,255,0.12);
-  background:transparent;font-family:'DM Sans',sans-serif;
-  font-weight:500;transition:all .18s;color:rgba(255,255,255,0.6);
-}
-.pbtn.on,.pbtn:hover{background:rgba(255,255,255,0.08);color:#fff}
+/* ============ TAB 4 WILDLIFE ============ */
+#t4{--acc:#d4a017;--bg:#1a1205}
+#t4{background:#1a1205}
 
-.shrow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-.shbtn{
-  padding:5px 14px;border-radius:7px;font-size:11px;
-  cursor:pointer;border:1px solid rgba(255,255,255,0.12);
-  background:transparent;font-family:'DM Sans',sans-serif;
-  transition:all .18s;color:rgba(255,255,255,0.55);
-}
-.shbtn.on,.shbtn:hover{background:rgba(255,255,255,0.07);color:#fff}
+/* ============ TAB 5 COASTAL ============ */
+#t5{--acc:#78c9c9;--bg:#141416}
+#t5{background:#141416}
 
-/* PHI BOX */
-.phibox{
-  font-family:'Space Mono',monospace;font-size:11px;
-  padding:10px 14px;border-radius:8px;margin-top:10px;line-height:1.9;
-}
+/* ============ TAB 6 ANATOMY ============ */
+#t6{--acc:#c0392b;--bg:#f0ebe4}
+#t6{background:#f0ebe4;color:#1a1a2e}
+#t6 .btn{border-color:#c0392b;color:#c0392b}
+#t6 .btn:hover{background:#c0392b;color:#fff}
+#t6 .quiz-box{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1)}
+#t6 .qbtn{border-color:rgba(0,0,0,.2);color:#1a1a2e}
+#t6 label{color:#1a1a2e}
+#t6 input[type=range]{accent-color:#c0392b}
+#t6 input[type=number]{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.2);color:#1a1a2e}
+#t6 .tag{color:#1a1a2e}
+#t6 .quiz-q{color:#1a1a2e}
 
-@media(max-width:580px){
-  .panel{padding:20px 14px 50px}
-  .ptitle{font-size:36px}
-  .srow{grid-template-columns:1fr}
-}
+/* STAT CARDS */
+.stat-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.stat{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 20px;text-align:center;min-width:140px}
+#t6 .stat{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.1)}
+.stat-val{font-size:1.5rem;font-weight:700;color:var(--acc)}
+.stat-lbl{font-size:.72rem;opacity:.6;margin-top:4px}
 
-/* ── TAB THEMES ── */
-#tab-m{background:radial-gradient(ellipse 80% 55% at 50% 110%,rgba(0,100,160,0.45),transparent),#050e1a;color:#ddf4ff}
-#tab-m .ptitle{font-family:'Playfair Display',serif;color:#00d4ff}
-#tab-m .stag{color:#00d4ff}
+/* RESULT BAR */
+.bar-wrap{display:flex;gap:6px;align-items:center;font-size:.78rem;margin:4px 0}
+.bar-outer{flex:1;height:10px;background:rgba(255,255,255,.1);border-radius:5px;overflow:hidden;max-width:200px}
+.bar-inner{height:100%;border-radius:5px;transition:width .5s}
+#t6 .bar-outer{background:rgba(0,0,0,.1)}
 
-#tab-f{background:radial-gradient(ellipse 100% 45% at 50% 0%,rgba(55,15,110,0.55),transparent),#050308;color:#ede8ff}
-#tab-f .ptitle{font-family:'Rajdhani',sans-serif;letter-spacing:0.06em;color:#b388ff}
-#tab-f .stag{color:#b388ff}
-.lflash{position:fixed;inset:0;pointer-events:none;z-index:0;animation:lf 9s infinite}
-@keyframes lf{0%,87%,89%,91%,100%{opacity:0}88%,90%{opacity:1}}
-#tab-f .inner{position:relative;z-index:1}
+/* RATIO VIZ */
+#ratio-viz{display:flex;height:18px;border-radius:6px;overflow:hidden;width:100%;max-width:320px;margin-top:8px}
+#ratio-a{background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#000}
+#ratio-b{background:rgba(255,215,0,.4);display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff}
 
-#tab-s{background:#020008;color:#fff8e0}
-#tab-s .ptitle{font-family:'Cormorant Garamond',serif;font-style:italic;color:#ffd700}
-#tab-s .stag{color:#ffd700}
-.starbg{position:fixed;inset:0;pointer-events:none;z-index:0}
-#tab-s .inner{position:relative;z-index:1}
-
-#tab-w{background:radial-gradient(ellipse 80% 45% at 50% 100%,rgba(80,50,10,0.45),transparent),#0c0902;color:#f0e4c0}
-#tab-w .ptitle{font-family:'Playfair Display',serif;color:#d4a017}
-#tab-w .stag{color:#d4a017}
-
-#tab-g{background:radial-gradient(ellipse 60% 40% at 20% 80%,rgba(30,70,60,0.35),transparent),#0a1010;color:#daf0ef}
-#tab-g .ptitle{font-family:'Josefin Sans',sans-serif;letter-spacing:0.1em;color:#78c9c9}
-#tab-g .stag{color:#78c9c9}
-
-#tab-a{background:#f3ede4;color:#1a1828}
-#tab-a .ptitle{font-family:'EB Garamond',serif;color:#b03020}
-#tab-a .stag{color:#b03020;border-color:#b03020}
-#tab-a .psub{color:#1a1828}
-#tab-a .ctext{color:#1a1828}
-#tab-a .slabel{color:#1a1828}
-#tab-a .swrap{border-color:rgba(0,0,0,0.1)}
-#tab-a .sbox{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)}
-#tab-a .sbox-title{color:#1a1828}
-#tab-a input[type=range]{background:rgba(0,0,0,0.15)}
-#tab-a .slw label{color:#1a1828}
-#tab-a .sv{color:#1a1828}
-#tab-a .btn{color:#b03020;border-color:#b03020}
-#tab-a .btn:hover{background:rgba(176,48,32,0.07)}
-#tab-a .pbtn{border-color:rgba(0,0,0,0.15);color:rgba(0,0,0,0.5)}
-#tab-a .pbtn.on,.pbtn:hover{background:rgba(0,0,0,0.06);color:#1a1828}
-#tab-a .phibox{background:rgba(176,48,32,0.08);color:#b03020}
-
-/* bubbles */
-.bubble{position:absolute;border-radius:50%;background:rgba(0,200,255,0.07);animation:rise linear infinite}
-@keyframes rise{from{transform:translateY(0) scale(1);opacity:.35}50%{opacity:.15}to{transform:translateY(-110vh) scale(.4);opacity:0}}
-.bbg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-#tab-m .inner{position:relative;z-index:1}
+@media(max-width:600px){.sim-wrap{padding:12px}.stat-row{gap:8px}.stat{min-width:110px}}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-brand">TEDx NUFV<br>Math in Nature</div>
-  <button class="tab-btn active" data-tab="m" style="--tc:#00d4ff;--tc-dim:rgba(0,212,255,0.07)">
-    <span class="ti">🐟</span><span class="tf">Marine Bio</span><span class="tt">Symmetry</span>
+<nav id="nav">
+  <button class="ntab active" data-tab="1" style="--acc:#00d4ff">
+    <span class="icon">🐠</span><span class="label">Marine</span><span class="sub">Symmetry</span>
   </button>
-  <button class="tab-btn" data-tab="f" style="--tc:#b388ff;--tc-dim:rgba(179,136,255,0.07)">
-    <span class="ti">⛈️</span><span class="tf">Meteorology</span><span class="tt">Fractals</span>
+  <button class="ntab" data-tab="2" style="--acc:#c8a2ff">
+    <span class="icon">⛈️</span><span class="label">Meteorology</span><span class="sub">Fractals</span>
   </button>
-  <button class="tab-btn" data-tab="s" style="--tc:#ffd700;--tc-dim:rgba(255,215,0,0.07)">
-    <span class="ti">🌌</span><span class="tf">Astrophysics</span><span class="tt">Spirals</span>
+  <button class="ntab" data-tab="3" style="--acc:#ffd700">
+    <span class="icon">🌌</span><span class="label">Astrophysics</span><span class="sub">Spirals</span>
   </button>
-  <button class="tab-btn" data-tab="w" style="--tc:#d4a017;--tc-dim:rgba(212,160,23,0.07)">
-    <span class="ti">🐆</span><span class="tf">Wildlife Bio</span><span class="tt">Animal Patterns</span>
+  <button class="ntab" data-tab="4" style="--acc:#d4a017">
+    <span class="icon">🦓</span><span class="label">Wildlife</span><span class="sub">Patterns</span>
   </button>
-  <button class="tab-btn" data-tab="g" style="--tc:#78c9c9;--tc-dim:rgba(120,201,201,0.07)">
-    <span class="ti">🪨</span><span class="tf">Geomorphology</span><span class="tt">Tessellation</span>
+  <button class="ntab" data-tab="5" style="--acc:#78c9c9">
+    <span class="icon">🔷</span><span class="label">Coastal</span><span class="sub">Tessellation</span>
   </button>
-  <button class="tab-btn" data-tab="a" style="--tc:#b03020;--tc-dim:rgba(176,48,32,0.06)">
-    <span class="ti">🫀</span><span class="tf">Anatomy</span><span class="tt">Body Symmetry</span>
+  <button class="ntab" data-tab="6" style="--acc:#c0392b">
+    <span class="icon">🫀</span><span class="label">Anatomy</span><span class="sub">Body Symmetry</span>
   </button>
 </nav>
 
-<div id="app">
+<div id="content">
 
-<!-- ═══════════════════════════════
-     TAB 1 — MARINE BIOLOGY
-═══════════════════════════════ -->
-<section class="panel active" id="tab-m">
-  <div class="bbg" id="bubbles"></div>
-  <div class="inner">
-    <div class="stag">Dr. Kim · Marine Biologist · Coral Reef Systems</div>
-    <h1 class="ptitle">SYMMETRY</h1>
-    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <p class="ctext">
-      <strong>Bilateral symmetry</strong> — one axis divides the body into two mirror halves, like a fish.
-      <strong>Radial symmetry</strong> — body radiates equally from a center through multiple planes, like a sea star.
-    </p>
-    <div class="slabel">— Live Simulation</div>
-    <div class="swrap"><canvas id="fishC" height="340"></canvas></div>
-    <div class="brow">
-      <button class="btn" id="btnBi" style="color:#00d4ff;border-color:#00d4ff">🐟 Bilateral — Fish</button>
-      <button class="btn" id="btnRad" style="color:#7fffd4;border-color:#7fffd4">⭐ Radial — Sea Star</button>
+<!-- ====== TAB 1: MARINE BIOLOGY ====== -->
+<div class="tab-panel active" id="t1">
+  <div id="t1-bg"></div>
+  <div class="sim-wrap" style="position:relative">
+    <div class="tag">Marine Biology · Dr. Kim</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;color:#00d4ff;letter-spacing:.05em">SYMMETRY</h2>
+    <canvas id="fishCanvas" width="700" height="380" aria-label="Fish symmetry simulation" style="border:1px solid rgba(0,212,255,.2);background:rgba(0,20,40,.6)"></canvas>
+    <div class="btn-row">
+      <button class="btn" id="fishBtnRadial">Show Radial Symmetry</button>
+      <button class="btn" id="fishBtnReset">Reset to Fish</button>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">Which symmetry divides an organism into two mirror-image halves along a single midline?</div>
+      <div class="quiz-opts" id="q1opts">
+        <button class="qbtn" data-ans="0">A) Radial Symmetry</button>
+        <button class="qbtn" data-ans="1">B) Bilateral Symmetry ✓</button>
+        <button class="qbtn" data-ans="0">C) Rotational Symmetry</button>
+        <button class="qbtn" data-ans="0">D) Translational Symmetry</button>
+      </div>
+      <div class="quiz-msg" id="q1msg"></div>
+      <div class="quiz-retry" id="q1retry" style="display:none">↩ Try Again</div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ═══════════════════════════════
-     TAB 2 — METEOROLOGY
-═══════════════════════════════ -->
-<section class="panel" id="tab-f">
-  <div class="lflash"></div>
-  <div class="inner">
-    <div class="stag">Dr. Dan · Meteorologist · Atmospheric Pattern Analysis</div>
-    <h1 class="ptitle">FRACTALS</h1>
-    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <p class="ctext">
-      A <strong>fractal</strong> is a pattern where each part has the same structure as the whole — <strong>self-similarity</strong> at every scale. Clouds, lightning, and typhoon formations are all fractals built from the same rule repeated at smaller and smaller scales.
-    </p>
-    <div class="slabel">— Live Simulation</div>
-    <div class="srow">
-      <div class="sbox">
-        <div class="sbox-title">Lightning — Recursive Fractal</div>
-        <canvas id="lightC" height="280" style="border-radius:8px;background:#030109;display:block;width:100%"></canvas>
-        <button class="btn" id="btnStrike" style="margin-top:10px;color:#b388ff;border-color:#b388ff;width:100%;justify-content:center">⚡ Strike Again</button>
+<!-- ====== TAB 2: METEOROLOGY ====== -->
+<div class="tab-panel" id="t2">
+  <div class="sim-wrap">
+    <div class="tag">Meteorology · Dr. Dan</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;color:#c8a2ff;letter-spacing:.05em">FRACTALS</h2>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%">
+      <!-- Lightning -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="tag">Lightning</div>
+        <canvas id="lightCanvas" width="280" height="380" aria-label="Lightning fractal" style="border:1px solid rgba(200,162,255,.2);background:#05030f;border-radius:8px"></canvas>
+        <button class="btn" id="lightBtn">⚡ Strike Again</button>
       </div>
-      <div class="sbox">
-        <div class="sbox-title">Fractal Tree — Branching Self-Similarity</div>
-        <canvas id="treeC" height="280" style="border-radius:8px;background:#030109;display:block;width:100%"></canvas>
-        <div class="slw" style="margin-top:10px">
-          <label style="color:#b388ff">Branch Angle</label>
-          <input type="range" id="tAngle" min="10" max="60" value="28" style="accent-color:#b388ff">
-          <span class="sv" id="tAngleV" style="color:#b388ff">28°</span>
-        </div>
-        <div class="slw">
-          <label style="color:#b388ff">Recursion Depth</label>
-          <input type="range" id="tDepth" min="2" max="10" value="7" style="accent-color:#b388ff">
-          <span class="sv" id="tDepthV" style="color:#b388ff">7</span>
+      <!-- Cloud -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="tag">Cloud Profile</div>
+        <canvas id="cloudCanvas" width="280" height="200" aria-label="Cloud fractal" style="border:1px solid rgba(200,162,255,.2);background:#080614;border-radius:8px"></canvas>
+        <div class="ctrl-row">
+          <label>Roughness</label>
+          <input type="range" id="roughSlider" min="1" max="10" value="5" step="1">
         </div>
       </div>
+      <!-- Tree -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div class="tag">Branching Tree</div>
+        <canvas id="treeCanvas" width="280" height="320" aria-label="Fractal tree" style="border:1px solid rgba(200,162,255,.2);background:#040210;border-radius:8px"></canvas>
+        <div class="ctrl-row">
+          <label>Angle</label>
+          <input type="range" id="treeAngle" min="10" max="60" value="25" step="5">
+          <label>Depth</label>
+          <input type="range" id="treeDepth" min="2" max="10" value="8" step="1">
+        </div>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">A fractal is best described as...</div>
+      <div class="quiz-opts" id="q2opts">
+        <button class="qbtn" data-ans="0">A) A shape with no recognizable pattern</button>
+        <button class="qbtn" data-ans="1">B) A pattern where each part mirrors the whole ✓</button>
+        <button class="qbtn" data-ans="0">C) A perfectly symmetric figure</button>
+        <button class="qbtn" data-ans="0">D) A type of circular spiral</button>
+      </div>
+      <div class="quiz-msg" id="q2msg"></div>
+      <div class="quiz-retry" id="q2retry" style="display:none">↩ Try Again</div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ═══════════════════════════════
-     TAB 3 — ASTROPHYSICS
-═══════════════════════════════ -->
-<section class="panel" id="tab-s">
-  <canvas class="starbg" id="starC"></canvas>
-  <div class="inner">
-    <div class="stag">JR · Astrophysicist · Galactic Formation and Pattern Studies</div>
-    <h1 class="ptitle">Spirals</h1>
-    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <p class="ctext">
-      The <strong>logarithmic spiral</strong> expands outward at a constant rate governed by the <strong>Golden Ratio φ ≈ 1.618</strong>. It appears in galaxy arms, nautilus shells, hurricanes, and sunflowers — same equation, different scales.
-      A spiral is <em>not</em> a circle: it always moves further out with each revolution.
-    </p>
-    <div class="slabel">— Live Simulation</div>
-    <div class="swrap" style="background:#020008"><canvas id="spiralC" height="400"></canvas></div>
-    <div class="slw">
-      <label style="color:#ffd700">Growth Constant (b)</label>
-      <input type="range" id="spiralB" min="10" max="55" value="28" style="accent-color:#ffd700">
-      <span class="sv" id="spiralBV" style="color:#ffd700">0.28</span>
+<!-- ====== TAB 3: ASTROPHYSICS ====== -->
+<div class="tab-panel" id="t3">
+  <canvas id="starBg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
+  <div class="sim-wrap" style="position:relative">
+    <div class="tag">Astrophysics · JR</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;color:#ffd700;letter-spacing:.05em">SPIRALS</h2>
+    <canvas id="spiralCanvas" width="680" height="460" aria-label="Golden spiral simulation" style="border:1px solid rgba(255,215,0,.15);background:rgba(2,0,8,.9);border-radius:10px"></canvas>
+    <div class="btn-row">
+      <button class="btn" id="spiralFib">Show Fibonacci Rectangles</button>
+      <button class="btn" id="spiralSun">Show Sunflower Seeds</button>
     </div>
-    <div class="brow">
-      <button class="btn" id="btnFib" style="color:#ffd700;border-color:#ffd700">▦ Fibonacci Rectangles</button>
+    <div class="ctrl-row">
+      <label>Spiral Tightness</label>
+      <input type="range" id="spiralB" min="10" max="50" value="21" step="1">
     </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════
-     TAB 4 — WILDLIFE BIOLOGY
-═══════════════════════════════ -->
-<section class="panel" id="tab-w">
-  <div class="inner">
-    <div class="stag">Dr. Emman · Wildlife Biologist · Biological Pattern and Camouflage Systems</div>
-    <h1 class="ptitle">ANIMAL PATTERNS</h1>
-    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <p class="ctext">
-      Turing's <strong>Reaction-Diffusion System</strong> — two chemicals (activator + inhibitor) spread across a developing embryo at different rates, producing stripes, spots, or blotches. Change two numbers: the entire pattern changes.
-    </p>
-    <div class="slabel">— Live Turing Reaction-Diffusion Simulation</div>
-    <div class="prow">
-      <button class="pbtn on" id="pZ">🦓 Zebra Stripes</button>
-      <button class="pbtn" id="pL">🐆 Leopard Spots</button>
-      <button class="pbtn" id="pG">🦒 Giraffe Blotches</button>
-      <button class="pbtn" id="pF">🐠 Fish Patterns</button>
-    </div>
-    <div class="swrap" style="background:#0e0a04"><canvas id="rdC" height="320"></canvas></div>
-    <div class="slw">
-      <label style="color:#d4a017">Feed Rate (f)</label>
-      <input type="range" id="rdF" min="1" max="80" value="35" style="accent-color:#d4a017">
-      <span class="sv" id="rdFV" style="color:#d4a017">0.035</span>
-    </div>
-    <div class="slw">
-      <label style="color:#d4a017">Kill Rate (k)</label>
-      <input type="range" id="rdK" min="40" max="70" value="65" style="accent-color:#d4a017">
-      <span class="sv" id="rdKV" style="color:#d4a017">0.065</span>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════
-     TAB 5 — GEOMORPHOLOGY
-═══════════════════════════════ -->
-<section class="panel" id="tab-g">
-  <div class="inner">
-    <div class="stag">Jirou · Coastal Geomorphologist · Natural Surface and Formation Studies</div>
-    <h1 class="ptitle">TESSELLATION</h1>
-    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <p class="ctext">
-      A repeating pattern of polygons covering a surface with <strong>no gaps, no overlaps</strong>. The <strong>hexagon</strong> is most efficient — greatest area for least perimeter. Nature arrives at hexagons independently: basalt columns, honeycombs, cracked soil.
-    </p>
-    <div class="slabel">— Live Simulation</div>
-    <div class="shrow">
-      <button class="shbtn on" id="shH">⬡ Hexagon</button>
-      <button class="shbtn" id="shS">□ Square</button>
-      <button class="shbtn" id="shT">△ Triangle</button>
-      <button class="shbtn" id="shC">○ Circle (fails)</button>
-    </div>
-    <div class="swrap" style="background:#0a1010"><canvas id="tessC" height="320"></canvas></div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════
-     TAB 6 — ANATOMY
-═══════════════════════════════ -->
-<section class="panel" id="tab-a">
-  <div class="inner">
-    <div class="stag" style="color:#b03020;border-color:#b03020">Dr. Rosantina · Anatomist · Human Body Structure and Proportion</div>
-    <h1 class="ptitle">Human Body<br>Symmetry</h1>
-    <p class="psub" style="color:#555">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <p class="ctext" style="color:#333">
-      The human body has <strong>bilateral symmetry</strong> along the anatomical midline. Its proportions follow the <strong>Golden Ratio φ ≈ 1.618</strong> — the same constant governing galaxy arms and nautilus shells.
-    </p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
+    <!-- Golden Ratio Calculator -->
+    <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;justify-content:center">
       <div>
-        <div class="slabel" style="color:#555">— Symmetry Simulation</div>
-        <div class="swrap" style="background:#ede5d8;border-color:rgba(0,0,0,0.1)">
-          <canvas id="bodyC" height="400"></canvas>
-        </div>
-        <div class="brow">
-          <button class="btn" id="bLeft">Left</button>
-          <button class="btn" id="bRight" style="color:#2060a0;border-color:#2060a0">Right</button>
-          <button class="btn" id="bBoth" style="color:#207040;border-color:#207040">Both</button>
-          <button class="btn" id="bGold" style="color:#c08000;border-color:#c08000">φ Ratio</button>
+        <label style="display:block;margin-bottom:4px">Length (cm)</label>
+        <input type="number" id="phiInput" placeholder="e.g. 10" min="1">
+      </div>
+      <div id="phiResult" style="font-size:.85rem;opacity:.8;max-width:280px"></div>
+    </div>
+    <div id="ratio-viz" style="display:none"><div id="ratio-a">a</div><div id="ratio-b">b=a×φ</div></div>
+    <div class="quiz-box">
+      <div class="quiz-q">The Golden Ratio governing logarithmic spirals in nature is approximately:</div>
+      <div class="quiz-opts" id="q3opts">
+        <button class="qbtn" data-ans="0">A) 3.14</button>
+        <button class="qbtn" data-ans="0">B) 2.71</button>
+        <button class="qbtn" data-ans="1">C) 1.618 ✓</button>
+        <button class="qbtn" data-ans="0">D) 0.618</button>
+      </div>
+      <div class="quiz-msg" id="q3msg"></div>
+      <div class="quiz-retry" id="q3retry" style="display:none">↩ Try Again</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 4: WILDLIFE ====== -->
+<div class="tab-panel" id="t4">
+  <div class="sim-wrap">
+    <div class="tag">Wildlife Biology · Dr. Emman</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;color:#d4a017;letter-spacing:.05em">ANIMAL PATTERNS</h2>
+    <canvas id="rdCanvas" width="500" height="500" aria-label="Reaction-diffusion simulation" style="border:1px solid rgba(212,160,23,.2);border-radius:8px;image-rendering:pixelated"></canvas>
+    <div class="btn-row">
+      <button class="btn rdpre" data-f="0.035" data-k="0.065">🦓 Zebra Stripes</button>
+      <button class="btn rdpre" data-f="0.025" data-k="0.055">🐆 Leopard Spots</button>
+      <button class="btn rdpre" data-f="0.022" data-k="0.051">🦒 Giraffe Blotches</button>
+      <button class="btn" id="rdReset">↺ Reset</button>
+    </div>
+    <div class="ctrl-row">
+      <label>Feed (f): <span id="fVal">0.035</span></label>
+      <input type="range" id="fSlider" min="0.010" max="0.080" value="0.035" step="0.001">
+      <label>Kill (k): <span id="kVal">0.065</span></label>
+      <input type="range" id="kSlider" min="0.040" max="0.070" value="0.065" step="0.001">
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">The mathematical model explaining zebra stripes and leopard spots is called:</div>
+      <div class="quiz-opts" id="q4opts">
+        <button class="qbtn" data-ans="0">A) Fibonacci Sequence</button>
+        <button class="qbtn" data-ans="0">B) Golden Ratio equation</button>
+        <button class="qbtn" data-ans="1">C) Reaction-Diffusion (Turing) equations ✓</button>
+        <button class="qbtn" data-ans="0">D) Radial symmetry formulas</button>
+      </div>
+      <div class="quiz-msg" id="q4msg"></div>
+      <div class="quiz-retry" id="q4retry" style="display:none">↩ Try Again</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 5: COASTAL TESSELLATION ====== -->
+<div class="tab-panel" id="t5">
+  <canvas id="hexBg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.35"></canvas>
+  <div class="sim-wrap" style="position:relative">
+    <div class="tag">Coastal Geomorphology · Jirou</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;color:#78c9c9;letter-spacing:.05em">TESSELLATION</h2>
+    <canvas id="tessCanvas" width="700" height="380" aria-label="Tessellation builder" style="border:1px solid rgba(120,201,201,.2);background:rgba(20,20,22,.8);border-radius:10px"></canvas>
+    <div class="btn-row">
+      <button class="btn tessBtn active" data-shape="hex">Hexagon</button>
+      <button class="btn tessBtn" data-shape="sq">Square</button>
+      <button class="btn tessBtn" data-shape="tri">Triangle</button>
+      <button class="btn tessBtn" data-shape="circ">⭕ Circle (fails)</button>
+    </div>
+    <div id="tessInfo" style="font-size:.82rem;opacity:.7;text-align:center"></div>
+    <!-- Efficiency chart -->
+    <div class="stat-row">
+      <div class="stat"><div class="stat-val" style="color:#78c9c9">2.598</div><div class="stat-lbl">Hexagon area (p=6)</div></div>
+      <div class="stat"><div class="stat-val" style="color:#8c7853">2.250</div><div class="stat-lbl">Square area (p=6)</div></div>
+      <div class="stat"><div class="stat-val" style="color:#6a8f88">1.732</div><div class="stat-lbl">Triangle area (p=6)</div></div>
+    </div>
+    <div style="width:100%;max-width:420px">
+      <div class="bar-wrap"><span style="width:72px;font-size:.75rem">Hexagon</span><div class="bar-outer"><div class="bar-inner" style="width:100%;background:#78c9c9"></div></div><span style="font-size:.75rem;margin-left:6px">2.598</span></div>
+      <div class="bar-wrap"><span style="width:72px;font-size:.75rem">Square</span><div class="bar-outer"><div class="bar-inner" style="width:86%;background:#8c7853"></div></div><span style="font-size:.75rem;margin-left:6px">2.250</span></div>
+      <div class="bar-wrap"><span style="width:72px;font-size:.75rem">Triangle</span><div class="bar-outer"><div class="bar-inner" style="width:67%;background:#6a8f88"></div></div><span style="font-size:.75rem;margin-left:6px">1.732</span></div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">What makes the hexagon the most efficient shape for natural tessellation?</div>
+      <div class="quiz-opts" id="q5opts">
+        <button class="qbtn" data-ans="0">A) It has the most sides</button>
+        <button class="qbtn" data-ans="0">B) It is the strongest shape</button>
+        <button class="qbtn" data-ans="1">C) It encloses the greatest area for the least perimeter with no gaps ✓</button>
+        <button class="qbtn" data-ans="0">D) It is easiest to form under pressure</button>
+      </div>
+      <div class="quiz-msg" id="q5msg"></div>
+      <div class="quiz-retry" id="q5retry" style="display:none">↩ Try Again</div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== TAB 6: ANATOMY ====== -->
+<div class="tab-panel" id="t6">
+  <div class="sim-wrap">
+    <div class="tag" style="color:#c0392b;opacity:.7">Anatomy · Dr. Rosantina</div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;color:#c0392b;letter-spacing:.05em">HUMAN BODY SYMMETRY</h2>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;width:100%">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <canvas id="bodyCanvas" width="360" height="460" aria-label="Human body symmetry" style="border:1px solid rgba(192,57,43,.2);background:#f8f4ef;border-radius:10px"></canvas>
+        <div class="btn-row">
+          <button class="btn" id="bodyLeft">Left Side</button>
+          <button class="btn" id="bodyRight">Right Side</button>
+          <button class="btn" id="bodyBoth">Oscillate</button>
+          <button class="btn" id="bodyGolden">φ Ratio Lines</button>
+          <button class="btn" id="bodyClear">Clear</button>
         </div>
       </div>
-      <div>
-        <div class="sbox" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)">
-          <div class="sbox-title" style="color:#555">Golden Ratio Calculator</div>
-          <div class="slw">
-            <label>Height (cm)</label>
-            <input type="range" id="hSlide" min="140" max="210" value="170" style="accent-color:#b03020">
-            <span class="sv" id="hV">170</span>
-          </div>
-          <div class="phibox" id="phiOut">
-            Height: 170 cm<br>
-            Navel height: 105.1 cm<br>
-            170 ÷ 105.1 = <strong>1.618 φ</strong><br>
-            Forearm: ~26.7 cm<br>
-            Hand: ~16.5 cm<br>
-            Forearm ÷ Hand ≈ <strong>1.618 φ</strong>
-          </div>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:280px">
+        <div>
+          <label style="display:block;margin-bottom:6px;color:#1a1a2e;font-weight:600">Enter your height (cm)</label>
+          <input type="number" id="heightInput" placeholder="e.g. 170" min="100" max="250">
+        </div>
+        <div id="heightResult" style="font-size:.82rem;color:#1a1a2e;line-height:1.7"></div>
+        <div id="bodyBar" style="display:none;width:100%;height:200px;position:relative;border:1px solid rgba(0,0,0,.1);border-radius:8px;overflow:hidden;background:#f0ebe4">
+          <div id="bodyBarFill" style="position:absolute;bottom:0;left:0;right:0;background:rgba(192,57,43,.15);transition:height .5s"></div>
+          <div id="navelLine" style="position:absolute;left:0;right:0;height:2px;background:#d4a017;transition:bottom .5s"></div>
+          <div id="navelLabel" style="position:absolute;right:4px;font-size:.68rem;color:#d4a017;font-weight:700;transition:bottom .5s"></div>
+        </div>
+        <div class="stat-row" style="flex-direction:column;gap:8px">
+          <div class="stat" style="background:rgba(192,57,43,.06);border-color:rgba(192,57,43,.2)"><div class="stat-val" style="font-size:1.1rem;color:#c0392b">φ ≈ 1.618</div><div class="stat-lbl" style="color:#1a1a2e">Golden Ratio</div></div>
+          <div class="stat" style="background:rgba(192,57,43,.06);border-color:rgba(192,57,43,.2)"><div class="stat-val" style="font-size:1.1rem;color:#c0392b">Bilateral</div><div class="stat-lbl" style="color:#1a1a2e">Body Symmetry Type</div></div>
         </div>
       </div>
     </div>
+    <div class="quiz-box" style="background:rgba(0,0,0,.04);border-color:rgba(0,0,0,.1)">
+      <div class="quiz-q" style="color:#1a1a2e">The ratio of total height to navel height approximately equals:</div>
+      <div class="quiz-opts" id="q6opts">
+        <button class="qbtn" data-ans="0">A) Pi (3.14)</button>
+        <button class="qbtn" data-ans="1">B) The Golden Ratio (1.618) ✓</button>
+        <button class="qbtn" data-ans="0">C) 2 to 1</button>
+        <button class="qbtn" data-ans="0">D) Euler's number (2.71)</button>
+      </div>
+      <div class="quiz-msg" id="q6msg"></div>
+      <div class="quiz-retry" id="q6retry" style="display:none">↩ Try Again</div>
+    </div>
   </div>
-</section>
+</div>
 
-</div><!-- #app -->
+</div><!-- #content -->
 
 <script>
-// ══ TAB SWITCHING ══
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    const id='tab-'+btn.dataset.tab;
-    document.getElementById(id).classList.add('active');
-    document.getElementById('app').scrollTop=0;
-    const t=btn.dataset.tab;
-    if(t==='m'){cancelAnimationFrame(fishRaf);drawFish(fishMode)}
-    if(t==='f'){drawLightning();drawTree()}
-    if(t==='s'){startStars();drawSpiral()}
-    if(t==='g'){drawTess(tessMode)}
-    if(t==='a'){cancelAnimationFrame(bodyRaf);drawBody(bodyMode)}
-    if(t==='w'){initRD()}
+// ============================================================
+// NAVIGATION
+// ============================================================
+const tabs = document.querySelectorAll('.ntab');
+const panels = document.querySelectorAll('.tab-panel');
+let currentTab = '1';
+const tabInits = {};
+
+function switchTab(id) {
+  if (id === currentTab) return;
+  const oldPanel = document.getElementById('t'+currentTab);
+  const newPanel = document.getElementById('t'+id);
+  oldPanel.style.opacity = 0;
+  setTimeout(() => {
+    oldPanel.classList.remove('active');
+    oldPanel.style.display = 'none';
+    oldPanel.style.opacity = '';
+    newPanel.style.display = 'block';
+    newPanel.style.opacity = 0;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        newPanel.classList.add('active');
+        newPanel.style.opacity = 1;
+      });
+    });
+    currentTab = id;
+    if (tabInits[id] && !tabInits[id].done) { tabInits[id].fn(); tabInits[id].done=true; }
+  }, 200);
+  tabs.forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === id);
+    t.style.setProperty('--acc', t.style.getPropertyValue('--acc'));
   });
-});
-
-function rc(c){c.width=c.offsetWidth*devicePixelRatio;c.height=c.offsetHeight*devicePixelRatio}
-
-// ══════════════════════════════════════════
-// TAB 1 — FISH SYMMETRY (completely redrawn)
-// ══════════════════════════════════════════
-const fishC=document.getElementById('fishC');
-const fctx=fishC.getContext('2d');
-let fishMode='bilateral',fishRaf,breathT=0;
-
-function drawFish(mode){
-  cancelAnimationFrame(fishRaf);
-  rc(fishC);
-  const W=fishC.width,H=fishC.height;
-  fctx.clearRect(0,0,W,H);
-
-  if(mode==='bilateral'){
-    // ── properly drawn fish facing right ──
-    breathT+=0.03;
-    const bs=1+Math.sin(breathT)*0.012; // subtle breathe
-    fctx.save();
-    fctx.translate(W/2,H/2);
-    fctx.scale(bs,bs);
-
-    const BW=W*0.38; // half-body width (x direction, fish faces right)
-    const BH=H*0.20; // half-body height
-
-    // TAIL (left side, triangular fork)
-    fctx.beginPath();
-    fctx.moveTo(-BW*0.85,0);
-    fctx.lineTo(-BW*1.35,-BH*1.1);
-    fctx.lineTo(-BW*1.1,0);
-    fctx.lineTo(-BW*1.35,BH*1.1);
-    fctx.closePath();
-    fctx.fillStyle='#0088bb';fctx.fill();
-    fctx.strokeStyle='rgba(0,180,220,0.4)';fctx.lineWidth=2;fctx.stroke();
-
-    // BODY — proper fish shape using bezier
-    fctx.beginPath();
-    // top edge: tail join → dorsal peak → nose
-    fctx.moveTo(-BW*0.85,0);
-    fctx.bezierCurveTo(-BW*0.7,-BH*0.8, -BW*0.2,-BH*1.35, BW*0.3,-BH*0.8);
-    // nose curve
-    fctx.bezierCurveTo(BW*0.85,-BH*0.3, BW*0.9,BH*0.3, BW*0.5,BH*0.6);
-    // bottom edge: belly → tail join
-    fctx.bezierCurveTo(BW*0.1,BH*1.1, -BW*0.5,BH*1.0, -BW*0.85,0);
-    fctx.closePath();
-    const bodyGrad=fctx.createLinearGradient(-BW,0,BW,0);
-    bodyGrad.addColorStop(0,'#0077aa');
-    bodyGrad.addColorStop(0.4,'#00c4e8');
-    bodyGrad.addColorStop(1,'#00e8cc');
-    fctx.fillStyle=bodyGrad;fctx.fill();
-    fctx.strokeStyle='rgba(0,200,240,0.3)';fctx.lineWidth=2;fctx.stroke();
-
-    // DORSAL FIN (top)
-    fctx.beginPath();
-    fctx.moveTo(-BW*0.3,-BH*1.0);
-    fctx.bezierCurveTo(-BW*0.1,-BH*2.1, BW*0.15,-BH*2.0, BW*0.3,-BH*1.0);
-    fctx.fillStyle='rgba(0,180,220,0.55)';fctx.fill();
-    fctx.strokeStyle='rgba(0,200,240,0.3)';fctx.lineWidth=1.5;fctx.stroke();
-
-    // PECTORAL FIN (middle, side)
-    fctx.beginPath();
-    fctx.ellipse(BW*0.05,BH*0.4, BW*0.14,BH*0.38, 0.4,0,Math.PI*2);
-    fctx.fillStyle='rgba(0,200,240,0.35)';fctx.fill();
-
-    // ANAL FIN (bottom)
-    fctx.beginPath();
-    fctx.moveTo(-BW*0.1,BH*0.9);
-    fctx.bezierCurveTo(-BW*0.0,BH*1.7, BW*0.2,BH*1.6, BW*0.25,BH*0.9);
-    fctx.fillStyle='rgba(0,160,200,0.4)';fctx.fill();
-
-    // GILL LINE
-    fctx.beginPath();
-    fctx.arc(BW*0.28,0,BH*0.75,Math.PI*0.55,Math.PI*1.45);
-    fctx.strokeStyle='rgba(0,200,240,0.4)';fctx.lineWidth=2.5;fctx.stroke();
-
-    // EYE
-    const eyeX=BW*0.54,eyeY=-BH*0.22;
-    fctx.beginPath();fctx.arc(eyeX,eyeY,BH*0.18,0,Math.PI*2);
-    fctx.fillStyle='#001a28';fctx.fill();
-    fctx.strokeStyle='rgba(0,220,255,0.5)';fctx.lineWidth=2;fctx.stroke();
-    fctx.beginPath();fctx.arc(eyeX-BH*0.04,eyeY-BH*0.05,BH*0.07,0,Math.PI*2);
-    fctx.fillStyle='rgba(255,255,255,0.8)';fctx.fill();
-
-    // SCALE LINES (subtle)
-    fctx.globalAlpha=0.12;
-    for(let i=0;i<4;i++){
-      const sx=BW*(0.05-i*0.18),sy=0,sr=BH*(0.7+i*0.05);
-      fctx.beginPath();fctx.arc(sx,sy,sr,Math.PI*0.5,Math.PI*1.5);
-      fctx.strokeStyle='#00c8e8';fctx.lineWidth=1.5;fctx.stroke();
-    }
-    fctx.globalAlpha=1;
-
-    fctx.restore();
-
-    // ── SYMMETRY AXIS (vertical — splitting fish top/bottom not left/right for bilateral) ──
-    // For a fish the bilateral axis runs HEAD TO TAIL horizontally
-    // show as a dashed horizontal line through center
-    fctx.save();
-    fctx.setLineDash([10,7]);
-    fctx.beginPath();fctx.moveTo(30,H/2);fctx.lineTo(W-30,H/2);
-    fctx.strokeStyle='rgba(127,255,212,0.45)';fctx.lineWidth=1.5;fctx.stroke();
-    fctx.setLineDash([]);
-    // label LEFT half
-    fctx.fillStyle='rgba(127,255,212,0.6)';
-    fctx.font=`bold ${10*devicePixelRatio}px 'Space Mono'`;
-    fctx.textAlign='left';
-    fctx.fillText('← Axis of Bilateral Symmetry →',38,H/2-10);
-    // label top & bottom
-    fctx.font=`${9*devicePixelRatio}px 'Space Mono'`;
-    fctx.textAlign='center';
-    fctx.fillStyle='rgba(0,212,255,0.45)';
-    fctx.fillText('DORSAL SIDE',W/2,24);
-    fctx.fillText('VENTRAL SIDE',W/2,H-12);
-    fctx.restore();
-
-    fishRaf=requestAnimationFrame(()=>drawFish('bilateral'));
-
-  } else {
-    // ── SEA STAR radial ──
-    const cx=W/2,cy=H/2;
-    const outerR=Math.min(W,H)*0.33;
-    const innerR=outerR*0.4;
-    const rotA=(Date.now()/2200)%(Math.PI*2);
-    const arms=5;
-
-    // axes
-    fctx.setLineDash([7,5]);
-    for(let i=0;i<arms;i++){
-      const ang=(i*Math.PI*2/arms)+rotA;
-      fctx.beginPath();fctx.moveTo(cx,cy);
-      fctx.lineTo(cx+Math.cos(ang)*outerR*1.2,cy+Math.sin(ang)*outerR*1.2);
-      fctx.strokeStyle='rgba(127,255,212,0.18)';fctx.lineWidth=1;fctx.stroke();
-    }
-    fctx.setLineDash([]);
-
-    // star body
-    fctx.beginPath();
-    for(let i=0;i<arms*2;i++){
-      const ang=(i*Math.PI/arms)+rotA-Math.PI/2;
-      const r=i%2===0?outerR:innerR;
-      const x=cx+Math.cos(ang)*r,y=cy+Math.sin(ang)*r;
-      i===0?fctx.moveTo(x,y):fctx.lineTo(x,y);
-    }
-    fctx.closePath();
-    const rg=fctx.createRadialGradient(cx,cy,0,cx,cy,outerR);
-    rg.addColorStop(0,'#7fffd4');rg.addColorStop(1,'#004466');
-    fctx.fillStyle=rg;fctx.fill();
-    fctx.strokeStyle='rgba(0,212,255,0.5)';fctx.lineWidth=2;fctx.stroke();
-
-    // center
-    fctx.beginPath();fctx.arc(cx,cy,outerR*0.09,0,Math.PI*2);
-    fctx.fillStyle='#00d4ff';fctx.fill();
-
-    // labels
-    fctx.fillStyle='rgba(127,255,212,0.65)';
-    fctx.font=`bold ${11*devicePixelRatio}px 'Space Mono'`;
-    fctx.textAlign='center';
-    fctx.fillText('5-FOLD RADIAL SYMMETRY',cx,20);
-
-    fishRaf=requestAnimationFrame(()=>drawFish('radial'));
-  }
 }
 
-document.getElementById('btnBi').addEventListener('click',()=>{fishMode='bilateral';drawFish('bilateral')});
-document.getElementById('btnRad').addEventListener('click',()=>{fishMode='radial';drawFish('radial')});
+tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
 
-// bubbles
-(()=>{
-  const bg=document.getElementById('bubbles');
+// ============================================================
+// QUIZ SYSTEM
+// ============================================================
+function setupQuiz(n) {
+  const opts = document.querySelectorAll(`#q${n}opts .qbtn`);
+  const msg = document.getElementById(`q${n}msg`);
+  const retry = document.getElementById(`q${n}retry`);
+  opts.forEach(btn => {
+    btn.addEventListener('click', () => {
+      opts.forEach(b => b.disabled = true);
+      const correct = btn.dataset.ans === '1';
+      btn.classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) opts.forEach(b => { if (b.dataset.ans==='1') b.classList.add('correct'); });
+      msg.textContent = correct ? '✓ Correct! Well done.' : '✗ Not quite. The highlighted answer is correct.';
+      msg.style.color = correct ? '#4ade80' : '#f87171';
+      retry.style.display = 'block';
+    });
+  });
+  retry.addEventListener('click', () => {
+    opts.forEach(b => { b.disabled=false; b.classList.remove('correct','wrong'); });
+    msg.textContent = ''; retry.style.display='none';
+  });
+}
+[1,2,3,4,5,6].forEach(setupQuiz);
+
+// ============================================================
+// TAB 1 — FISH SYMMETRY
+// ============================================================
+(function(){
+  const canvas = document.getElementById('fishCanvas');
+  const ctx = canvas.getContext('2d');
+  let mode = 'fish'; // 'fish' or 'star'
+  let breathPhase = 0;
+  let starAngle = 0;
+  let animId;
+
+  function drawFish(scale) {
+    const W = canvas.width, H = canvas.height;
+    const cx = W/2, cy = H/2;
+    ctx.clearRect(0,0,W,H);
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(scale, scale);
+
+    // Body
+    function fishBody(fillColor) {
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 200, 90, 0, 0, Math.PI*2);
+      ctx.fillStyle = fillColor;
+      ctx.fill();
+    }
+
+    // left half teal
+    ctx.save();
+    ctx.beginPath(); ctx.rect(-220,-120,220,240); ctx.clip();
+    fishBody('#00d4ff');
+    ctx.restore();
+
+    // right half lighter
+    ctx.save();
+    ctx.beginPath(); ctx.rect(0,-120,220,240); ctx.clip();
+    fishBody('#7fffd4');
+    ctx.restore();
+
+    // Tail
+    ctx.beginPath();
+    ctx.moveTo(-200,0);
+    ctx.lineTo(-270,-70);
+    ctx.lineTo(-270,70);
+    ctx.closePath();
+    ctx.fillStyle = '#00a8cc';
+    ctx.fill();
+
+    // Dorsal fin
+    ctx.beginPath();
+    ctx.moveTo(60,-90);
+    ctx.quadraticCurveTo(30,-160,-30,-90);
+    ctx.closePath();
+    ctx.fillStyle = '#0099bb';
+    ctx.fill();
+
+    // Pectoral fin
+    ctx.beginPath();
+    ctx.moveTo(40,30);
+    ctx.quadraticCurveTo(80,90,0,80);
+    ctx.closePath();
+    ctx.fillStyle = '#00bcd4';
+    ctx.fill();
+
+    // Eye
+    ctx.beginPath();
+    ctx.arc(140,−20,14,0,Math.PI*2);
+    ctx.fillStyle='#fff';ctx.fill();
+    ctx.beginPath();ctx.arc(143,-22,7,0,Math.PI*2);
+    ctx.fillStyle='#001a2e';ctx.fill();
+
+    // Gill lines
+    ctx.strokeStyle='rgba(0,0,0,.3)';ctx.lineWidth=2;
+    [80,70,60].forEach((x,i)=>{
+      ctx.beginPath();ctx.arc(x,0,70,−0.6,0.6);ctx.stroke();
+    });
+
+    // Outline
+    ctx.beginPath();
+    ctx.ellipse(0,0,200,90,0,0,Math.PI*2);
+    ctx.strokeStyle='rgba(0,212,255,.4)';ctx.lineWidth=2;ctx.stroke();
+
+    ctx.restore();
+
+    // Center axis
+    ctx.save();
+    ctx.setLineDash([8,6]);
+    ctx.strokeStyle='rgba(255,255,255,.5)';
+    ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx,20);ctx.lineTo(cx,H-20);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,255,255,.6)';
+    ctx.font='11px Space Grotesk';
+    ctx.textAlign='center';
+    ctx.fillText('Axis of Symmetry',cx,H-8);
+    ctx.restore();
+  }
+
+  function drawStarfish(angle) {
+    const W=canvas.width,H=canvas.height,cx=W/2,cy=H/2;
+    ctx.clearRect(0,0,W,H);
+    const arms=5, r1=140, r2=55;
+    const colors=['#00d4ff','#7fffd4','#00a8cc','#00bcd4','#40e0d0'];
+
+    for(let i=0;i<arms;i++){
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(angle + i*Math.PI*2/arms);
+      ctx.beginPath();
+      const pts=[];
+      for(let j=0;j<=20;j++){
+        const a=j/20*Math.PI*2/1;
+        const r=j%2===0?r1:r2;
+        pts.push([Math.cos(a-(Math.PI/2))*r,Math.sin(a-(Math.PI/2))*r]);
+      }
+      ctx.moveTo(0,0);
+      ctx.lineTo(0,-r1);
+      ctx.lineTo(-r2*.5,-r2*.8);
+      ctx.lineTo(0,0);
+      ctx.fillStyle=colors[i];
+      ctx.fill();
+
+      // draw arm shape
+      ctx.beginPath();
+      ctx.ellipse(0,-r1/2,28,r1/2,0,0,Math.PI*2);
+      ctx.fillStyle=colors[i];
+      ctx.fill();
+      ctx.restore();
+
+      // axis lines
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(angle + i*Math.PI*2/arms);
+      ctx.setLineDash([6,5]);
+      ctx.strokeStyle='rgba(255,255,255,.35)';
+      ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,-160);ctx.lineTo(0,160);ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+
+    // Center
+    ctx.beginPath();
+    ctx.arc(cx,cy,30,0,Math.PI*2);
+    ctx.fillStyle='#00d4ff';ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,.5)';
+    ctx.font='bold 11px Space Grotesk';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('5-fold',cx,cy);
+
+    ctx.fillStyle='rgba(255,255,255,.5)';
+    ctx.font='11px Space Grotesk';ctx.textBaseline='alphabetic';
+    ctx.fillText('Radial Symmetry — 5 Axes',cx,H-8);
+  }
+
+  function animate() {
+    animId = requestAnimationFrame(animate);
+    if(mode==='fish'){
+      breathPhase += 0.02;
+      const s = 1 + Math.sin(breathPhase)*0.015;
+      drawFish(s);
+    } else {
+      starAngle += 0.005;
+      drawStarfish(starAngle);
+    }
+  }
+
+  document.getElementById('fishBtnRadial').addEventListener('click',()=>{ mode='star'; });
+  document.getElementById('fishBtnReset').addEventListener('click',()=>{ mode='fish'; breathPhase=0; });
+  animate();
+
+  // Bubbles background
+  const bg = document.getElementById('t1-bg');
   for(let i=0;i<18;i++){
-    const b=document.createElement('div');b.className='bubble';
-    const s=Math.random()*18+5;
-    b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:-${s}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s`;
+    const b=document.createElement('div');
+    b.className='bubble';
+    const size=4+Math.random()*14;
+    b.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}%;bottom:-${size}px;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;opacity:${.2+Math.random()*.3}`;
     bg.appendChild(b);
   }
 })();
 
-setTimeout(()=>drawFish('bilateral'),120);
-
-// ══════════════════════════════════════════
+// ============================================================
 // TAB 2 — FRACTALS
-// ══════════════════════════════════════════
-const lightC=document.getElementById('lightC');
-const lctx=lightC.getContext('2d');
-const treeC=document.getElementById('treeC');
-const tctx=treeC.getContext('2d');
+// ============================================================
+(function(){
+  // LIGHTNING
+  const lc = document.getElementById('lightCanvas');
+  const lx = lc.getContext('2d');
 
-function drawLightning(){
-  rc(lightC);
-  const W=lightC.width,H=lightC.height;
-  lctx.clearRect(0,0,W,H);
-  function bolt(x1,y1,x2,y2,d,w){
-    if(d===0||w<0.25)return;
-    const mx=(x1+x2)/2+(Math.random()-.5)*Math.abs(y2-y1)*0.65;
-    const my=(y1+y2)/2;
-    // glow
-    lctx.beginPath();lctx.moveTo(x1,y1);lctx.lineTo(mx,my);
-    lctx.strokeStyle=`rgba(170,150,255,${0.07*d})`;lctx.lineWidth=w*5;lctx.stroke();
-    // core
-    lctx.beginPath();lctx.moveTo(x1,y1);lctx.lineTo(mx,my);
-    lctx.strokeStyle=`rgba(210,190,255,0.9)`;lctx.lineWidth=w;lctx.stroke();
-    if(Math.random()<0.42){
-      const bx=mx+(Math.random()-.5)*70,by=my+H*0.14*(Math.random()+0.4);
-      bolt(mx,my,bx,by,d-1,w*0.52);
-    }
-    bolt(mx,my,x2,y2,d-1,w*0.78);
-  }
-  bolt(W/2,0,W/2+(Math.random()-.5)*W*0.35,H,6,2.2);
-}
-
-function drawTree(){
-  rc(treeC);
-  const W=treeC.width,H=treeC.height;
-  tctx.clearRect(0,0,W,H);
-  const ang=parseFloat(document.getElementById('tAngle').value)*Math.PI/180;
-  const maxD=parseInt(document.getElementById('tDepth').value);
-  function branch(x,y,len,a,d){
-    if(d===0||len<1.5)return;
-    const ex=x+Math.cos(a)*len,ey=y-Math.sin(a)*len;
-    const t=d/maxD;
-    tctx.beginPath();tctx.moveTo(x,y);tctx.lineTo(ex,ey);
-    tctx.strokeStyle=`hsl(${115-t*75},${35+t*45}%,${28+t*35}%)`;
-    tctx.lineWidth=Math.max(0.4,d*1.1);tctx.stroke();
-    branch(ex,ey,len*0.73,a-ang,d-1);
-    branch(ex,ey,len*0.73,a+ang,d-1);
-  }
-  branch(W/2,H-10,H*0.22,Math.PI/2,maxD);
-}
-
-document.getElementById('btnStrike').addEventListener('click',()=>{
-  lctx.fillStyle='rgba(160,130,255,0.25)';lctx.fillRect(0,0,lightC.width,lightC.height);
-  setTimeout(drawLightning,70);
-});
-document.getElementById('tAngle').addEventListener('input',e=>{
-  document.getElementById('tAngleV').textContent=e.target.value+'°';drawTree();
-});
-document.getElementById('tDepth').addEventListener('input',e=>{
-  document.getElementById('tDepthV').textContent=e.target.value;drawTree();
-});
-
-// ══════════════════════════════════════════
-// TAB 3 — SPIRALS + STARS
-// ══════════════════════════════════════════
-const starC=document.getElementById('starC');
-const sbctx=starC.getContext('2d');
-const spiralC=document.getElementById('spiralC');
-const sctx=spiralC.getContext('2d');
-let showFib=false,starRaf;
-
-function startStars(){
-  cancelAnimationFrame(starRaf);
-  starC.width=window.innerWidth*devicePixelRatio;
-  starC.height=window.innerHeight*devicePixelRatio;
-  starC.style.width=window.innerWidth+'px';
-  starC.style.height=window.innerHeight+'px';
-  const W=starC.width,H=starC.height;
-  const stars=Array.from({length:260},()=>({
-    x:Math.random()*W,y:Math.random()*H,
-    r:Math.random()*1.4+0.3,p:Math.random()*6.28
-  }));
-  let t=0;
-  (function anim(){
-    sbctx.clearRect(0,0,W,H);t+=0.018;
-    stars.forEach(s=>{
-      sbctx.beginPath();sbctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      sbctx.fillStyle=`rgba(255,248,225,${0.25+0.35*Math.sin(t+s.p)})`;
-      sbctx.fill();
-    });
-    starRaf=requestAnimationFrame(anim);
-  })();
-}
-
-function drawSpiral(){
-  rc(spiralC);
-  const W=spiralC.width,H=spiralC.height;
-  sctx.clearRect(0,0,W,H);
-  const cx=W/2,cy=H/2;
-  const b=parseInt(document.getElementById('spiralB').value)/100;
-
-  // galaxy arms bg
-  for(let arm=0;arm<2;arm++){
-    sctx.beginPath();
-    let first=true;
-    for(let t=0;t<7*Math.PI;t+=0.06){
-      const r=8*Math.exp(0.18*t);
-      if(r>Math.min(W,H)*0.54)break;
-      const x=cx+r*Math.cos(t+arm*Math.PI),y=cy+r*Math.sin(t+arm*Math.PI);
-      first?sctx.moveTo(x,y):sctx.lineTo(x,y);first=false;
-    }
-    sctx.strokeStyle='rgba(120,60,200,0.1)';sctx.lineWidth=20;sctx.stroke();
-  }
-
-  // galaxy core glow
-  const cg=sctx.createRadialGradient(cx,cy,0,cx,cy,80);
-  cg.addColorStop(0,'rgba(255,240,180,0.22)');cg.addColorStop(1,'transparent');
-  sctx.fillStyle=cg;sctx.fillRect(0,0,W,H);
-
-  // Fibonacci rectangles
-  if(showFib){
-    sctx.save();sctx.translate(cx,cy);
-    const sz=[1,1,2,3,5,8,13,21,34].map(n=>n*10);
-    let ox=0,oy=0,dir=0;
-    sz.forEach((s,i)=>{
-      sctx.strokeStyle=`rgba(255,215,0,${0.12-i*0.009})`;sctx.lineWidth=1;
-      sctx.strokeRect(ox,oy,s,s);
-      if(dir===0){ox+=s;dir=1}else if(dir===1){oy+=s;dir=2}
-      else if(dir===2){ox-=sz[i];dir=3}else{oy-=sz[i];dir=0}
-    });
-    sctx.restore();
-  }
-
-  // golden spiral
-  sctx.beginPath();
-  let first=true;
-  for(let t=0;t<7*Math.PI;t+=0.025){
-    const r=4*Math.exp(b*t);
-    if(r>Math.min(W,H)*0.52)break;
-    const x=cx+r*Math.cos(t),y=cy+r*Math.sin(t);
-    first?sctx.moveTo(x,y):sctx.lineTo(x,y);first=false;
-  }
-  sctx.strokeStyle='rgba(255,215,0,0.14)';sctx.lineWidth=12;sctx.stroke();
-  sctx.strokeStyle='rgba(255,215,0,0.92)';sctx.lineWidth=2.2;sctx.stroke();
-
-  sctx.fillStyle='rgba(255,215,0,0.55)';
-  sctx.font=`bold ${11*devicePixelRatio}px 'Space Mono'`;
-  sctx.textAlign='center';
-  sctx.fillText('φ = 1.618  ·  r = e^('+b.toFixed(2)+'θ)',cx,H-14);
-}
-
-document.getElementById('spiralB').addEventListener('input',e=>{
-  document.getElementById('spiralBV').textContent=(parseInt(e.target.value)/100).toFixed(2);
-  drawSpiral();
-});
-document.getElementById('btnFib').addEventListener('click',()=>{showFib=!showFib;drawSpiral()});
-
-// ══════════════════════════════════════════
-// TAB 4 — REACTION DIFFUSION
-// ══════════════════════════════════════════
-const rdC=document.getElementById('rdC');
-const rdctx=rdC.getContext('2d');
-const N=100;
-let U=new Float32Array(N*N),V=new Float32Array(N*N);
-let rdFv=0.035,rdKv=0.065,rdRunning=false,rdTick;
-const Du=0.16,Dv=0.08;
-const PRESETS={Z:{f:0.035,k:0.065},L:{f:0.025,k:0.055},G:{f:0.022,k:0.051},F:{f:0.029,k:0.057}};
-
-function initRD(){
-  clearTimeout(rdTick);rdRunning=false;
-  U.fill(1);V.fill(0);
-  for(let i=0;i<15;i++){
-    const cx=Math.floor(Math.random()*(N-12)+6),cy=Math.floor(Math.random()*(N-12)+6);
-    for(let dx=-3;dx<=3;dx++)for(let dy=-3;dy<=3;dy++){
-      const idx=(cy+dy)*N+(cx+dx);
-      if(idx>=0&&idx<N*N){U[idx]=0.5+Math.random()*0.08;V[idx]=0.25+Math.random()*0.08;}
-    }
-  }
-  rdRunning=true;rdStep();
-}
-
-function lap(arr,i,j){
-  return arr[i*N+Math.max(j-1,0)]+arr[i*N+Math.min(j+1,N-1)]+
-         arr[Math.max(i-1,0)*N+j]+arr[Math.min(i+1,N-1)*N+j]-4*arr[i*N+j];
-}
-
-function rdStep(){
-  if(!rdRunning)return;
-  const f=rdFv,k=rdKv;
-  const nU=new Float32Array(N*N),nV=new Float32Array(N*N);
-  for(let i=0;i<N;i++)for(let j=0;j<N;j++){
-    const idx=i*N+j,u=U[idx],v=V[idx],uvv=u*v*v;
-    nU[idx]=Math.max(0,Math.min(1,u+Du*lap(U,i,j)-uvv+f*(1-u)));
-    nV[idx]=Math.max(0,Math.min(1,v+Dv*lap(V,i,j)+uvv-(f+k)*v));
-  }
-  U=nU;V=nV;renderRD();
-  rdTick=setTimeout(rdStep,16);
-}
-
-function renderRD(){
-  rc(rdC);
-  const W=rdC.width,H=rdC.height;
-  const img=rdctx.createImageData(W,H);
-  const cw=W/N,ch=H/N;
-  for(let i=0;i<N;i++)for(let j=0;j<N;j++){
-    const val=U[i*N+j],c=Math.floor(val*255);
-    for(let di=0;di<ch;di++)for(let dj=0;dj<cw;dj++){
-      const px=((Math.floor(i*ch)+di)*W+(Math.floor(j*cw)+dj))*4;
-      img.data[px]=Math.floor(28+c*0.82);
-      img.data[px+1]=Math.floor(18+c*0.70);
-      img.data[px+2]=Math.floor(8+c*0.55);
-      img.data[px+3]=255;
-    }
-  }
-  rdctx.putImageData(img,0,0);
-}
-
-function setPreset(key,btnId){
-  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
-  document.getElementById(btnId).classList.add('on');
-  const p=PRESETS[key];rdFv=p.f;rdKv=p.k;
-  document.getElementById('rdF').value=Math.round(p.f*1000);
-  document.getElementById('rdK').value=Math.round(p.k*1000);
-  document.getElementById('rdFV').textContent=p.f.toFixed(3);
-  document.getElementById('rdKV').textContent=p.k.toFixed(3);
-  initRD();
-}
-
-document.getElementById('pZ').addEventListener('click',()=>setPreset('Z','pZ'));
-document.getElementById('pL').addEventListener('click',()=>setPreset('L','pL'));
-document.getElementById('pG').addEventListener('click',()=>setPreset('G','pG'));
-document.getElementById('pF').addEventListener('click',()=>setPreset('F','pF'));
-document.getElementById('rdF').addEventListener('input',e=>{
-  rdFv=parseInt(e.target.value)/1000;
-  document.getElementById('rdFV').textContent=rdFv.toFixed(3);initRD();
-});
-document.getElementById('rdK').addEventListener('input',e=>{
-  rdKv=parseInt(e.target.value)/1000;
-  document.getElementById('rdKV').textContent=rdKv.toFixed(3);initRD();
-});
-
-// ══════════════════════════════════════════
-// TAB 5 — TESSELLATION
-// ══════════════════════════════════════════
-const tessC=document.getElementById('tessC');
-const tectx=tessC.getContext('2d');
-let tessMode='hex';
-
-function drawTess(shape){
-  rc(tessC);
-  const W=tessC.width,H=tessC.height;
-  tectx.clearRect(0,0,W,H);
-
-  if(shape==='hex'){
-    const r=42*devicePixelRatio,hh=r*Math.sqrt(3)/2;
-    const palette=['#0b1e20','#0e2428','#091a1c'];
-    let row=0;
-    for(let y=-r;y<H+r;y+=hh,row++){
-      let col=0;
-      for(let x=(row%2===0?0:-r*1.5);x<W+r*2;x+=r*3,col++){
-        tectx.beginPath();
-        for(let i=0;i<6;i++){
-          const a=Math.PI/3*i+Math.PI/6;
-          i?tectx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a)):tectx.moveTo(x+r*Math.cos(a),y+r*Math.sin(a));
-        }
-        tectx.closePath();
-        tectx.fillStyle=palette[(row+col)%palette.length];tectx.fill();
-        tectx.strokeStyle='rgba(120,201,201,0.22)';tectx.lineWidth=1;tectx.stroke();
+  function drawLightning() {
+    lx.clearRect(0,0,lc.width,lc.height);
+    lx.fillStyle='#05030f';lx.fillRect(0,0,lc.width,lc.height);
+    function bolt(x1,y1,x2,y2,depth,thick){
+      if(depth===0||Math.hypot(x2-x1,y2-y1)<4){
+        // glow
+        lx.beginPath();lx.moveTo(x1,y1);lx.lineTo(x2,y2);
+        lx.strokeStyle=`rgba(160,208,255,0.15)`;lx.lineWidth=thick*3;lx.stroke();
+        // main
+        lx.beginPath();lx.moveTo(x1,y1);lx.lineTo(x2,y2);
+        lx.strokeStyle='#c8e8ff';lx.lineWidth=thick;lx.stroke();
+        return;
+      }
+      const mx=(x1+x2)/2+(Math.random()-.5)*80;
+      const my=(y1+y2)/2+(Math.random()-.5)*30;
+      bolt(x1,y1,mx,my,depth-1,thick*.8);
+      bolt(mx,my,x2,y2,depth-1,thick*.8);
+      if(Math.random()<.4){
+        const bx=mx+(Math.random()-.5)*60;
+        const by=my+Math.random()*80;
+        bolt(mx,my,bx,by,depth-2,thick*.5);
       }
     }
-    tectx.fillStyle='rgba(120,201,201,0.7)';
-    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
-    tectx.textAlign='center';
-    tectx.fillText('HEXAGONAL TESSELLATION  ·  No gaps ✓  No overlaps ✓  Most efficient ✓',W/2,H-16);
+    bolt(lc.width/2,10,lc.width/2+((Math.random()-.5)*40),lc.height-10,5,2.5);
+  }
 
-  }else if(shape==='sq'){
-    const s=54*devicePixelRatio;
-    for(let y=0;y<H;y+=s)for(let x=0;x<W;x+=s){
-      tectx.fillStyle=((x/s+y/s)%2)?'#101820':'#141e28';
-      tectx.fillRect(x,y,s,s);
-      tectx.strokeStyle='rgba(120,201,201,0.18)';tectx.lineWidth=1;tectx.strokeRect(x,y,s,s);
+  document.getElementById('lightBtn').addEventListener('click',()=>{
+    lx.fillStyle='rgba(255,255,255,0.9)';lx.fillRect(0,0,lc.width,lc.height);
+    setTimeout(drawLightning,80);
+  });
+  drawLightning();
+
+  // CLOUD
+  const cc = document.getElementById('cloudCanvas');
+  const cx2 = cc.getContext('2d');
+
+  function drawCloud(roughness) {
+    cx2.clearRect(0,0,cc.width,cc.height);
+    cx2.fillStyle='#080614';cx2.fillRect(0,0,cc.width,cc.height);
+    function midpointDisplace(pts,rough,level){
+      if(level===0)return pts;
+      const out=[];
+      for(let i=0;i<pts.length-1;i++){
+        out.push(pts[i]);
+        const mx=(pts[i][0]+pts[i+1][0])/2;
+        const my=(pts[i][1]+pts[i+1][1])/2+(Math.random()-.5)*rough;
+        out.push([mx,my]);
+      }
+      out.push(pts[pts.length-1]);
+      return midpointDisplace(out,rough*.5,level-1);
     }
-    tectx.fillStyle='rgba(120,201,201,0.7)';
-    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
-    tectx.textAlign='center';
-    tectx.fillText('SQUARE TESSELLATION  ·  No gaps ✓  Less efficient than hexagon',W/2,H-16);
+    [1,.6,.35].forEach((op,layer)=>{
+      const baseY = 80+layer*40;
+      let pts=[[0,baseY],[cc.width,baseY]];
+      pts=midpointDisplace(pts,roughness*60,5);
+      cx2.beginPath();
+      cx2.moveTo(pts[0][0],pts[0][1]);
+      pts.forEach(p=>cx2.lineTo(p[0],p[1]));
+      cx2.lineTo(cc.width,cc.height);cx2.lineTo(0,cc.height);cx2.closePath();
+      cx2.fillStyle=`rgba(200,210,230,${op*.7})`;cx2.fill();
+    });
+  }
 
-  }else if(shape==='tri'){
-    const s=58*devicePixelRatio,th=s*Math.sqrt(3)/2;
-    for(let row=0;row*th<H+th;row++)for(let col=0;col*s/2<W+s;col++){
-      const x=col*s/2,y=row*th,up=(col+row)%2===0;
-      tectx.beginPath();
-      if(up){tectx.moveTo(x,y+th);tectx.lineTo(x+s/2,y);tectx.lineTo(x+s,y+th);}
-      else{tectx.moveTo(x,y);tectx.lineTo(x+s/2,y+th);tectx.lineTo(x+s,y);}
-      tectx.closePath();
-      tectx.fillStyle=(col+row)%3?'#0c1614':'#101a18';tectx.fill();
-      tectx.strokeStyle='rgba(120,201,201,0.18)';tectx.lineWidth=1;tectx.stroke();
+  const rs=document.getElementById('roughSlider');
+  rs.addEventListener('input',()=>drawCloud(rs.value/10));
+  drawCloud(.5);
+
+  // TREE
+  const tc = document.getElementById('treeCanvas');
+  const tx = tc.getContext('2d');
+
+  function drawTree(){
+    const angle=parseInt(document.getElementById('treeAngle').value)*Math.PI/180;
+    const depth=parseInt(document.getElementById('treeDepth').value);
+    tx.clearRect(0,0,tc.width,tc.height);
+    tx.fillStyle='#040210';tx.fillRect(0,0,tc.width,tc.height);
+    function branch(x,y,len,dir,d){
+      if(d===0||len<2)return;
+      const t=1-d/depth;
+      const r=Math.round(139*t+43*(1-t));
+      const g=Math.round(94*(1-t)+90*t);
+      const b=Math.round(60*(1-t)+27*t);
+      tx.strokeStyle=`rgb(${r},${g},${b})`;
+      tx.lineWidth=Math.max(.5,d*.5);
+      const ex=x+Math.cos(dir)*len;
+      const ey=y+Math.sin(dir)*len;
+      tx.beginPath();tx.moveTo(x,y);tx.lineTo(ex,ey);tx.stroke();
+      branch(ex,ey,len*.72,dir-angle,d-1);
+      branch(ex,ey,len*.72,dir+angle,d-1);
     }
-    tectx.fillStyle='rgba(120,201,201,0.7)';
-    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
-    tectx.textAlign='center';
-    tectx.fillText('TRIANGLE TESSELLATION  ·  No gaps ✓  Least area-efficient',W/2,H-16);
+    branch(tc.width/2,tc.height,90,-Math.PI/2,depth);
+  }
 
-  }else if(shape==='circ'){
-    const r=34*devicePixelRatio;
-    // red gap background
-    tectx.fillStyle='rgba(180,40,40,0.18)';tectx.fillRect(0,0,W,H);
-    for(let y=r;y<H+r;y+=r*2)for(let x=r;x<W+r;x+=r*2){
-      tectx.beginPath();tectx.arc(x,y,r,0,Math.PI*2);
-      tectx.fillStyle='#0c1820';tectx.fill();
-      tectx.strokeStyle='rgba(120,201,201,0.35)';tectx.lineWidth=1.5;tectx.stroke();
+  document.getElementById('treeAngle').addEventListener('input',drawTree);
+  document.getElementById('treeDepth').addEventListener('input',drawTree);
+  drawTree();
+})();
+
+// ============================================================
+// TAB 3 — SPIRALS
+// ============================================================
+tabInits['3'] = { fn: function(){
+  const sc = document.getElementById('spiralCanvas');
+  const sx = sc.getContext('2d');
+  let showFib=false, showSun=false;
+  let animStarId;
+
+  // Star field background
+  const starBg = document.getElementById('starBg');
+  starBg.width = starBg.offsetWidth||window.innerWidth;
+  starBg.height = starBg.offsetHeight||window.innerHeight;
+  const sbx = starBg.getContext('2d');
+  const stars = Array.from({length:200},()=>({
+    x:Math.random()*starBg.width,y:Math.random()*starBg.height,
+    r:Math.random()*1.8+.2,ph:Math.random()*Math.PI*2,sp:0.005+Math.random()*.02
+  }));
+  function animStars(){
+    animStarId=requestAnimationFrame(animStars);
+    sbx.clearRect(0,0,starBg.width,starBg.height);
+    stars.forEach(s=>{
+      s.ph+=s.sp;
+      const op=.4+Math.sin(s.ph)*.35;
+      sbx.beginPath();sbx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      sbx.fillStyle=`rgba(255,255,255,${op})`;sbx.fill();
+    });
+  }
+  animStars();
+
+  function drawSpiral(){
+    const W=sc.width,H=sc.height,cx=W/2,cy=H/2;
+    sx.clearRect(0,0,W,H);
+    sx.fillStyle='rgba(2,0,8,.92)';sx.fillRect(0,0,W,H);
+
+    // Galaxy arms
+    for(let arm=0;arm<2;arm++){
+      for(let i=0;i<300;i++){
+        const t=i/300;
+        const r=t*180+20;
+        const a=t*Math.PI*4+arm*Math.PI;
+        const x=cx+Math.cos(a)*r;
+        const y=cy+Math.sin(a)*r;
+        sx.beginPath();sx.arc(x,y,2+t*2,0,Math.PI*2);
+        sx.fillStyle=`rgba(80,40,160,${(1-t)*.4})`;sx.fill();
+      }
     }
-    tectx.fillStyle='rgba(255,100,100,0.85)';
-    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
-    tectx.textAlign='center';
-    tectx.fillText('CIRCLES — Cannot tessellate ✗  Gaps between every circle (shown in red)',W/2,H-16);
-  }
-}
 
-document.getElementById('shH').addEventListener('click',()=>{tessMode='hex';setShBtn('shH');drawTess('hex')});
-document.getElementById('shS').addEventListener('click',()=>{tessMode='sq';setShBtn('shS');drawTess('sq')});
-document.getElementById('shT').addEventListener('click',()=>{tessMode='tri';setShBtn('shT');drawTess('tri')});
-document.getElementById('shC').addEventListener('click',()=>{tessMode='circ';setShBtn('shC');drawTess('circ')});
-function setShBtn(id){document.querySelectorAll('.shbtn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on')}
+    // Core glow
+    const g=sx.createRadialGradient(cx,cy,0,cx,cy,60);
+    g.addColorStop(0,'rgba(255,240,180,.6)');g.addColorStop(1,'transparent');
+    sx.beginPath();sx.arc(cx,cy,60,0,Math.PI*2);sx.fillStyle=g;sx.fill();
 
-// ══════════════════════════════════════════
-// TAB 6 — BODY SYMMETRY
-// ══════════════════════════════════════════
-const bodyC=document.getElementById('bodyC');
-const bctx=bodyC.getContext('2d');
-let bodyMode='both',bodyRaf,showGold=false,bodyT=0;
+    const bVal = parseInt(document.getElementById('spiralB').value)/100;
 
-function drawBody(mode){
-  cancelAnimationFrame(bodyRaf);
-  rc(bodyC);
-  const W=bodyC.width,H=bodyC.height;
-  bctx.clearRect(0,0,W,H);
-  const cx=W/2;
+    // Golden spiral glow
+    sx.beginPath();
+    let first=true;
+    for(let th=0;th<6*Math.PI;th+=0.05){
+      const r=1.5*Math.exp(bVal*th);
+      const x=cx+Math.cos(th-Math.PI/2)*r;
+      const y=cy+Math.sin(th-Math.PI/2)*r;
+      if(first){sx.moveTo(x,y);first=false;}else sx.lineTo(x,y);
+    }
+    sx.strokeStyle='rgba(255,215,0,.15)';sx.lineWidth=7;sx.stroke();
 
-  // proportions
-  const hR=W*0.082;
-  const hY=H*0.09;
-  const shY=H*0.195,shW=W*0.27;
-  const hipY=H*0.52,hipW=W*0.19;
-  const elbY=H*0.37,wriY=H*0.52,hanY=H*0.59;
-  const kneY=H*0.70,fooY=H*0.91;
+    sx.beginPath();first=true;
+    for(let th=0;th<6*Math.PI;th+=0.03){
+      const r=1.5*Math.exp(bVal*th);
+      const x=cx+Math.cos(th-Math.PI/2)*r;
+      const y=cy+Math.sin(th-Math.PI/2)*r;
+      if(first){sx.moveTo(x,y);first=false;}else sx.lineTo(x,y);
+    }
+    sx.strokeStyle='#ffd700';sx.lineWidth=2.2;sx.stroke();
 
-  // torso
-  bctx.beginPath();
-  bctx.moveTo(cx-shW,shY);
-  bctx.bezierCurveTo(cx-shW,H*0.33,cx-hipW,H*0.44,cx-hipW,hipY);
-  bctx.lineTo(cx+hipW,hipY);
-  bctx.bezierCurveTo(cx+hipW,H*0.44,cx+shW,H*0.33,cx+shW,shY);
-  bctx.closePath();
-  bctx.fillStyle='rgba(50,40,30,0.08)';bctx.fill();
-  bctx.strokeStyle='rgba(50,40,30,0.5)';bctx.lineWidth=2*devicePixelRatio;bctx.stroke();
+    // Fibonacci rectangles overlay
+    if(showFib){
+      sx.save();sx.translate(cx,cy);
+      sx.strokeStyle='rgba(255,215,0,.35)';sx.lineWidth=1;
+      const sizes=[180,111,69,43,26,16,10];
+      let x=0,y=0,dir=0;
+      const dirs=[[1,0],[0,1],[-1,0],[0,-1]];
+      sizes.forEach((s,i)=>{
+        sx.strokeRect(x-s*dirs[(dir+2)%4][0],y-s*dirs[(dir+3)%4][1],s,s);
+        x+=s*dirs[dir][0];y+=s*dirs[dir][1];
+        dir=(dir+1)%4;
+      });
+      sx.restore();
+    }
 
-  // limbs
-  function limb(x1,y1,x2,y2,x3,y3,col,lw){
-    bctx.beginPath();bctx.moveTo(x1,y1);bctx.lineTo(x2,y2);bctx.lineTo(x3,y3);
-    bctx.strokeStyle=col;bctx.lineWidth=lw;bctx.stroke();
-  }
-  const lc=mode==='left'?'rgba(176,48,32,0.85)':mode==='both'?'rgba(176,48,32,0.6)':'rgba(50,40,30,0.25)';
-  const rc2=mode==='right'?'rgba(32,96,160,0.85)':mode==='both'?'rgba(32,96,160,0.6)':'rgba(50,40,30,0.25)';
-  const lw=3*devicePixelRatio;
-
-  // left arm & leg
-  limb(cx-shW,shY,cx-shW-W*0.06,elbY,cx-shW-W*0.01,wriY,lc,lw);
-  bctx.beginPath();bctx.moveTo(cx-shW-W*0.01,wriY);bctx.lineTo(cx-shW+W*0.02,hanY);
-  bctx.strokeStyle=lc;bctx.lineWidth=lw;bctx.stroke();
-  limb(cx-hipW*0.5,hipY,cx-hipW*0.6,kneY,cx-hipW*0.55,fooY,lc,lw);
-
-  // right arm & leg
-  limb(cx+shW,shY,cx+shW+W*0.06,elbY,cx+shW+W*0.01,wriY,rc2,lw);
-  bctx.beginPath();bctx.moveTo(cx+shW+W*0.01,wriY);bctx.lineTo(cx+shW-W*0.02,hanY);
-  bctx.strokeStyle=rc2;bctx.lineWidth=lw;bctx.stroke();
-  limb(cx+hipW*0.5,hipY,cx+hipW*0.6,kneY,cx+hipW*0.55,fooY,rc2,lw);
-
-  // head
-  bctx.beginPath();bctx.arc(cx,hY,hR,0,Math.PI*2);
-  bctx.fillStyle='rgba(50,40,30,0.07)';bctx.fill();
-  bctx.strokeStyle='rgba(50,40,30,0.5)';bctx.lineWidth=2*devicePixelRatio;bctx.stroke();
-  // eyes
-  bctx.fillStyle='rgba(50,40,30,0.45)';
-  bctx.beginPath();bctx.arc(cx-hR*0.3,hY-hR*0.08,hR*0.09,0,Math.PI*2);bctx.fill();
-  bctx.beginPath();bctx.arc(cx+hR*0.3,hY-hR*0.08,hR*0.09,0,Math.PI*2);bctx.fill();
-  // neck
-  bctx.beginPath();
-  bctx.moveTo(cx-hR*0.32,hY+hR);bctx.lineTo(cx-hR*0.32,shY);
-  bctx.lineTo(cx+hR*0.32,shY);bctx.lineTo(cx+hR*0.32,hY+hR);
-  bctx.strokeStyle='rgba(50,40,30,0.35)';bctx.lineWidth=2*devicePixelRatio;bctx.stroke();
-
-  // symmetry axis
-  bctx.setLineDash([9,6]);
-  bctx.beginPath();bctx.moveTo(cx,6);bctx.lineTo(cx,H-6);
-  bctx.strokeStyle='rgba(176,48,32,0.35)';bctx.lineWidth=1.5;bctx.stroke();
-  bctx.setLineDash([]);
-  bctx.fillStyle='rgba(176,48,32,0.55)';
-  bctx.font=`${9*devicePixelRatio}px 'Space Mono'`;
-  bctx.textAlign='center';
-  bctx.fillText('AXIS OF BILATERAL SYMMETRY',cx,H-6);
-
-  // golden ratio lines
-  if(showGold){
-    const navY=hY+hR+(fooY-(hY+hR))/1.618;
-    // navel line
-    bctx.setLineDash([7,4]);
-    bctx.beginPath();bctx.moveTo(cx-W*0.38,navY);bctx.lineTo(cx+W*0.38,navY);
-    bctx.strokeStyle='rgba(192,128,0,0.75)';bctx.lineWidth=2;bctx.stroke();
-    bctx.setLineDash([]);
-    bctx.fillStyle='rgba(192,128,0,0.85)';
-    bctx.font=`bold ${9*devicePixelRatio}px 'Space Mono'`;
-    bctx.textAlign='right';
-    bctx.fillText('φ = 1.618',cx+W*0.38,navY-6);
-    bctx.font=`${8*devicePixelRatio}px 'Space Mono'`;
-    bctx.fillText('height ÷ navel height',cx+W*0.38,navY+13);
-    // forearm line
-    bctx.setLineDash([5,4]);
-    bctx.beginPath();
-    bctx.moveTo(cx-shW-W*0.07,elbY);bctx.lineTo(cx-shW-W*0.07,wriY);
-    bctx.strokeStyle='rgba(192,128,0,0.6)';bctx.lineWidth=2;bctx.stroke();
-    bctx.setLineDash([]);
-    bctx.textAlign='left';
-    bctx.font=`${8*devicePixelRatio}px 'Space Mono'`;
-    bctx.fillText('forearm÷hand≈φ',cx-shW-W*0.04,elbY+(wriY-elbY)/2);
+    // Sunflower seeds
+    if(showSun){
+      const goldenAngle=137.508*Math.PI/180;
+      for(let i=0;i<300;i++){
+        const r=Math.sqrt(i)*9;
+        const a=i*goldenAngle;
+        const x=cx+Math.cos(a)*r;
+        const y=cy+Math.sin(a)*r;
+        if(r>200)continue;
+        sx.beginPath();sx.arc(x,y,2.5,0,Math.PI*2);
+        const hue=30+i*.15;
+        sx.fillStyle=`hsl(${hue},80%,55%)`;sx.fill();
+      }
+    }
   }
 
-  if(mode==='animate'){
-    bodyT+=0.035;
-    const a=Math.max(0,Math.sin(bodyT));
-    bctx.fillStyle=`rgba(176,48,32,${a*0.12})`;bctx.fillRect(0,0,W/2,H);
-    bctx.fillStyle=`rgba(32,96,160,${(1-a)*0.12})`;bctx.fillRect(W/2,0,W/2,H);
-    bodyRaf=requestAnimationFrame(()=>drawBody('animate'));
+  document.getElementById('spiralB').addEventListener('input',drawSpiral);
+  document.getElementById('spiralFib').addEventListener('click',function(){
+    showFib=!showFib;this.classList.toggle('active',showFib);
+    this.textContent=showFib?'Hide Fibonacci Rectangles':'Show Fibonacci Rectangles';
+    drawSpiral();
+  });
+  document.getElementById('spiralSun').addEventListener('click',function(){
+    showSun=!showSun;this.classList.toggle('active',showSun);
+    this.textContent=showSun?'Hide Sunflower Seeds':'Show Sunflower Seeds';
+    drawSpiral();
+  });
+
+  // Golden ratio calculator
+  document.getElementById('phiInput').addEventListener('input',function(){
+    const a=parseFloat(this.value);
+    const rv=document.getElementById('ratio-viz');
+    if(!a||a<=0){document.getElementById('phiResult').textContent='';rv.style.display='none';return;}
+    const b=(a*1.618).toFixed(2);
+    const total=(a+parseFloat(b)).toFixed(2);
+    document.getElementById('phiResult').innerHTML=`φ partner: <strong>${b} cm</strong><br>Combined: <strong>${total} cm</strong><br>Ratio b/a = <strong>1.618 (φ)</strong>`;
+    const pct=Math.round(a/(a+parseFloat(b))*100);
+    document.getElementById('ratio-a').style.width=pct+'%';
+    document.getElementById('ratio-b').style.width=(100-pct)+'%';
+    rv.style.display='flex';
+  });
+
+  drawSpiral();
+}, done:false};
+
+// ============================================================
+// TAB 4 — REACTION DIFFUSION
+// ============================================================
+(function(){
+  const canvas = document.getElementById('rdCanvas');
+  const ctx = canvas.getContext('2d');
+  const N = 100;
+  const SCALE = canvas.width/N;
+  let U=new Float32Array(N*N), V=new Float32Array(N*N);
+  let nU=new Float32Array(N*N), nV=new Float32Array(N*N);
+  let Du=0.16,Dv=0.08,f=0.035,k=0.065;
+  let running=true,animId2;
+
+  function initGrid(){
+    U.fill(1);V.fill(0);
+    const cx=Math.floor(N/2),cy=Math.floor(N/2),r=8;
+    for(let y=cy-r;y<cy+r;y++)for(let x=cx-r;x<cx+r;x++){
+      const i=y*N+x;
+      U[i]=0.5+Math.random()*.2-.1;
+      V[i]=0.25+Math.random()*.1-.05;
+    }
   }
-}
 
-document.getElementById('bLeft').addEventListener('click',()=>{bodyMode='left';showGold=false;cancelAnimationFrame(bodyRaf);drawBody('left')});
-document.getElementById('bRight').addEventListener('click',()=>{bodyMode='right';showGold=false;cancelAnimationFrame(bodyRaf);drawBody('right')});
-document.getElementById('bBoth').addEventListener('click',()=>{bodyMode='animate';showGold=false;drawBody('animate')});
-document.getElementById('bGold').addEventListener('click',()=>{showGold=!showGold;bodyMode='both';cancelAnimationFrame(bodyRaf);drawBody('both')});
+  function step(){
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const i=y*N+x;
+      const l=(x>0?x-1:N-1),r2=(x<N-1?x+1:0);
+      const u2=(y>0?y-1:N-1),d=(y<N-1?y+1:0);
+      const lapU=U[u2*N+x]+U[d*N+x]+U[y*N+l]+U[y*N+r2]-4*U[i];
+      const lapV=V[u2*N+x]+V[d*N+x]+V[y*N+l]+V[y*N+r2]-4*V[i];
+      const uvv=U[i]*V[i]*V[i];
+      nU[i]=Math.max(0,Math.min(1,U[i]+Du*lapU-uvv+f*(1-U[i])));
+      nV[i]=Math.max(0,Math.min(1,V[i]+Dv*lapV+uvv-(f+k)*V[i]));
+    }
+    [U,nU]=[nU,U]; [V,nV]=[nV,V];
+  }
 
-document.getElementById('hSlide').addEventListener('input',e=>{
-  const h=parseInt(e.target.value);
-  document.getElementById('hV').textContent=h;
-  const nav=(h/1.618).toFixed(1);
-  const fa=(h*0.157).toFixed(1),ha=(h*0.097).toFixed(1);
-  const ratio=(fa/ha).toFixed(3);
-  document.getElementById('phiOut').innerHTML=
-    `Height: ${h} cm<br>Navel height: ${nav} cm from floor<br>${h} ÷ ${nav} = <strong>1.618 φ</strong><br>Forearm ≈ ${fa} cm  ·  Hand ≈ ${ha} cm<br>Forearm ÷ Hand ≈ <strong>${ratio} φ</strong>`;
-});
+  const imgData=ctx.createImageData(canvas.width,canvas.height);
+  function render(){
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const u=U[y*N+x];
+      const c=Math.floor(u*255);
+      for(let dy=0;dy<SCALE;dy++)for(let dx=0;dx<SCALE;dx++){
+        const p=((y*SCALE+dy)*canvas.width+(x*SCALE+dx))*4;
+        imgData.data[p]=c; imgData.data[p+1]=Math.floor(c*.85);
+        imgData.data[p+2]=Math.floor(c*.6); imgData.data[p+3]=255;
+      }
+    }
+    ctx.putImageData(imgData,0,0);
+  }
 
-// ══ INIT ══
-window.addEventListener('load',()=>{
-  setTimeout(()=>{
-    drawFish('bilateral');
-    drawLightning();drawTree();
-    drawTess('hex');
-    drawBody('both');
-  },150);
-});
+  function loop(){
+    if(!running)return;
+    animId2=requestAnimationFrame(loop);
+    for(let s=0;s<5;s++)step();
+    render();
+  }
 
+  initGrid(); loop();
+
+  document.querySelectorAll('.rdpre').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      f=parseFloat(btn.dataset.f);k=parseFloat(btn.dataset.k);
+      document.getElementById('fSlider').value=f;
+      document.getElementById('kSlider').value=k;
+      document.getElementById('fVal').textContent=f.toFixed(3);
+      document.getElementById('kVal').textContent=k.toFixed(3);
+      initGrid();
+    });
+  });
+  document.getElementById('rdReset').addEventListener('click',initGrid);
+  document.getElementById('fSlider').addEventListener('input',function(){
+    f=parseFloat(this.value);document.getElementById('fVal').textContent=f.toFixed(3);
+  });
+  document.getElementById('kSlider').addEventListener('input',function(){
+    k=parseFloat(this.value);document.getElementById('kVal').textContent=k.toFixed(3);
+  });
+})();
+
+// ============================================================
+// TAB 5 — TESSELLATION
+// ============================================================
+(function(){
+  const tc = document.getElementById('tessCanvas');
+  const tx = tc.getContext('2d');
+  let currentShape='hex';
+  let buildTimer=null;
+
+  // Background hexagons
+  const hexBg=document.getElementById('hexBg');
+  hexBg.width=window.innerWidth;hexBg.height=window.innerHeight;
+  const hbx=hexBg.getContext('2d');
+  function hexPts(cx,cy,r){
+    return Array.from({length:6},(_,i)=>[cx+r*Math.cos(Math.PI/6+i*Math.PI/3),cy+r*Math.sin(Math.PI/6+i*Math.PI/3)]);
+  }
+  let bgPhase=0;
+  function animBg(){
+    requestAnimationFrame(animBg);
+    bgPhase+=.005;
+    hbx.clearRect(0,0,hexBg.width,hexBg.height);
+    const r=32,h=r*Math.sqrt(3);
+    for(let row=-1;row<hexBg.height/h+2;row++){
+      for(let col=-1;col<hexBg.width/(r*1.5)+2;col++){
+        const cx=col*r*3+(row%2===0?0:r*1.5);
+        const cy=row*h;
+        const op=.04+.03*Math.sin(bgPhase+col*.3+row*.2);
+        hbx.beginPath();
+        hexPts(cx,cy,r).forEach((p,i)=>i?hbx.lineTo(p[0],p[1]):hbx.moveTo(p[0],p[1]));
+        hbx.closePath();
+        hbx.strokeStyle=`rgba(120,201,201,${op})`;hbx.lineWidth=1;hbx.stroke();
+      }
+    }
+  }
+  animBg();
+
+  const tessInfo = {
+    hex:{angle:120,vertex:3,label:'Hexagons — Interior: 120° | Meeting at vertex: 3 | No gaps ✓'},
+    sq:{angle:90,vertex:4,label:'Squares — Interior: 90° | Meeting at vertex: 4 | No gaps ✓'},
+    tri:{angle:60,vertex:6,label:'Triangles — Interior: 60° | Meeting at vertex: 6 | No gaps ✓'},
+    circ:{label:'Circles — Cannot tessellate — Gaps appear ✗'}
+  };
+
+  function drawHex(){
+    const r=36,h=r*Math.sqrt(3),W=tc.width,H=tc.height;
+    const tiles=[];
+    for(let row=0;row<H/h+2;row++)for(let col=0;col<W/(r*1.5)+2;col++){
+      tiles.push({cx:col*r*3+(row%2===0?0:r*1.5),cy:row*h-h/2});
+    }
+    return {tiles,draw(t,c2){
+      const shade=Math.floor(20+Math.random()*15);
+      c2.beginPath();
+      hexPts(t.cx,t.cy,r-1).forEach((p,i)=>i?c2.lineTo(p[0],p[1]):c2.moveTo(p[0],p[1]));
+      c2.closePath();
+      c2.fillStyle=`rgb(${shade},${shade+8},${shade+10})`;c2.fill();
+      c2.strokeStyle='rgba(120,201,201,.4)';c2.lineWidth=1;c2.stroke();
+    }};
+  }
+
+  function drawSq(){
+    const s=46,W=tc.width,H=tc.height;
+    const tiles=[];
+    for(let y=0;y<H/s+1;y++)for(let x=0;x<W/s+1;x++) tiles.push({x:x*s,y:y*s});
+    return {tiles,draw(t,c2){
+      const shade=Math.floor(35+Math.random()*20);
+      c2.fillStyle=`rgb(${shade+40},${shade+20},${shade})`;
+      c2.fillRect(t.x,t.y,s-1,s-1);
+      c2.strokeStyle='rgba(140,120,83,.4)';c2.lineWidth=1;
+      c2.strokeRect(t.x,t.y,s-1,s-1);
+    }};
+  }
+
+  function drawTri(){
+    const s=50,h=s*Math.sqrt(3)/2;
+    const W=tc.width,H=tc.height;
+    const tiles=[];
+    for(let row=0;row<H/h+2;row++)for(let col=0;col<W/s*2+2;col++){
+      tiles.push({col,row});
+    }
+    return {tiles,draw(t,c2){
+      const col=t.col,row=t.row;
+      const x0=col*s/2,y0=row*h;
+      const flip=(col+row)%2===1;
+      c2.beginPath();
+      if(!flip){c2.moveTo(x0,y0+h);c2.lineTo(x0+s/2,y0);c2.lineTo(x0+s,y0+h);}
+      else{c2.moveTo(x0,y0);c2.lineTo(x0+s/2,y0+h);c2.lineTo(x0+s,y0);}
+      c2.closePath();
+      const shade=Math.floor(25+Math.random()*20);
+      c2.fillStyle=`rgb(${shade+30},${shade+35},${shade+60})`;c2.fill();
+      c2.strokeStyle='rgba(100,130,160,.4)';c2.lineWidth=1;c2.stroke();
+    }};
+  }
+
+  function drawCirc(){
+    const r=26,W=tc.width,H=tc.height;
+    const tiles=[];
+    for(let y=0;y<H/(r*2)+2;y++)for(let x=0;x<W/(r*2)+2;x++) tiles.push({x:x*r*2+r,y:y*r*2+r});
+    return {tiles,draw(t,c2){
+      c2.beginPath();c2.arc(t.x,t.y,r-2,0,Math.PI*2);
+      c2.fillStyle='rgba(120,201,201,.3)';c2.fill();
+      c2.strokeStyle='rgba(120,201,201,.6)';c2.lineWidth=1;c2.stroke();
+    }};
+  }
+
+  function buildTiles(shape){
+    if(buildTimer)clearTimeout(buildTimer);
+    tx.clearRect(0,0,tc.width,tc.height);
+    tx.fillStyle='rgba(20,20,22,.8)';tx.fillRect(0,0,tc.width,tc.height);
+    const obj = shape==='hex'?drawHex():shape==='sq'?drawSq():shape==='tri'?drawTri():drawCirc();
+    let i=0;
+    function popTile(){
+      if(i>=obj.tiles.length)return;
+      obj.draw(obj.tiles[i],tx);
+      i++;
+      buildTimer=setTimeout(popTile,3);
+    }
+    popTile();
+    document.getElementById('tessInfo').textContent=tessInfo[shape].label;
+  }
+
+  document.querySelectorAll('.tessBtn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.tessBtn').forEach(b=>b.classList.remove('active'));
+      this.classList.add('active');
+      currentShape=this.dataset.shape;
+      buildTiles(currentShape);
+    });
+  });
+  buildTiles('hex');
+})();
+
+// ============================================================
+// TAB 6 — ANATOMY
+// ============================================================
+(function(){
+  const bc=document.getElementById('bodyCanvas');
+  const bx=bc.getContext('2d');
+  let highlightMode=null, oscillateId=null, showGolden=false;
+  let oscPhase=0;
+
+  function drawHuman(mode, goldenLines){
+    const W=bc.width,H=bc.height,cx=W/2;
+    bx.clearRect(0,0,W,H);
+    bx.fillStyle='#f8f4ef';bx.fillRect(0,0,W,H);
+
+    const bodyParts=[
+      // [type, ...params]  relative to cx,top
+      // Head
+      {t:'ellipse',x:cx,y:70,rx:36,ry:44},
+      // Neck
+      {t:'rect',x:cx-12,y:112,w:24,h:28},
+      // Torso
+      {t:'rect',x:cx-52,y:140,w:104,h:120},
+      // Hips
+      {t:'rect',x:cx-58,y:250,w:116,h:40},
+      // Left upper arm
+      {t:'rect',x:cx-88,y:142,w:30,h:85,side:'L'},
+      // Left forearm
+      {t:'rect',x:cx-84,y:228,w:24,h:70,side:'L'},
+      // Right upper arm
+      {t:'rect',x:cx+58,y:142,w:30,h:85,side:'R'},
+      // Right forearm
+      {t:'rect',x:cx+60,y:228,w:24,h:70,side:'R'},
+      // Left thigh
+      {t:'rect',x:cx-52,y:288,w:44,h:90,side:'L'},
+      // Left shin
+      {t:'rect',x:cx-50,y:376,w:36,h:70,side:'L'},
+      // Right thigh
+      {t:'rect',x:cx+8,y:288,w:44,h:90,side:'R'},
+      // Right shin
+      {t:'rect',x:cx+14,y:376,w:36,h:70,side:'R'},
+    ];
+
+    bodyParts.forEach(p=>{
+      const side=p.side||null;
+      let fill='#d6c9bc',stroke='#2c3e50';
+      if(mode==='L'&&side==='L') fill='rgba(220,80,60,.55)';
+      if(mode==='R'&&side==='R') fill='rgba(60,100,200,.45)';
+      if(mode==='L'&&!side) fill='rgba(220,80,60,.15)';
+      if(mode==='R'&&!side) fill='rgba(60,100,200,.12)';
+
+      bx.fillStyle=fill;bx.strokeStyle=stroke;bx.lineWidth=1.5;
+      if(p.t==='ellipse'){
+        bx.beginPath();bx.ellipse(p.x,p.y,p.rx,p.ry,0,0,Math.PI*2);bx.fill();bx.stroke();
+        // Eyes
+        bx.fillStyle='#2c3e50';
+        bx.beginPath();bx.ellipse(cx-14,62,5,3,0,0,Math.PI*2);bx.fill();
+        bx.beginPath();bx.ellipse(cx+14,62,5,3,0,0,Math.PI*2);bx.fill();
+        // Mouth
+        bx.beginPath();bx.arc(cx,80,12,0.2,Math.PI-.2);bx.stroke();
+      } else {
+        const rx=p.x-p.w/2; // centered
+        bx.beginPath();bx.roundRect(rx,p.y,p.w,p.h,4);bx.fill();bx.stroke();
+      }
+    });
+
+    // Hands
+    [[cx-84,298],[cx+84,298]].forEach((pos,i)=>{
+      bx.beginPath();bx.ellipse(pos[0],pos[1],14,10,0,0,Math.PI*2);
+      bx.fillStyle=(mode==='L'&&i===0)?'rgba(220,80,60,.55)':(mode==='R'&&i===1)?'rgba(60,100,200,.45)':'#d6c9bc';
+      bx.fill();bx.strokeStyle='#2c3e50';bx.stroke();
+    });
+    // Feet
+    [[cx-32,448],[cx+32,448]].forEach((pos,i)=>{
+      bx.beginPath();bx.ellipse(pos[0],pos[1],20,10,0,0,Math.PI*2);
+      bx.fillStyle=(mode==='L'&&i===0)?'rgba(220,80,60,.55)':(mode==='R'&&i===1)?'rgba(60,100,200,.45)':'#d6c9bc';
+      bx.fill();bx.strokeStyle='#2c3e50';bx.stroke();
+    });
+
+    // Center axis
+    bx.save();bx.setLineDash([7,5]);
+    bx.strokeStyle='rgba(192,57,43,.5)';bx.lineWidth=1.5;
+    bx.beginPath();bx.moveTo(cx,18);bx.lineTo(cx,H-16);bx.stroke();
+    bx.setLineDash([]);
+    bx.fillStyle='rgba(192,57,43,.7)';bx.font='10px Space Grotesk';bx.textAlign='center';
+    bx.fillText('Axis of Symmetry',cx,H-5);
+    bx.restore();
+
+    // Golden ratio lines
+    if(goldenLines){
+      const totalH=440, navelY=30+(totalH/1.618);
+      // Navel line
+      bx.save();
+      bx.strokeStyle='#d4a017';bx.lineWidth=2;bx.setLineDash([]);
+      bx.beginPath();bx.moveTo(20,navelY);bx.lineTo(W-20,navelY);bx.stroke();
+      bx.fillStyle='#d4a017';bx.font='bold 10px Space Grotesk';bx.textAlign='left';
+      bx.fillText('Height ÷ Navel = φ',24,navelY-5);
+      // Forearm
+      bx.strokeStyle='rgba(212,160,23,.7)';bx.lineWidth=1.5;bx.setLineDash([4,3]);
+      bx.beginPath();bx.moveTo(cx-84,228);bx.lineTo(cx-84,298);bx.stroke();
+      bx.setLineDash([]);bx.font='9px Space Grotesk';
+      bx.fillText('Forearm/Hand ≈ φ',6,240);
+      // Eye line
+      bx.strokeStyle='rgba(212,160,23,.5)';bx.setLineDash([3,3]);
+      bx.beginPath();bx.moveTo(50,62);bx.lineTo(W-50,62);bx.stroke();
+      bx.fillText('Eye line (facial φ)',24,58);
+      bx.restore();
+    }
+  }
+
+  function stopOsc(){if(oscillateId){cancelAnimationFrame(oscillateId);oscillateId=null;}}
+  function startOsc(){
+    stopOsc();
+    function osc(){
+      oscillateId=requestAnimationFrame(osc);
+      oscPhase+=0.02;
+      const m=Math.sin(oscPhase)>0?'L':'R';
+      drawHuman(m,showGolden);
+    }
+    osc();
+  }
+
+  document.getElementById('bodyLeft').addEventListener('click',()=>{stopOsc();highlightMode='L';drawHuman('L',showGolden);});
+  document.getElementById('bodyRight').addEventListener('click',()=>{stopOsc();highlightMode='R';drawHuman('R',showGolden);});
+  document.getElementById('bodyBoth').addEventListener('click',startOsc);
+  document.getElementById('bodyGolden').addEventListener('click',function(){
+    showGolden=!showGolden;this.classList.toggle('active',showGolden);
+    drawHuman(highlightMode,showGolden);
+  });
+  document.getElementById('bodyClear').addEventListener('click',()=>{stopOsc();highlightMode=null;showGolden=false;document.getElementById('bodyGolden').classList.remove('active');drawHuman(null,false);});
+
+  document.getElementById('heightInput').addEventListener('input',function(){
+    const h=parseFloat(this.value);
+    const res=document.getElementById('heightResult');
+    const bar=document.getElementById('bodyBar');
+    if(!h||h<50){res.innerHTML='';bar.style.display='none';return;}
+    const navel=(h/1.618).toFixed(1);
+    const forearm=(h*.269).toFixed(1);
+    res.innerHTML=`Navel height: <strong>${navel} cm</strong> from ground<br>Upper:Lower = <strong>φ (1.618)</strong><br>Forearm + hand: ≈ <strong>${forearm} cm</strong>`;
+    bar.style.display='block';
+    const pct=(navel/h*100);
+    document.getElementById('bodyBarFill').style.height=pct+'%';
+    document.getElementById('navelLine').style.bottom=pct+'%';
+    document.getElementById('navelLabel').style.bottom=pct+'%';
+    document.getElementById('navelLabel').textContent='Navel '+navel+'cm';
+  });
+
+  drawHuman(null,false);
+})();
+
+// ============================================================
+// HANDLE RESIZE for star bg
+// ============================================================
 window.addEventListener('resize',()=>{
-  const at=document.querySelector('.panel.active').id.replace('tab-','');
-  if(at==='m'){cancelAnimationFrame(fishRaf);drawFish(fishMode)}
-  if(at==='f'){drawLightning();drawTree()}
-  if(at==='s'){startStars();drawSpiral()}
-  if(at==='g')drawTess(tessMode);
-  if(at==='a'){cancelAnimationFrame(bodyRaf);drawBody(bodyMode==='animate'?'both':bodyMode)}
+  const sb=document.getElementById('starBg');
+  if(sb){sb.width=sb.offsetWidth||window.innerWidth;sb.height=sb.offsetHeight||window.innerHeight;}
+  const hb=document.getElementById('hexBg');
+  if(hb){hb.width=window.innerWidth;hb.height=window.innerHeight;}
 });
+
+// Init tab 3 star bg immediately
+document.getElementById('starBg').width=window.innerWidth;
+document.getElementById('starBg').height=window.innerHeight;
 </script>
 </body>
 </html>
