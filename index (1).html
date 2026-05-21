@@ -5,640 +5,408 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Patterns and Numbers in Nature — TEDx NUFV</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Josefin+Sans:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Rajdhani:wght@500;700&family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Josefin+Sans:wght@300;600&family=EB+Garamond:wght@400;600&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --nav-h:64px;
-  --trans:300ms cubic-bezier(.4,0,.2,1);
-}
+:root{--nav-h:60px;--trans:280ms cubic-bezier(.4,0,.2,1)}
 html,body{height:100%;overflow:hidden}
-body{font-family:'DM Sans',sans-serif;background:#0a0a0f}
+body{font-family:'DM Sans',sans-serif;background:#080810}
 
-/* ── NAV ── */
+/* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   height:var(--nav-h);
-  background:rgba(8,8,15,0.85);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,0.06);
+  background:rgba(6,6,14,0.92);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
   display:flex;align-items:center;
-  padding:0 12px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  gap:4px;
+  padding:0 10px;overflow-x:auto;scrollbar-width:none;gap:2px;
 }
 nav::-webkit-scrollbar{display:none}
 .nav-brand{
-  font-family:'Space Mono',monospace;
-  font-size:10px;color:rgba(255,255,255,0.3);
-  letter-spacing:0.12em;white-space:nowrap;
-  padding-right:16px;border-right:1px solid rgba(255,255,255,0.08);
-  margin-right:8px;min-width:fit-content;
-  line-height:1.3;
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:rgba(255,255,255,0.25);letter-spacing:0.1em;
+  white-space:nowrap;padding-right:14px;
+  border-right:1px solid rgba(255,255,255,0.06);
+  margin-right:6px;line-height:1.4;min-width:fit-content;
 }
 .tab-btn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:6px 14px;border-radius:8px;cursor:pointer;
-  border:none;background:transparent;
-  min-width:100px;gap:2px;
+  display:flex;flex-direction:column;align-items:center;
+  padding:5px 12px;border-radius:7px;cursor:pointer;
+  border:none;background:transparent;gap:1px;
+  min-width:90px;position:relative;
   transition:background var(--trans);
-  position:relative;
 }
-.tab-btn:hover{background:rgba(255,255,255,0.05)}
-.tab-btn.active{background:var(--tab-color-dim)}
+.tab-btn:hover{background:rgba(255,255,255,0.04)}
+.tab-btn.active{background:var(--tc-dim)}
 .tab-btn::after{
-  content:'';position:absolute;bottom:-1px;left:12px;right:12px;
-  height:2px;background:var(--tab-color,transparent);
-  border-radius:2px 2px 0 0;
-  opacity:0;transition:opacity var(--trans);
+  content:'';position:absolute;bottom:-1px;left:10px;right:10px;
+  height:2px;background:var(--tc,transparent);
+  border-radius:2px 2px 0 0;opacity:0;
+  transition:opacity var(--trans);
 }
 .tab-btn.active::after{opacity:1}
-.tab-icon{font-size:16px;line-height:1}
-.tab-field{font-size:11px;font-weight:500;color:rgba(255,255,255,0.7);white-space:nowrap}
-.tab-topic{font-size:9px;color:rgba(255,255,255,0.35);white-space:nowrap;letter-spacing:0.04em}
-.tab-btn.active .tab-field{color:var(--tab-color)}
+.tab-btn.active .tf{color:var(--tc)}
+.ti{font-size:15px;line-height:1}
+.tf{font-size:10px;font-weight:500;color:rgba(255,255,255,0.65);white-space:nowrap}
+.tt{font-size:8px;color:rgba(255,255,255,0.28);letter-spacing:0.04em;white-space:nowrap}
 
-/* ── MAIN SCROLL AREA ── */
+/* APP SCROLL CONTAINER */
 #app{
   position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;
   overflow-y:auto;overflow-x:hidden;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,0.1) transparent;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.08) transparent;
 }
 
-/* ── PANELS ── */
-.panel{
-  display:none;min-height:100%;
-  padding:40px 24px 80px;
-  animation:fadeUp 0.35s ease forwards;
-}
-.panel.active{display:block}
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-.panel-inner{max-width:900px;margin:0 auto}
+/* PANELS */
+.panel{display:none;min-height:100%;padding:32px 20px 60px}
+.panel.active{display:block;animation:fu .3s ease forwards}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.inner{max-width:860px;margin:0 auto}
 
-/* ── SHARED SECTION STYLES ── */
-.speaker-tag{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
-  font-weight:600;padding:4px 12px;border-radius:20px;
-  margin-bottom:14px;
-  border:1px solid currentColor;
-  opacity:0.7;
+/* HEADER */
+.stag{
+  display:inline-flex;align-items:center;
+  font-size:10px;letter-spacing:0.1em;text-transform:uppercase;
+  font-weight:600;padding:3px 10px;border-radius:20px;
+  margin-bottom:10px;border:1px solid currentColor;opacity:0.6;
 }
-.panel-title{
-  font-size:clamp(36px,8vw,72px);
-  font-weight:700;line-height:0.95;
-  margin-bottom:8px;
-  letter-spacing:-0.02em;
+.ptitle{
+  font-size:clamp(32px,7vw,64px);font-weight:700;
+  line-height:0.92;margin-bottom:6px;letter-spacing:-0.02em;
 }
-.panel-sub{
-  font-size:13px;opacity:0.5;margin-bottom:20px;
-  font-style:italic;
-}
-.concept-box{
-  border-left:3px solid currentColor;
-  padding:14px 18px;
-  border-radius:0 8px 8px 0;
-  margin-bottom:32px;
-  font-size:14px;line-height:1.7;
-  background:rgba(255,255,255,0.03);
-}
-.concept-box strong{font-weight:600}
+.psub{font-size:12px;opacity:0.35;margin-bottom:18px;font-style:italic}
 
-.sim-label{
-  font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
-  opacity:0.4;margin-bottom:12px;font-family:'Space Mono',monospace;
+/* SHORT CONCEPT TEXT */
+.ctext{
+  font-size:13px;line-height:1.75;opacity:0.65;
+  margin-bottom:24px;max-width:640px;
 }
-.sim-wrap{
-  border-radius:12px;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.06);
-  margin-bottom:16px;
-  position:relative;
-}
-canvas{display:block;width:100%;max-width:100%}
+.ctext strong{font-weight:600;opacity:1}
 
+/* SIM AREA */
+.slabel{
+  font-size:9px;letter-spacing:0.12em;text-transform:uppercase;
+  opacity:0.3;margin-bottom:8px;font-family:'Space Mono',monospace;
+}
+.swrap{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);margin-bottom:12px;position:relative}
+canvas{display:block;width:100%}
+
+/* CONTROLS */
+.brow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:8px;
-  font-size:13px;font-weight:500;cursor:pointer;
-  border:1px solid currentColor;
-  transition:all 0.2s;background:transparent;
-  font-family:'DM Sans',sans-serif;
-  letter-spacing:0.02em;
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 16px;border-radius:7px;font-size:12px;
+  font-weight:500;cursor:pointer;border:1px solid currentColor;
+  background:transparent;font-family:'DM Sans',sans-serif;
+  transition:all .18s;letter-spacing:0.02em;
 }
-.btn:hover{background:rgba(255,255,255,0.08)}
-.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:8px}
-.info-card{
-  padding:16px;border-radius:10px;
-  background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.06);
+.btn:hover{background:rgba(255,255,255,0.07)}
+.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:12px}
+.sbox{
+  border-radius:10px;border:1px solid rgba(255,255,255,0.05);
+  background:rgba(255,255,255,0.015);padding:14px;
 }
-.info-card-title{font-size:12px;font-weight:600;margin-bottom:6px;opacity:0.9;letter-spacing:0.04em}
-.info-card-body{font-size:12px;line-height:1.6;opacity:0.55}
+.sbox-title{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.35;margin-bottom:8px;font-family:'Space Mono',monospace}
 
-/* slider */
-.slider-wrap{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.slider-wrap label{font-size:12px;opacity:0.6;white-space:nowrap;min-width:120px}
+.slw{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.slw label{font-size:11px;opacity:0.55;white-space:nowrap;min-width:110px}
 input[type=range]{
   flex:1;-webkit-appearance:none;appearance:none;
-  height:3px;border-radius:2px;outline:none;
-  background:rgba(255,255,255,0.15);cursor:pointer;
+  height:2px;border-radius:2px;outline:none;
+  background:rgba(255,255,255,0.12);cursor:pointer;
 }
 input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:14px;height:14px;
+  -webkit-appearance:none;width:13px;height:13px;
   border-radius:50%;background:currentColor;cursor:pointer;
 }
-.slider-val{font-size:12px;font-family:'Space Mono',monospace;opacity:0.7;min-width:32px;text-align:right}
+.sv{font-size:11px;font-family:'Space Mono',monospace;opacity:0.6;min-width:28px;text-align:right}
 
-/* ══════════════════════════════════════
-   TAB 1 — MARINE BIOLOGY / SYMMETRY
-══════════════════════════════════════ */
-#tab-marine{
-  --c:#00d4ff;--cdim:rgba(0,212,255,0.08);
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 120%,rgba(0,100,170,0.4),transparent),
-    radial-gradient(ellipse 60% 40% at 80% 10%,rgba(0,212,255,0.06),transparent),
-    #060f1e;
-  color:#e8f4ff;
+.prow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pbtn{
+  padding:5px 14px;border-radius:20px;font-size:11px;
+  cursor:pointer;border:1px solid rgba(255,255,255,0.12);
+  background:transparent;font-family:'DM Sans',sans-serif;
+  font-weight:500;transition:all .18s;color:rgba(255,255,255,0.6);
 }
-#tab-marine .bubbles-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.bubble{
-  position:absolute;border-radius:50%;
-  background:rgba(0,212,255,0.08);
-  animation:rise linear infinite;
-}
-@keyframes rise{
-  from{transform:translateY(0) scale(1);opacity:0.4}
-  50%{opacity:0.2}
-  to{transform:translateY(-110vh) scale(0.5);opacity:0}
-}
-#tab-marine .panel-inner{position:relative;z-index:1}
-#tab-marine .speaker-tag{color:#00d4ff}
-#tab-marine .panel-title{color:#00d4ff;font-family:'Playfair Display',serif}
-#tab-marine .concept-box{border-color:#00d4ff;color:#c8eeff}
-#tab-marine .btn{color:#00d4ff}
-#tab-marine input[type=range]{color:#00d4ff}
+.pbtn.on,.pbtn:hover{background:rgba(255,255,255,0.08);color:#fff}
 
-/* ══════════════════════════════════════
-   TAB 2 — METEOROLOGY / FRACTALS
-══════════════════════════════════════ */
-#tab-meteo{
-  --c:#b388ff;--cdim:rgba(179,136,255,0.08);
-  background:
-    radial-gradient(ellipse 100% 50% at 50% 0%,rgba(60,20,120,0.5),transparent),
-    #06040f;
-  color:#ede8ff;
+.shrow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.shbtn{
+  padding:5px 14px;border-radius:7px;font-size:11px;
+  cursor:pointer;border:1px solid rgba(255,255,255,0.12);
+  background:transparent;font-family:'DM Sans',sans-serif;
+  transition:all .18s;color:rgba(255,255,255,0.55);
 }
-#tab-meteo .speaker-tag{color:#b388ff}
-#tab-meteo .panel-title{color:#b388ff;font-family:'Rajdhani',sans-serif;letter-spacing:0.05em}
-#tab-meteo .concept-box{border-color:#b388ff;color:#d8ceff}
-#tab-meteo .btn{color:#b388ff}
-#tab-meteo input[type=range]{color:#b388ff}
-.lightning-flash{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:rgba(200,180,255,0.03);
-  animation:lflash 7s ease infinite;
-}
-@keyframes lflash{
-  0%,89%,91%,93%,100%{opacity:0}
-  90%,92%{opacity:1}
-}
-#tab-meteo .panel-inner{position:relative;z-index:1}
+.shbtn.on,.shbtn:hover{background:rgba(255,255,255,0.07);color:#fff}
 
-/* sim panels row */
-.sim-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:8px}
-.sim-panel-box{
-  border-radius:12px;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.06);
-  background:rgba(255,255,255,0.02);
-  padding:16px;
-}
-.sim-panel-title{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.5;margin-bottom:10px;font-family:'Space Mono',monospace}
-
-/* ══════════════════════════════════════
-   TAB 3 — ASTROPHYSICS / SPIRALS
-══════════════════════════════════════ */
-#tab-astro{
-  --c:#ffd700;--cdim:rgba(255,215,0,0.07);
-  background:#020008;
-  color:#fff8e8;
-}
-#tab-astro .star-bg{position:fixed;inset:0;pointer-events:none;z-index:0}
-#tab-astro .panel-inner{position:relative;z-index:1}
-#tab-astro .speaker-tag{color:#ffd700}
-#tab-astro .panel-title{color:#ffd700;font-family:'Cormorant Garamond',serif;font-style:italic}
-#tab-astro .concept-box{border-color:#ffd700;color:#fff3c0}
-#tab-astro .btn{color:#ffd700}
-#tab-astro input[type=range]{color:#ffd700}
-
-/* ══════════════════════════════════════
-   TAB 4 — WILDLIFE / ANIMAL PATTERNS
-══════════════════════════════════════ */
-#tab-wildlife{
-  --c:#d4a017;--cdim:rgba(212,160,23,0.08);
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 100%,rgba(90,62,27,0.4),transparent),
-    #0e0a04;
-  color:#f5ead0;
-}
-#tab-wildlife .speaker-tag{color:#d4a017}
-#tab-wildlife .panel-title{color:#d4a017;font-family:'Playfair Display',serif}
-#tab-wildlife .concept-box{border-color:#d4a017;color:#ead8a8}
-#tab-wildlife .btn{color:#d4a017}
-#tab-wildlife input[type=range]{color:#d4a017}
-
-.preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.preset-btn{
-  padding:6px 16px;border-radius:20px;font-size:12px;
-  cursor:pointer;border:1px solid rgba(212,160,23,0.4);
-  background:transparent;color:#d4a017;
-  font-family:'DM Sans',sans-serif;font-weight:500;
-  transition:all 0.2s;
-}
-.preset-btn.active,.preset-btn:hover{background:rgba(212,160,23,0.15)}
-
-/* ══════════════════════════════════════
-   TAB 5 — GEOMORPHOLOGY / TESSELLATION
-══════════════════════════════════════ */
-#tab-geo{
-  --c:#78c9c9;--cdim:rgba(120,201,201,0.08);
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 80%,rgba(40,80,70,0.3),transparent),
-    #0d1214;
-  color:#e0f0f0;
-}
-#tab-geo .speaker-tag{color:#78c9c9}
-#tab-geo .panel-title{color:#78c9c9;font-family:'Josefin Sans',sans-serif;letter-spacing:0.08em}
-#tab-geo .concept-box{border-color:#78c9c9;color:#c8e8e8}
-#tab-geo .btn{color:#78c9c9}
-#tab-geo input[type=range]{color:#78c9c9}
-
-.shape-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.shape-btn{
-  padding:6px 16px;border-radius:8px;font-size:12px;
-  cursor:pointer;border:1px solid rgba(120,201,201,0.3);
-  background:transparent;color:#78c9c9;
-  font-family:'DM Sans',sans-serif;transition:all 0.2s;
-}
-.shape-btn.active,.shape-btn:hover{background:rgba(120,201,201,0.12)}
-
-/* ══════════════════════════════════════
-   TAB 6 — ANATOMY / BODY SYMMETRY
-══════════════════════════════════════ */
-#tab-anatomy{
-  --c:#c0392b;--cdim:rgba(192,57,43,0.06);
-  background:#f5f0e8;
-  color:#1a1a2e;
-}
-#tab-anatomy .speaker-tag{color:#c0392b;border-color:#c0392b}
-#tab-anatomy .panel-title{color:#c0392b;font-family:'EB Garamond',serif}
-#tab-anatomy .panel-sub{color:#1a1a2e}
-#tab-anatomy .concept-box{border-color:#c0392b;color:#2c2c3e;background:rgba(0,0,0,0.03)}
-#tab-anatomy .btn{color:#c0392b;border-color:#c0392b}
-#tab-anatomy .btn:hover{background:rgba(192,57,43,0.06)}
-#tab-anatomy .sim-wrap{border-color:rgba(0,0,0,0.1)}
-#tab-anatomy .info-card{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)}
-#tab-anatomy .info-card-title{color:#c0392b}
-#tab-anatomy .info-card-body{color:#1a1a2e;opacity:0.7}
-#tab-anatomy input[type=range]{color:#c0392b;background:rgba(0,0,0,0.15)}
-#tab-anatomy .slider-wrap label{color:#1a1a2e}
-#tab-anatomy .slider-val{color:#1a1a2e}
-#tab-anatomy .sim-label{color:#1a1a2e}
-.phi-display{
+/* PHI BOX */
+.phibox{
   font-family:'Space Mono',monospace;font-size:11px;
-  color:#c0392b;background:rgba(192,57,43,0.08);
-  padding:10px 14px;border-radius:8px;margin-top:12px;
-  line-height:1.8;
+  padding:10px 14px;border-radius:8px;margin-top:10px;line-height:1.9;
 }
 
-@media(max-width:600px){
-  .panel{padding:24px 16px 60px}
-  .panel-title{font-size:40px}
-  .sim-row{grid-template-columns:1fr}
+@media(max-width:580px){
+  .panel{padding:20px 14px 50px}
+  .ptitle{font-size:36px}
+  .srow{grid-template-columns:1fr}
 }
+
+/* ── TAB THEMES ── */
+#tab-m{background:radial-gradient(ellipse 80% 55% at 50% 110%,rgba(0,100,160,0.45),transparent),#050e1a;color:#ddf4ff}
+#tab-m .ptitle{font-family:'Playfair Display',serif;color:#00d4ff}
+#tab-m .stag{color:#00d4ff}
+
+#tab-f{background:radial-gradient(ellipse 100% 45% at 50% 0%,rgba(55,15,110,0.55),transparent),#050308;color:#ede8ff}
+#tab-f .ptitle{font-family:'Rajdhani',sans-serif;letter-spacing:0.06em;color:#b388ff}
+#tab-f .stag{color:#b388ff}
+.lflash{position:fixed;inset:0;pointer-events:none;z-index:0;animation:lf 9s infinite}
+@keyframes lf{0%,87%,89%,91%,100%{opacity:0}88%,90%{opacity:1}}
+#tab-f .inner{position:relative;z-index:1}
+
+#tab-s{background:#020008;color:#fff8e0}
+#tab-s .ptitle{font-family:'Cormorant Garamond',serif;font-style:italic;color:#ffd700}
+#tab-s .stag{color:#ffd700}
+.starbg{position:fixed;inset:0;pointer-events:none;z-index:0}
+#tab-s .inner{position:relative;z-index:1}
+
+#tab-w{background:radial-gradient(ellipse 80% 45% at 50% 100%,rgba(80,50,10,0.45),transparent),#0c0902;color:#f0e4c0}
+#tab-w .ptitle{font-family:'Playfair Display',serif;color:#d4a017}
+#tab-w .stag{color:#d4a017}
+
+#tab-g{background:radial-gradient(ellipse 60% 40% at 20% 80%,rgba(30,70,60,0.35),transparent),#0a1010;color:#daf0ef}
+#tab-g .ptitle{font-family:'Josefin Sans',sans-serif;letter-spacing:0.1em;color:#78c9c9}
+#tab-g .stag{color:#78c9c9}
+
+#tab-a{background:#f3ede4;color:#1a1828}
+#tab-a .ptitle{font-family:'EB Garamond',serif;color:#b03020}
+#tab-a .stag{color:#b03020;border-color:#b03020}
+#tab-a .psub{color:#1a1828}
+#tab-a .ctext{color:#1a1828}
+#tab-a .slabel{color:#1a1828}
+#tab-a .swrap{border-color:rgba(0,0,0,0.1)}
+#tab-a .sbox{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)}
+#tab-a .sbox-title{color:#1a1828}
+#tab-a input[type=range]{background:rgba(0,0,0,0.15)}
+#tab-a .slw label{color:#1a1828}
+#tab-a .sv{color:#1a1828}
+#tab-a .btn{color:#b03020;border-color:#b03020}
+#tab-a .btn:hover{background:rgba(176,48,32,0.07)}
+#tab-a .pbtn{border-color:rgba(0,0,0,0.15);color:rgba(0,0,0,0.5)}
+#tab-a .pbtn.on,.pbtn:hover{background:rgba(0,0,0,0.06);color:#1a1828}
+#tab-a .phibox{background:rgba(176,48,32,0.08);color:#b03020}
+
+/* bubbles */
+.bubble{position:absolute;border-radius:50%;background:rgba(0,200,255,0.07);animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(0) scale(1);opacity:.35}50%{opacity:.15}to{transform:translateY(-110vh) scale(.4);opacity:0}}
+.bbg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+#tab-m .inner{position:relative;z-index:1}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-brand">TEDx NUFV<br>Math in the Modern World</div>
-  <button class="tab-btn active" data-tab="marine" style="--tab-color:#00d4ff;--tab-color-dim:rgba(0,212,255,0.08)">
-    <span class="tab-icon">🐟</span>
-    <span class="tab-field">Marine Biology</span>
-    <span class="tab-topic">Symmetry</span>
+  <div class="nav-brand">TEDx NUFV<br>Math in Nature</div>
+  <button class="tab-btn active" data-tab="m" style="--tc:#00d4ff;--tc-dim:rgba(0,212,255,0.07)">
+    <span class="ti">🐟</span><span class="tf">Marine Bio</span><span class="tt">Symmetry</span>
   </button>
-  <button class="tab-btn" data-tab="meteo" style="--tab-color:#b388ff;--tab-color-dim:rgba(179,136,255,0.08)">
-    <span class="tab-icon">⛈</span>
-    <span class="tab-field">Meteorology</span>
-    <span class="tab-topic">Fractals</span>
+  <button class="tab-btn" data-tab="f" style="--tc:#b388ff;--tc-dim:rgba(179,136,255,0.07)">
+    <span class="ti">⛈️</span><span class="tf">Meteorology</span><span class="tt">Fractals</span>
   </button>
-  <button class="tab-btn" data-tab="astro" style="--tab-color:#ffd700;--tab-color-dim:rgba(255,215,0,0.07)">
-    <span class="tab-icon">🌌</span>
-    <span class="tab-field">Astrophysics</span>
-    <span class="tab-topic">Spirals</span>
+  <button class="tab-btn" data-tab="s" style="--tc:#ffd700;--tc-dim:rgba(255,215,0,0.07)">
+    <span class="ti">🌌</span><span class="tf">Astrophysics</span><span class="tt">Spirals</span>
   </button>
-  <button class="tab-btn" data-tab="wildlife" style="--tab-color:#d4a017;--tab-color-dim:rgba(212,160,23,0.08)">
-    <span class="tab-icon">🐆</span>
-    <span class="tab-field">Wildlife Biology</span>
-    <span class="tab-topic">Animal Patterns</span>
+  <button class="tab-btn" data-tab="w" style="--tc:#d4a017;--tc-dim:rgba(212,160,23,0.07)">
+    <span class="ti">🐆</span><span class="tf">Wildlife Bio</span><span class="tt">Animal Patterns</span>
   </button>
-  <button class="tab-btn" data-tab="geo" style="--tab-color:#78c9c9;--tab-color-dim:rgba(120,201,201,0.08)">
-    <span class="tab-icon">🪨</span>
-    <span class="tab-field">Geomorphology</span>
-    <span class="tab-topic">Tessellation</span>
+  <button class="tab-btn" data-tab="g" style="--tc:#78c9c9;--tc-dim:rgba(120,201,201,0.07)">
+    <span class="ti">🪨</span><span class="tf">Geomorphology</span><span class="tt">Tessellation</span>
   </button>
-  <button class="tab-btn" data-tab="anatomy" style="--tab-color:#c0392b;--tab-color-dim:rgba(192,57,43,0.06)">
-    <span class="tab-icon">🫀</span>
-    <span class="tab-field">Anatomy</span>
-    <span class="tab-topic">Body Symmetry</span>
+  <button class="tab-btn" data-tab="a" style="--tc:#b03020;--tc-dim:rgba(176,48,32,0.06)">
+    <span class="ti">🫀</span><span class="tf">Anatomy</span><span class="tt">Body Symmetry</span>
   </button>
 </nav>
 
 <div id="app">
 
-<!-- ══════════════════════════════════════
-     TAB 1 — MARINE BIOLOGY: SYMMETRY
-══════════════════════════════════════ -->
-<section class="panel active" id="tab-marine">
-  <div class="bubbles-bg" id="bubbles"></div>
-  <div class="panel-inner">
-    <div class="speaker-tag">Dr. Kim · Marine Biologist · Coral Reef Systems</div>
-    <h1 class="panel-title">SYMMETRY</h1>
-    <p class="panel-sub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <div class="concept-box" style="color:#c8eeff;border-color:#00d4ff">
-      <strong>Symmetry</strong> is a sense of harmonious proportion — balance. An object has symmetry when it remains unchanged under a transformation: a reflection, a rotation, or a change in scale. <strong>Bilateral symmetry</strong> — the left and right sides are mirror images along a central midline, like a fish. <strong>Radial symmetry</strong> — the body is arranged around a central point, divisible into equal halves through multiple planes, like a sea star.
-    </div>
-
-    <div class="sim-label">— Live Simulation</div>
-    <div class="sim-wrap">
-      <canvas id="fishCanvas" height="340"></canvas>
-    </div>
-    <div class="btn-row">
-      <button class="btn" id="btnBilateral" style="color:#00d4ff;border-color:#00d4ff">🐟 Bilateral — Fish</button>
-      <button class="btn" id="btnRadial" style="color:#7fffd4;border-color:#7fffd4">⭐ Radial — Sea Star</button>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-card-title" style="color:#00d4ff">Bilateral Symmetry</div>
-        <div class="info-card-body">One axis divides the body into two mirror halves. Found in fish, dolphins, sharks, and humans. Enables efficient directional movement — both sides generate equal thrust and drag.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#7fffd4">Radial Symmetry</div>
-        <div class="info-card-body">Body radiates equally from a central point through multiple planes. Found in sea stars, jellyfish, and sea anemones. Suits stationary or drifting animals that need to sense all directions equally.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#00d4ff">Ecosystem Balance</div>
-        <div class="info-card-body">In a coral reef, symmetry operates at scale. Remove one species and the system tilts. A healthy reef — like a symmetric body — depends on every part being in balance with the rest.</div>
-      </div>
+<!-- ═══════════════════════════════
+     TAB 1 — MARINE BIOLOGY
+═══════════════════════════════ -->
+<section class="panel active" id="tab-m">
+  <div class="bbg" id="bubbles"></div>
+  <div class="inner">
+    <div class="stag">Dr. Kim · Marine Biologist · Coral Reef Systems</div>
+    <h1 class="ptitle">SYMMETRY</h1>
+    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
+    <p class="ctext">
+      <strong>Bilateral symmetry</strong> — one axis divides the body into two mirror halves, like a fish.
+      <strong>Radial symmetry</strong> — body radiates equally from a center through multiple planes, like a sea star.
+    </p>
+    <div class="slabel">— Live Simulation</div>
+    <div class="swrap"><canvas id="fishC" height="340"></canvas></div>
+    <div class="brow">
+      <button class="btn" id="btnBi" style="color:#00d4ff;border-color:#00d4ff">🐟 Bilateral — Fish</button>
+      <button class="btn" id="btnRad" style="color:#7fffd4;border-color:#7fffd4">⭐ Radial — Sea Star</button>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     TAB 2 — METEOROLOGY: FRACTALS
-══════════════════════════════════════ -->
-<section class="panel" id="tab-meteo">
-  <div class="lightning-flash"></div>
-  <div class="panel-inner">
-    <div class="speaker-tag">Dr. Dan · Meteorologist · Atmospheric Pattern Analysis</div>
-    <h1 class="panel-title">FRACTALS</h1>
-    <p class="panel-sub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <div class="concept-box" style="color:#d8ceff;border-color:#b388ff">
-      A <strong>fractal</strong> is a curve or geometric figure where each part has the same statistical character as the whole. The key property is <strong>self-similarity</strong> — zoom into any section and it looks like the entire shape at a smaller scale. Fractals have infinite detail at every level of magnification. Coined by Benoît Mandelbrot in 1975, but nature had been producing them for billions of years before we had a word for them.
-    </div>
-
-    <div class="sim-label">— Live Simulation</div>
-    <div class="sim-row">
-      <div class="sim-panel-box">
-        <div class="sim-panel-title">Lightning Generator</div>
-        <canvas id="lightningCanvas" height="300" style="border-radius:8px;background:#03010a"></canvas>
+<!-- ═══════════════════════════════
+     TAB 2 — METEOROLOGY
+═══════════════════════════════ -->
+<section class="panel" id="tab-f">
+  <div class="lflash"></div>
+  <div class="inner">
+    <div class="stag">Dr. Dan · Meteorologist · Atmospheric Pattern Analysis</div>
+    <h1 class="ptitle">FRACTALS</h1>
+    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
+    <p class="ctext">
+      A <strong>fractal</strong> is a pattern where each part has the same structure as the whole — <strong>self-similarity</strong> at every scale. Clouds, lightning, and typhoon formations are all fractals built from the same rule repeated at smaller and smaller scales.
+    </p>
+    <div class="slabel">— Live Simulation</div>
+    <div class="srow">
+      <div class="sbox">
+        <div class="sbox-title">Lightning — Recursive Fractal</div>
+        <canvas id="lightC" height="280" style="border-radius:8px;background:#030109;display:block;width:100%"></canvas>
         <button class="btn" id="btnStrike" style="margin-top:10px;color:#b388ff;border-color:#b388ff;width:100%;justify-content:center">⚡ Strike Again</button>
       </div>
-      <div class="sim-panel-box">
-        <div class="sim-panel-title">Fractal Tree — Branching</div>
-        <canvas id="treeCanvas" height="300" style="border-radius:8px;background:#03010a"></canvas>
-        <div class="slider-wrap" style="margin-top:10px">
+      <div class="sbox">
+        <div class="sbox-title">Fractal Tree — Branching Self-Similarity</div>
+        <canvas id="treeC" height="280" style="border-radius:8px;background:#030109;display:block;width:100%"></canvas>
+        <div class="slw" style="margin-top:10px">
           <label style="color:#b388ff">Branch Angle</label>
-          <input type="range" id="treeAngle" min="10" max="60" value="30" style="accent-color:#b388ff">
-          <span class="slider-val" id="treeAngleVal" style="color:#b388ff">30°</span>
+          <input type="range" id="tAngle" min="10" max="60" value="28" style="accent-color:#b388ff">
+          <span class="sv" id="tAngleV" style="color:#b388ff">28°</span>
         </div>
-        <div class="slider-wrap">
-          <label style="color:#b388ff">Depth</label>
-          <input type="range" id="treeDepth" min="2" max="10" value="7" style="accent-color:#b388ff">
-          <span class="slider-val" id="treeDepthVal" style="color:#b388ff">7</span>
+        <div class="slw">
+          <label style="color:#b388ff">Recursion Depth</label>
+          <input type="range" id="tDepth" min="2" max="10" value="7" style="accent-color:#b388ff">
+          <span class="sv" id="tDepthV" style="color:#b388ff">7</span>
         </div>
-      </div>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-card-title" style="color:#b388ff">Clouds</div>
-        <div class="info-card-body">Look at a storm cloud — irregular, billowing. Zoom in and you see the same shape. Zoom further, still the same. Cloud boundaries are infinitely complex at every scale.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#b388ff">Lightning</div>
-        <div class="info-card-body">A lightning bolt branches, each branch branches again, all the way down to the microscopic discharge. Every level of branching looks like the whole — a perfect fractal.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#b388ff">Typhoon Formations</div>
-        <div class="info-card-body">The large spiral of a typhoon is built entirely from repetition of smaller spiraling cloud bands. Small atmospheric disturbances carry the structure of the larger system.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     TAB 3 — ASTROPHYSICS: SPIRALS
-══════════════════════════════════════ -->
-<section class="panel" id="tab-astro">
-  <canvas id="starBg" class="star-bg"></canvas>
-  <div class="panel-inner">
-    <div class="speaker-tag">JR · Astrophysicist · Galactic Formation and Pattern Studies</div>
-    <h1 class="panel-title">Spirals</h1>
-    <p class="panel-sub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <div class="concept-box" style="color:#fff3c0;border-color:#ffd700">
-      A <strong>spiral</strong> is a self-similar curved pattern that expands outward from a center point at a constant rate per revolution. The <strong>logarithmic spiral</strong> is governed by the <strong>Golden Ratio — φ ≈ 1.618</strong> — which appears in the Fibonacci sequence: 1, 1, 2, 3, 5, 8, 13… each term approximately 1.618× the previous. Critical distinction: a spiral is <em>not</em> a circle. A circle returns to the exact same point. A spiral returns to the same direction — but always further out. It is mathematically impossible for a logarithmic spiral to close on itself.
-    </div>
-
-    <div class="sim-label">— Live Simulation</div>
-    <div class="sim-wrap" style="background:#020008">
-      <canvas id="spiralCanvas" height="420"></canvas>
-    </div>
-    <div class="slider-wrap">
+<!-- ═══════════════════════════════
+     TAB 3 — ASTROPHYSICS
+═══════════════════════════════ -->
+<section class="panel" id="tab-s">
+  <canvas class="starbg" id="starC"></canvas>
+  <div class="inner">
+    <div class="stag">JR · Astrophysicist · Galactic Formation and Pattern Studies</div>
+    <h1 class="ptitle">Spirals</h1>
+    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
+    <p class="ctext">
+      The <strong>logarithmic spiral</strong> expands outward at a constant rate governed by the <strong>Golden Ratio φ ≈ 1.618</strong>. It appears in galaxy arms, nautilus shells, hurricanes, and sunflowers — same equation, different scales.
+      A spiral is <em>not</em> a circle: it always moves further out with each revolution.
+    </p>
+    <div class="slabel">— Live Simulation</div>
+    <div class="swrap" style="background:#020008"><canvas id="spiralC" height="400"></canvas></div>
+    <div class="slw">
       <label style="color:#ffd700">Growth Constant (b)</label>
-      <input type="range" id="spiralB" min="10" max="60" value="30" style="accent-color:#ffd700">
-      <span class="slider-val" id="spiralBVal" style="color:#ffd700">0.30</span>
+      <input type="range" id="spiralB" min="10" max="55" value="28" style="accent-color:#ffd700">
+      <span class="sv" id="spiralBV" style="color:#ffd700">0.28</span>
     </div>
-    <div class="btn-row">
-      <button class="btn" id="btnFibRect" style="color:#ffd700;border-color:#ffd700">▦ Toggle Fibonacci Rectangles</button>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-card-title" style="color:#ffd700">Milky Way Galaxy</div>
-        <div class="info-card-body">A barred spiral galaxy — its arms spiral outward from a central structure due to gravity and angular momentum acting on matter over billions of years, converging on the logarithmic spiral.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#ffd700">Hurricanes from Space</div>
-        <div class="info-card-body">Rotating air systems follow the same rotational mathematics as galactic arms. The same spiral geometry appears at planetary and galactic scale — different material, same equation.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#ffd700">Golden Ratio φ = 1.618</div>
-        <div class="info-card-body">Connects the nautilus shell, sunflower seed arrangement, fern frond, and galaxy arm. The constant does not care what the material is. It only cares about how things grow.</div>
-      </div>
+    <div class="brow">
+      <button class="btn" id="btnFib" style="color:#ffd700;border-color:#ffd700">▦ Fibonacci Rectangles</button>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     TAB 4 — WILDLIFE: ANIMAL PATTERNS
-══════════════════════════════════════ -->
-<section class="panel" id="tab-wildlife">
-  <div class="panel-inner">
-    <div class="speaker-tag">Dr. Emman · Wildlife Biologist · Biological Pattern and Camouflage Systems</div>
-    <h1 class="panel-title">ANIMAL PATTERNS</h1>
-    <p class="panel-sub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <div class="concept-box" style="color:#ead8a8;border-color:#d4a017">
-      Turing's <strong>Reaction-Diffusion System</strong> (1952) describes how two chemicals — an <strong>activator</strong> and an <strong>inhibitor</strong> — interact across a developing embryo's surface. The activator promotes pigment; the inhibitor suppresses it. Because they diffuse at different rates, zones of high and low pigment form. Change just two parameters — the diffusion rates — and the output shifts from <strong>stripes → spots → blotches</strong>. Same equation. Different numbers. Completely different pattern.
+<!-- ═══════════════════════════════
+     TAB 4 — WILDLIFE BIOLOGY
+═══════════════════════════════ -->
+<section class="panel" id="tab-w">
+  <div class="inner">
+    <div class="stag">Dr. Emman · Wildlife Biologist · Biological Pattern and Camouflage Systems</div>
+    <h1 class="ptitle">ANIMAL PATTERNS</h1>
+    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
+    <p class="ctext">
+      Turing's <strong>Reaction-Diffusion System</strong> — two chemicals (activator + inhibitor) spread across a developing embryo at different rates, producing stripes, spots, or blotches. Change two numbers: the entire pattern changes.
+    </p>
+    <div class="slabel">— Live Turing Reaction-Diffusion Simulation</div>
+    <div class="prow">
+      <button class="pbtn on" id="pZ">🦓 Zebra Stripes</button>
+      <button class="pbtn" id="pL">🐆 Leopard Spots</button>
+      <button class="pbtn" id="pG">🦒 Giraffe Blotches</button>
+      <button class="pbtn" id="pF">🐠 Fish Patterns</button>
     </div>
-
-    <div class="sim-label">— Live Reaction-Diffusion Simulation (Turing Model)</div>
-    <div class="preset-row">
-      <button class="preset-btn active" id="presetZebra">🦓 Zebra Stripes</button>
-      <button class="preset-btn" id="presetLeopard">🐆 Leopard Spots</button>
-      <button class="preset-btn" id="presetGiraffe">🦒 Giraffe Blotches</button>
-      <button class="preset-btn" id="presetFish">🐠 Fish Patterns</button>
-    </div>
-    <div class="sim-wrap" style="background:#0e0a04">
-      <canvas id="rdCanvas" height="340"></canvas>
-    </div>
-    <div class="slider-wrap">
+    <div class="swrap" style="background:#0e0a04"><canvas id="rdC" height="320"></canvas></div>
+    <div class="slw">
       <label style="color:#d4a017">Feed Rate (f)</label>
       <input type="range" id="rdF" min="1" max="80" value="35" style="accent-color:#d4a017">
-      <span class="slider-val" id="rdFVal" style="color:#d4a017">0.035</span>
+      <span class="sv" id="rdFV" style="color:#d4a017">0.035</span>
     </div>
-    <div class="slider-wrap">
+    <div class="slw">
       <label style="color:#d4a017">Kill Rate (k)</label>
       <input type="range" id="rdK" min="40" max="70" value="65" style="accent-color:#d4a017">
-      <span class="slider-val" id="rdKVal" style="color:#d4a017">0.065</span>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-card-title" style="color:#d4a017">Stripes — Zebras, Tigers, Snakes</div>
-        <div class="info-card-body">High feed rate, high kill rate produces parallel stripe formations. Stripes on a moving body create visual confusion — predators struggle to track the edges in motion.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#d4a017">Spots — Leopards, Hyenas</div>
-        <div class="info-card-body">Lower feed rate produces discrete spot formations. Spots break up the body outline against dappled light environments like forests and grasslands.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#d4a017">Morphogenesis</div>
-        <div class="info-card-body">Turing's term for the mathematical origin of biological form. The animal doesn't choose its pattern. Mathematics — running in the chemistry of a developing embryo — chooses it.</div>
-      </div>
+      <span class="sv" id="rdKV" style="color:#d4a017">0.065</span>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     TAB 5 — GEOMORPHOLOGY: TESSELLATION
-══════════════════════════════════════ -->
-<section class="panel" id="tab-geo">
-  <div class="panel-inner">
-    <div class="speaker-tag">Jirou · Coastal Geomorphologist · Natural Surface and Formation Studies</div>
-    <h1 class="panel-title">TESSELLATION</h1>
-    <p class="panel-sub">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <div class="concept-box" style="color:#c8e8e8;border-color:#78c9c9">
-      <strong>Tessellation</strong> is a repeating pattern of polygons that covers a flat surface with <strong>no gaps and no overlaps</strong>. For a polygon to tessellate, its interior angles must sum to exactly 360° at every vertex. Of all regular polygons, only three can tile a flat plane on their own: the equilateral triangle, the square, and the <strong>regular hexagon</strong>. The hexagon is the most efficient — it encloses the <strong>greatest area for the least perimeter</strong>. Nature always optimizes. The hexagon is the optimal solution.
+<!-- ═══════════════════════════════
+     TAB 5 — GEOMORPHOLOGY
+═══════════════════════════════ -->
+<section class="panel" id="tab-g">
+  <div class="inner">
+    <div class="stag">Jirou · Coastal Geomorphologist · Natural Surface and Formation Studies</div>
+    <h1 class="ptitle">TESSELLATION</h1>
+    <p class="psub">Patterns and Numbers in Nature — TEDx NUFV</p>
+    <p class="ctext">
+      A repeating pattern of polygons covering a surface with <strong>no gaps, no overlaps</strong>. The <strong>hexagon</strong> is most efficient — greatest area for least perimeter. Nature arrives at hexagons independently: basalt columns, honeycombs, cracked soil.
+    </p>
+    <div class="slabel">— Live Simulation</div>
+    <div class="shrow">
+      <button class="shbtn on" id="shH">⬡ Hexagon</button>
+      <button class="shbtn" id="shS">□ Square</button>
+      <button class="shbtn" id="shT">△ Triangle</button>
+      <button class="shbtn" id="shC">○ Circle (fails)</button>
     </div>
-
-    <div class="sim-label">— Live Simulation</div>
-    <div class="shape-row">
-      <button class="shape-btn active" id="shapeHex">⬡ Hexagon</button>
-      <button class="shape-btn" id="shapeSquare">□ Square</button>
-      <button class="shape-btn" id="shapeTriangle">△ Triangle</button>
-      <button class="shape-btn" id="shapeCircle">○ Circle (fails)</button>
-    </div>
-    <div class="sim-wrap" style="background:#0d1214">
-      <canvas id="tessCanvas" height="340"></canvas>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card">
-        <div class="info-card-title" style="color:#78c9c9">Giant's Causeway</div>
-        <div class="info-card-body">When lava cools and contracts, stress fractures form. The geometry minimizing total crack length while covering the surface completely is the hexagon — thousands of hexagonal basalt columns, produced by physics alone.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#78c9c9">Honeycombs & Dry Soil</div>
-        <div class="info-card-body">Bees instinctively build hexagonal cells — the geometry that stores the most honey for the least wax. Cracked dry soil forms Voronoi-like polygon tessellations as moisture evaporates and the surface contracts.</div>
-      </div>
-      <div class="info-card">
-        <div class="info-card-title" style="color:#78c9c9">Efficiency Proof</div>
-        <div class="info-card-body">For a fixed perimeter: Hexagon encloses ≈2.598 sq units · Square encloses 2.25 sq units · Triangle encloses ≈1.732 sq units. The hexagon wins — same boundary, most space. Nature converges on this independently, across materials.</div>
-      </div>
-    </div>
+    <div class="swrap" style="background:#0a1010"><canvas id="tessC" height="320"></canvas></div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     TAB 6 — ANATOMY: BODY SYMMETRY
-══════════════════════════════════════ -->
-<section class="panel" id="tab-anatomy">
-  <div class="panel-inner">
-    <div class="speaker-tag" style="color:#c0392b;border-color:#c0392b">Dr. Rosantina · Anatomist · Human Body Structure and Proportion</div>
-    <h1 class="panel-title">Human Body<br>Symmetry</h1>
-    <p class="panel-sub" style="color:#555">Patterns and Numbers in Nature — TEDx NUFV</p>
-    <div class="concept-box" style="color:#2c2c3e;border-color:#c0392b;background:rgba(0,0,0,0.03)">
-      The human body exhibits <strong>bilateral symmetry</strong> — two arms, two legs, two eyes, two lungs, two cerebral hemispheres, mirror images along the central anatomical midline. Beyond structure, the body demonstrates <strong>mathematical proportion</strong>: the <strong>Golden Ratio φ ≈ 1.618</strong> appears measurably throughout — total height to navel height, forearm to hand, shoulder-to-fingertip to elbow-to-fingertip. The same constant that governs galaxy arms governs your own body.
-    </div>
-
-    <div class="sim-label" style="color:#1a1a2e">— Live Simulation</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+<!-- ═══════════════════════════════
+     TAB 6 — ANATOMY
+═══════════════════════════════ -->
+<section class="panel" id="tab-a">
+  <div class="inner">
+    <div class="stag" style="color:#b03020;border-color:#b03020">Dr. Rosantina · Anatomist · Human Body Structure and Proportion</div>
+    <h1 class="ptitle">Human Body<br>Symmetry</h1>
+    <p class="psub" style="color:#555">Patterns and Numbers in Nature — TEDx NUFV</p>
+    <p class="ctext" style="color:#333">
+      The human body has <strong>bilateral symmetry</strong> along the anatomical midline. Its proportions follow the <strong>Golden Ratio φ ≈ 1.618</strong> — the same constant governing galaxy arms and nautilus shells.
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start">
       <div>
-        <div class="sim-wrap" style="background:#ede8e0;border-color:rgba(0,0,0,0.1)">
-          <canvas id="bodyCanvas" height="420"></canvas>
+        <div class="slabel" style="color:#555">— Symmetry Simulation</div>
+        <div class="swrap" style="background:#ede5d8;border-color:rgba(0,0,0,0.1)">
+          <canvas id="bodyC" height="400"></canvas>
         </div>
-        <div class="btn-row">
-          <button class="btn" id="btnLeft" style="color:#c0392b;border-color:#c0392b;font-size:12px">Left Side</button>
-          <button class="btn" id="btnRight" style="color:#2980b9;border-color:#2980b9;font-size:12px">Right Side</button>
-          <button class="btn" id="btnBoth" style="color:#27ae60;border-color:#27ae60;font-size:12px">Both</button>
-          <button class="btn" id="btnGolden" style="color:#d4a017;border-color:#d4a017;font-size:12px">φ Golden Ratio</button>
+        <div class="brow">
+          <button class="btn" id="bLeft">Left</button>
+          <button class="btn" id="bRight" style="color:#2060a0;border-color:#2060a0">Right</button>
+          <button class="btn" id="bBoth" style="color:#207040;border-color:#207040">Both</button>
+          <button class="btn" id="bGold" style="color:#c08000;border-color:#c08000">φ Ratio</button>
         </div>
       </div>
       <div>
-        <div class="sim-panel-box" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)">
-          <div class="sim-panel-title" style="color:#555">Golden Ratio Calculator</div>
-          <p style="font-size:12px;color:#555;margin-bottom:10px">Enter your height to see the Golden Ratio at work in your own body.</p>
-          <div class="slider-wrap">
-            <label style="color:#1a1a2e;min-width:80px">Height (cm)</label>
-            <input type="range" id="heightSlider" min="140" max="210" value="170" style="accent-color:#c0392b">
-            <span class="slider-val" id="heightVal" style="color:#c0392b">170</span>
+        <div class="sbox" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)">
+          <div class="sbox-title" style="color:#555">Golden Ratio Calculator</div>
+          <div class="slw">
+            <label>Height (cm)</label>
+            <input type="range" id="hSlide" min="140" max="210" value="170" style="accent-color:#b03020">
+            <span class="sv" id="hV">170</span>
           </div>
-          <div class="phi-display" id="phiOutput">
+          <div class="phibox" id="phiOut">
             Height: 170 cm<br>
-            Navel height: 105.1 cm from floor<br>
-            Ratio: 170 ÷ 105.1 = 1.618 φ<br>
-            Forearm estimate: 45.7 cm<br>
-            Hand estimate: 28.2 cm<br>
-            Forearm ÷ Hand ≈ 1.618 φ
-          </div>
-        </div>
-        <div style="margin-top:12px" class="info-grid" style="grid-template-columns:1fr">
-          <div class="info-card" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08)">
-            <div class="info-card-title" style="color:#c0392b">Facial Symmetry</div>
-            <div class="info-card-body" style="color:#1a1a2e;opacity:0.7">Research shows humans perceive more symmetric faces as more attractive — not cultural preference, but a biological signal. Symmetry indicates developmental processes ran without major disruption.</div>
-          </div>
-          <div class="info-card" style="background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.08);margin-top:10px">
-            <div class="info-card-title" style="color:#c0392b">Mathematical Equilibrium</div>
-            <div class="info-card-body" style="color:#1a1a2e;opacity:0.7">Internal body systems work in dynamic equilibrium. When one is overloaded, others compensate. When imbalance persists too long, the body breaks down. Health is sustained mathematical balance.</div>
+            Navel height: 105.1 cm<br>
+            170 ÷ 105.1 = <strong>1.618 φ</strong><br>
+            Forearm: ~26.7 cm<br>
+            Hand: ~16.5 cm<br>
+            Forearm ÷ Hand ≈ <strong>1.618 φ</strong>
           </div>
         </div>
       </div>
@@ -649,748 +417,672 @@ input[type=range]::-webkit-slider-thumb{
 </div><!-- #app -->
 
 <script>
-// ══════════════════════════════════════
-// TAB SWITCHING
-// ══════════════════════════════════════
-const tabs = document.querySelectorAll('.tab-btn');
-const panels = document.querySelectorAll('.panel');
-
-tabs.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
-    tabs.forEach(t => t.classList.remove('active'));
-    panels.forEach(p => p.classList.remove('active'));
+// ══ TAB SWITCHING ══
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('tab-' + target).classList.add('active');
-    document.getElementById('app').scrollTop = 0;
-    // trigger redraws
-    if(target === 'astro') { drawStars(); drawSpiral(); }
-    if(target === 'meteo') { drawTree(); drawLightning(); }
-    if(target === 'marine') drawFish(false);
-    if(target === 'geo') drawTessellation('hex');
-    if(target === 'anatomy') drawBody('both');
-    if(target === 'wildlife') { initRD(); }
+    const id='tab-'+btn.dataset.tab;
+    document.getElementById(id).classList.add('active');
+    document.getElementById('app').scrollTop=0;
+    const t=btn.dataset.tab;
+    if(t==='m'){cancelAnimationFrame(fishRaf);drawFish(fishMode)}
+    if(t==='f'){drawLightning();drawTree()}
+    if(t==='s'){startStars();drawSpiral()}
+    if(t==='g'){drawTess(tessMode)}
+    if(t==='a'){cancelAnimationFrame(bodyRaf);drawBody(bodyMode)}
+    if(t==='w'){initRD()}
   });
 });
 
-// ══════════════════════════════════════
-// TAB 1 — SYMMETRY: FISH / SEA STAR
-// ══════════════════════════════════════
-const fishCanvas = document.getElementById('fishCanvas');
-const fctx = fishCanvas.getContext('2d');
-let isRadial = false;
-let breathScale = 1, breathDir = 1;
-let fishAnim;
+function rc(c){c.width=c.offsetWidth*devicePixelRatio;c.height=c.offsetHeight*devicePixelRatio}
 
-function resizeCanvas(c) {
-  c.width = c.offsetWidth * devicePixelRatio;
-  c.height = c.offsetHeight * devicePixelRatio;
-}
+// ══════════════════════════════════════════
+// TAB 1 — FISH SYMMETRY (completely redrawn)
+// ══════════════════════════════════════════
+const fishC=document.getElementById('fishC');
+const fctx=fishC.getContext('2d');
+let fishMode='bilateral',fishRaf,breathT=0;
 
-function drawFish(radial) {
-  cancelAnimationFrame(fishAnim);
-  resizeCanvas(fishCanvas);
-  const W = fishCanvas.width, H = fishCanvas.height;
-  const cx = W/2, cy = H/2;
+function drawFish(mode){
+  cancelAnimationFrame(fishRaf);
+  rc(fishC);
+  const W=fishC.width,H=fishC.height;
   fctx.clearRect(0,0,W,H);
 
-  if (!radial) {
-    // bilateral fish
+  if(mode==='bilateral'){
+    // ── properly drawn fish facing right ──
+    breathT+=0.03;
+    const bs=1+Math.sin(breathT)*0.012; // subtle breathe
     fctx.save();
-    fctx.translate(cx, cy);
-    fctx.scale(breathScale, breathScale);
+    fctx.translate(W/2,H/2);
+    fctx.scale(bs,bs);
 
-    // body
-    fctx.beginPath();
-    fctx.ellipse(-W*0.05, 0, W*0.28, H*0.22, 0, 0, Math.PI*2);
-    const lg = fctx.createLinearGradient(-W*0.3, 0, W*0.2, 0);
-    lg.addColorStop(0,'#00d4ff'); lg.addColorStop(1,'#7fffd4');
-    fctx.fillStyle = lg; fctx.fill();
-    fctx.strokeStyle='rgba(0,212,255,0.3)'; fctx.lineWidth=2; fctx.stroke();
+    const BW=W*0.38; // half-body width (x direction, fish faces right)
+    const BH=H*0.20; // half-body height
 
-    // tail
+    // TAIL (left side, triangular fork)
     fctx.beginPath();
-    fctx.moveTo(-W*0.33, 0);
-    fctx.lineTo(-W*0.48, -H*0.18);
-    fctx.lineTo(-W*0.48, H*0.18);
+    fctx.moveTo(-BW*0.85,0);
+    fctx.lineTo(-BW*1.35,-BH*1.1);
+    fctx.lineTo(-BW*1.1,0);
+    fctx.lineTo(-BW*1.35,BH*1.1);
     fctx.closePath();
-    fctx.fillStyle='#00d4ff'; fctx.fill();
+    fctx.fillStyle='#0088bb';fctx.fill();
+    fctx.strokeStyle='rgba(0,180,220,0.4)';fctx.lineWidth=2;fctx.stroke();
 
-    // dorsal fin
+    // BODY — proper fish shape using bezier
     fctx.beginPath();
-    fctx.moveTo(-W*0.1, -H*0.22);
-    fctx.quadraticCurveTo(W*0.05, -H*0.38, W*0.14, -H*0.22);
-    fctx.fillStyle='rgba(0,212,255,0.6)'; fctx.fill();
+    // top edge: tail join → dorsal peak → nose
+    fctx.moveTo(-BW*0.85,0);
+    fctx.bezierCurveTo(-BW*0.7,-BH*0.8, -BW*0.2,-BH*1.35, BW*0.3,-BH*0.8);
+    // nose curve
+    fctx.bezierCurveTo(BW*0.85,-BH*0.3, BW*0.9,BH*0.3, BW*0.5,BH*0.6);
+    // bottom edge: belly → tail join
+    fctx.bezierCurveTo(BW*0.1,BH*1.1, -BW*0.5,BH*1.0, -BW*0.85,0);
+    fctx.closePath();
+    const bodyGrad=fctx.createLinearGradient(-BW,0,BW,0);
+    bodyGrad.addColorStop(0,'#0077aa');
+    bodyGrad.addColorStop(0.4,'#00c4e8');
+    bodyGrad.addColorStop(1,'#00e8cc');
+    fctx.fillStyle=bodyGrad;fctx.fill();
+    fctx.strokeStyle='rgba(0,200,240,0.3)';fctx.lineWidth=2;fctx.stroke();
 
-    // pectoral fin
+    // DORSAL FIN (top)
     fctx.beginPath();
-    fctx.ellipse(W*0.02, H*0.1, W*0.07, H*0.06, 0.5, 0, Math.PI*2);
-    fctx.fillStyle='rgba(127,255,212,0.5)'; fctx.fill();
+    fctx.moveTo(-BW*0.3,-BH*1.0);
+    fctx.bezierCurveTo(-BW*0.1,-BH*2.1, BW*0.15,-BH*2.0, BW*0.3,-BH*1.0);
+    fctx.fillStyle='rgba(0,180,220,0.55)';fctx.fill();
+    fctx.strokeStyle='rgba(0,200,240,0.3)';fctx.lineWidth=1.5;fctx.stroke();
 
-    // eye
+    // PECTORAL FIN (middle, side)
     fctx.beginPath();
-    fctx.arc(W*0.19, -H*0.04, W*0.025, 0, Math.PI*2);
-    fctx.fillStyle='#001828'; fctx.fill();
-    fctx.beginPath();
-    fctx.arc(W*0.19, -H*0.04, W*0.010, 0, Math.PI*2);
-    fctx.fillStyle='#fff'; fctx.fill();
+    fctx.ellipse(BW*0.05,BH*0.4, BW*0.14,BH*0.38, 0.4,0,Math.PI*2);
+    fctx.fillStyle='rgba(0,200,240,0.35)';fctx.fill();
 
-    // gill line
+    // ANAL FIN (bottom)
     fctx.beginPath();
-    fctx.arc(W*0.1, 0, H*0.15, -Math.PI*0.45, Math.PI*0.45);
-    fctx.strokeStyle='rgba(0,212,255,0.35)'; fctx.lineWidth=2; fctx.stroke();
+    fctx.moveTo(-BW*0.1,BH*0.9);
+    fctx.bezierCurveTo(-BW*0.0,BH*1.7, BW*0.2,BH*1.6, BW*0.25,BH*0.9);
+    fctx.fillStyle='rgba(0,160,200,0.4)';fctx.fill();
+
+    // GILL LINE
+    fctx.beginPath();
+    fctx.arc(BW*0.28,0,BH*0.75,Math.PI*0.55,Math.PI*1.45);
+    fctx.strokeStyle='rgba(0,200,240,0.4)';fctx.lineWidth=2.5;fctx.stroke();
+
+    // EYE
+    const eyeX=BW*0.54,eyeY=-BH*0.22;
+    fctx.beginPath();fctx.arc(eyeX,eyeY,BH*0.18,0,Math.PI*2);
+    fctx.fillStyle='#001a28';fctx.fill();
+    fctx.strokeStyle='rgba(0,220,255,0.5)';fctx.lineWidth=2;fctx.stroke();
+    fctx.beginPath();fctx.arc(eyeX-BH*0.04,eyeY-BH*0.05,BH*0.07,0,Math.PI*2);
+    fctx.fillStyle='rgba(255,255,255,0.8)';fctx.fill();
+
+    // SCALE LINES (subtle)
+    fctx.globalAlpha=0.12;
+    for(let i=0;i<4;i++){
+      const sx=BW*(0.05-i*0.18),sy=0,sr=BH*(0.7+i*0.05);
+      fctx.beginPath();fctx.arc(sx,sy,sr,Math.PI*0.5,Math.PI*1.5);
+      fctx.strokeStyle='#00c8e8';fctx.lineWidth=1.5;fctx.stroke();
+    }
+    fctx.globalAlpha=1;
 
     fctx.restore();
 
-    // symmetry axis
-    fctx.setLineDash([8,6]);
-    fctx.beginPath(); fctx.moveTo(cx, 20); fctx.lineTo(cx, H-20);
-    fctx.strokeStyle='rgba(127,255,212,0.5)'; fctx.lineWidth=1.5; fctx.stroke();
+    // ── SYMMETRY AXIS (vertical — splitting fish top/bottom not left/right for bilateral) ──
+    // For a fish the bilateral axis runs HEAD TO TAIL horizontally
+    // show as a dashed horizontal line through center
+    fctx.save();
+    fctx.setLineDash([10,7]);
+    fctx.beginPath();fctx.moveTo(30,H/2);fctx.lineTo(W-30,H/2);
+    fctx.strokeStyle='rgba(127,255,212,0.45)';fctx.lineWidth=1.5;fctx.stroke();
     fctx.setLineDash([]);
-    fctx.fillStyle='rgba(127,255,212,0.7)'; fctx.font=`${11*devicePixelRatio}px 'Space Mono'`;
+    // label LEFT half
+    fctx.fillStyle='rgba(127,255,212,0.6)';
+    fctx.font=`bold ${10*devicePixelRatio}px 'Space Mono'`;
+    fctx.textAlign='left';
+    fctx.fillText('← Axis of Bilateral Symmetry →',38,H/2-10);
+    // label top & bottom
+    fctx.font=`${9*devicePixelRatio}px 'Space Mono'`;
     fctx.textAlign='center';
-    fctx.fillText('Axis of Symmetry', cx, 14);
+    fctx.fillStyle='rgba(0,212,255,0.45)';
+    fctx.fillText('DORSAL SIDE',W/2,24);
+    fctx.fillText('VENTRAL SIDE',W/2,H-12);
+    fctx.restore();
 
-    // breathe
-    breathScale += 0.002 * breathDir;
-    if(breathScale > 1.025) breathDir=-1;
-    if(breathScale < 0.975) breathDir=1;
-    fishAnim = requestAnimationFrame(() => drawFish(false));
+    fishRaf=requestAnimationFrame(()=>drawFish('bilateral'));
 
   } else {
-    // radial sea star
-    const arms = 5;
-    const outerR = Math.min(W,H)*0.36;
-    const innerR = outerR*0.38;
-    const colors = ['#00d4ff','#7fffd4','#00aacc','#4fffcc','#00d4ff'];
-    const rotAngle = (Date.now()/2000) % (Math.PI*2);
+    // ── SEA STAR radial ──
+    const cx=W/2,cy=H/2;
+    const outerR=Math.min(W,H)*0.33;
+    const innerR=outerR*0.4;
+    const rotA=(Date.now()/2200)%(Math.PI*2);
+    const arms=5;
 
-    for(let a=0; a<arms; a++){
-      // draw symmetry axes
-      const axisAngle = (a*Math.PI*2/arms) + rotAngle;
-      fctx.setLineDash([6,5]);
-      fctx.beginPath();
-      fctx.moveTo(cx,cy);
-      fctx.lineTo(cx + Math.cos(axisAngle)*outerR*1.15, cy + Math.sin(axisAngle)*outerR*1.15);
-      fctx.strokeStyle='rgba(127,255,212,0.2)'; fctx.lineWidth=1; fctx.stroke();
-      fctx.setLineDash([]);
+    // axes
+    fctx.setLineDash([7,5]);
+    for(let i=0;i<arms;i++){
+      const ang=(i*Math.PI*2/arms)+rotA;
+      fctx.beginPath();fctx.moveTo(cx,cy);
+      fctx.lineTo(cx+Math.cos(ang)*outerR*1.2,cy+Math.sin(ang)*outerR*1.2);
+      fctx.strokeStyle='rgba(127,255,212,0.18)';fctx.lineWidth=1;fctx.stroke();
     }
+    fctx.setLineDash([]);
 
-    // draw star
+    // star body
     fctx.beginPath();
-    for(let a=0; a<arms*2; a++){
-      const angle = (a*Math.PI/arms) + rotAngle - Math.PI/2;
-      const r = a%2===0 ? outerR : innerR;
-      const x = cx + Math.cos(angle)*r;
-      const y = cy + Math.sin(angle)*r;
-      a===0 ? fctx.moveTo(x,y) : fctx.lineTo(x,y);
+    for(let i=0;i<arms*2;i++){
+      const ang=(i*Math.PI/arms)+rotA-Math.PI/2;
+      const r=i%2===0?outerR:innerR;
+      const x=cx+Math.cos(ang)*r,y=cy+Math.sin(ang)*r;
+      i===0?fctx.moveTo(x,y):fctx.lineTo(x,y);
     }
     fctx.closePath();
-    const rg = fctx.createRadialGradient(cx,cy,0,cx,cy,outerR);
-    rg.addColorStop(0,'#7fffd4'); rg.addColorStop(1,'#005577');
-    fctx.fillStyle=rg; fctx.fill();
-    fctx.strokeStyle='rgba(0,212,255,0.5)'; fctx.lineWidth=2; fctx.stroke();
+    const rg=fctx.createRadialGradient(cx,cy,0,cx,cy,outerR);
+    rg.addColorStop(0,'#7fffd4');rg.addColorStop(1,'#004466');
+    fctx.fillStyle=rg;fctx.fill();
+    fctx.strokeStyle='rgba(0,212,255,0.5)';fctx.lineWidth=2;fctx.stroke();
 
-    // center dot
-    fctx.beginPath(); fctx.arc(cx,cy,outerR*0.08,0,Math.PI*2);
-    fctx.fillStyle='#00d4ff'; fctx.fill();
+    // center
+    fctx.beginPath();fctx.arc(cx,cy,outerR*0.09,0,Math.PI*2);
+    fctx.fillStyle='#00d4ff';fctx.fill();
 
-    fctx.fillStyle='rgba(127,255,212,0.7)'; fctx.font=`${11*devicePixelRatio}px 'Space Mono'`;
+    // labels
+    fctx.fillStyle='rgba(127,255,212,0.65)';
+    fctx.font=`bold ${11*devicePixelRatio}px 'Space Mono'`;
     fctx.textAlign='center';
-    fctx.fillText('5-fold Radial Symmetry', cx, 18);
+    fctx.fillText('5-FOLD RADIAL SYMMETRY',cx,20);
 
-    fishAnim = requestAnimationFrame(() => drawFish(true));
+    fishRaf=requestAnimationFrame(()=>drawFish('radial'));
   }
 }
 
-document.getElementById('btnBilateral').addEventListener('click',()=>{isRadial=false;drawFish(false)});
-document.getElementById('btnRadial').addEventListener('click',()=>{isRadial=true;drawFish(true)});
+document.getElementById('btnBi').addEventListener('click',()=>{fishMode='bilateral';drawFish('bilateral')});
+document.getElementById('btnRad').addEventListener('click',()=>{fishMode='radial';drawFish('radial')});
 
-// Bubbles
-function makeBubbles() {
-  const bg = document.getElementById('bubbles');
+// bubbles
+(()=>{
+  const bg=document.getElementById('bubbles');
   for(let i=0;i<18;i++){
-    const b = document.createElement('div');
-    b.className='bubble';
-    const s=Math.random()*20+6;
-    b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:-${s}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*8}s`;
+    const b=document.createElement('div');b.className='bubble';
+    const s=Math.random()*18+5;
+    b.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;bottom:-${s}px;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s`;
     bg.appendChild(b);
   }
-}
-makeBubbles();
-setTimeout(()=>drawFish(false),100);
+})();
 
+setTimeout(()=>drawFish('bilateral'),120);
 
-// ══════════════════════════════════════
-// TAB 2 — FRACTALS: LIGHTNING + TREE
-// ══════════════════════════════════════
-const lCanvas = document.getElementById('lightningCanvas');
-const lctx = lCanvas.getContext('2d');
-const tCanvas = document.getElementById('treeCanvas');
-const tctx = tCanvas.getContext('2d');
+// ══════════════════════════════════════════
+// TAB 2 — FRACTALS
+// ══════════════════════════════════════════
+const lightC=document.getElementById('lightC');
+const lctx=lightC.getContext('2d');
+const treeC=document.getElementById('treeC');
+const tctx=treeC.getContext('2d');
 
-function drawLightning() {
-  resizeCanvas(lCanvas);
-  const W=lCanvas.width, H=lCanvas.height;
+function drawLightning(){
+  rc(lightC);
+  const W=lightC.width,H=lightC.height;
   lctx.clearRect(0,0,W,H);
-  function bolt(x1,y1,x2,y2,depth,width){
-    if(depth===0||width<0.3)return;
-    const mx=(x1+x2)/2+(Math.random()-0.5)*(Math.abs(y2-y1)*0.6);
-    const my=(y1+y2)/2+(Math.random()-0.5)*(Math.abs(y2-y1)*0.1);
+  function bolt(x1,y1,x2,y2,d,w){
+    if(d===0||w<0.25)return;
+    const mx=(x1+x2)/2+(Math.random()-.5)*Math.abs(y2-y1)*0.65;
+    const my=(y1+y2)/2;
     // glow
-    lctx.beginPath(); lctx.moveTo(x1,y1); lctx.lineTo(mx,my);
-    lctx.strokeStyle=`rgba(160,180,255,${0.08*depth})`; lctx.lineWidth=width*4;lctx.stroke();
-    lctx.beginPath(); lctx.moveTo(x1,y1); lctx.lineTo(mx,my);
-    lctx.strokeStyle=`rgba(200,180,255,${0.5})`; lctx.lineWidth=width;lctx.stroke();
-    // branch
-    if(Math.random()<0.45){
-      const bx=mx+(Math.random()-0.5)*60, by=my+H*0.15*(Math.random()+0.5);
-      bolt(mx,my,bx,by,depth-1,width*0.55);
+    lctx.beginPath();lctx.moveTo(x1,y1);lctx.lineTo(mx,my);
+    lctx.strokeStyle=`rgba(170,150,255,${0.07*d})`;lctx.lineWidth=w*5;lctx.stroke();
+    // core
+    lctx.beginPath();lctx.moveTo(x1,y1);lctx.lineTo(mx,my);
+    lctx.strokeStyle=`rgba(210,190,255,0.9)`;lctx.lineWidth=w;lctx.stroke();
+    if(Math.random()<0.42){
+      const bx=mx+(Math.random()-.5)*70,by=my+H*0.14*(Math.random()+0.4);
+      bolt(mx,my,bx,by,d-1,w*0.52);
     }
-    bolt(mx,my,x2,y2,depth-1,width*0.8);
+    bolt(mx,my,x2,y2,d-1,w*0.78);
   }
-  bolt(W/2,0,W/2+(Math.random()-0.5)*W*0.3,H,6,2.5);
+  bolt(W/2,0,W/2+(Math.random()-.5)*W*0.35,H,6,2.2);
 }
 
-function drawTree() {
-  resizeCanvas(tCanvas);
-  const W=tCanvas.width, H=tCanvas.height;
+function drawTree(){
+  rc(treeC);
+  const W=treeC.width,H=treeC.height;
   tctx.clearRect(0,0,W,H);
-  const angle = parseFloat(document.getElementById('treeAngle').value)*Math.PI/180;
-  const maxD = parseInt(document.getElementById('treeDepth').value);
-  function branch(x,y,len,ang,d){
-    if(d===0||len<2)return;
-    const ex=x+Math.cos(ang)*len, ey=y-Math.sin(ang)*len;
+  const ang=parseFloat(document.getElementById('tAngle').value)*Math.PI/180;
+  const maxD=parseInt(document.getElementById('tDepth').value);
+  function branch(x,y,len,a,d){
+    if(d===0||len<1.5)return;
+    const ex=x+Math.cos(a)*len,ey=y-Math.sin(a)*len;
     const t=d/maxD;
-    tctx.beginPath(); tctx.moveTo(x,y); tctx.lineTo(ex,ey);
-    tctx.strokeStyle=`hsl(${120-t*80},${40+t*40}%,${30+t*30}%)`;
-    tctx.lineWidth=Math.max(0.5,d*1.2); tctx.stroke();
-    branch(ex,ey,len*0.72,ang-angle,d-1);
-    branch(ex,ey,len*0.72,ang+angle,d-1);
+    tctx.beginPath();tctx.moveTo(x,y);tctx.lineTo(ex,ey);
+    tctx.strokeStyle=`hsl(${115-t*75},${35+t*45}%,${28+t*35}%)`;
+    tctx.lineWidth=Math.max(0.4,d*1.1);tctx.stroke();
+    branch(ex,ey,len*0.73,a-ang,d-1);
+    branch(ex,ey,len*0.73,a+ang,d-1);
   }
-  branch(W/2,H-20,H*0.22,Math.PI/2,maxD);
+  branch(W/2,H-10,H*0.22,Math.PI/2,maxD);
 }
 
 document.getElementById('btnStrike').addEventListener('click',()=>{
-  lctx.fillStyle='rgba(180,160,255,0.3)';
-  lctx.fillRect(0,0,lCanvas.width,lCanvas.height);
-  setTimeout(drawLightning,80);
+  lctx.fillStyle='rgba(160,130,255,0.25)';lctx.fillRect(0,0,lightC.width,lightC.height);
+  setTimeout(drawLightning,70);
 });
-document.getElementById('treeAngle').addEventListener('input',e=>{
-  document.getElementById('treeAngleVal').textContent=e.target.value+'°';
-  drawTree();
+document.getElementById('tAngle').addEventListener('input',e=>{
+  document.getElementById('tAngleV').textContent=e.target.value+'°';drawTree();
 });
-document.getElementById('treeDepth').addEventListener('input',e=>{
-  document.getElementById('treeDepthVal').textContent=e.target.value;
-  drawTree();
+document.getElementById('tDepth').addEventListener('input',e=>{
+  document.getElementById('tDepthV').textContent=e.target.value;drawTree();
 });
 
+// ══════════════════════════════════════════
+// TAB 3 — SPIRALS + STARS
+// ══════════════════════════════════════════
+const starC=document.getElementById('starC');
+const sbctx=starC.getContext('2d');
+const spiralC=document.getElementById('spiralC');
+const sctx=spiralC.getContext('2d');
+let showFib=false,starRaf;
 
-// ══════════════════════════════════════
-// TAB 3 — SPIRALS
-// ══════════════════════════════════════
-const starBg = document.getElementById('starBg');
-const sbctx = starBg.getContext('2d');
-const spiralCanvas = document.getElementById('spiralCanvas');
-const sctx = spiralCanvas.getContext('2d');
-let showFib = false;
-let starAnimFrame;
-
-function drawStars() {
-  cancelAnimationFrame(starAnimFrame);
-  starBg.width = window.innerWidth * devicePixelRatio;
-  starBg.height = window.innerHeight * devicePixelRatio;
-  starBg.style.width = window.innerWidth+'px';
-  starBg.style.height = window.innerHeight+'px';
-  const W=starBg.width,H=starBg.height;
-  sbctx.clearRect(0,0,W,H);
-  const stars=[];
-  for(let i=0;i<250;i++) stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+0.3,p:Math.random()*6});
+function startStars(){
+  cancelAnimationFrame(starRaf);
+  starC.width=window.innerWidth*devicePixelRatio;
+  starC.height=window.innerHeight*devicePixelRatio;
+  starC.style.width=window.innerWidth+'px';
+  starC.style.height=window.innerHeight+'px';
+  const W=starC.width,H=starC.height;
+  const stars=Array.from({length:260},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    r:Math.random()*1.4+0.3,p:Math.random()*6.28
+  }));
   let t=0;
-  function animStars(){
-    sbctx.clearRect(0,0,W,H);
-    t+=0.02;
+  (function anim(){
+    sbctx.clearRect(0,0,W,H);t+=0.018;
     stars.forEach(s=>{
-      const op=0.3+0.4*Math.sin(t+s.p);
-      sbctx.beginPath(); sbctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      sbctx.fillStyle=`rgba(255,248,230,${op})`; sbctx.fill();
+      sbctx.beginPath();sbctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      sbctx.fillStyle=`rgba(255,248,225,${0.25+0.35*Math.sin(t+s.p)})`;
+      sbctx.fill();
     });
-    starAnimFrame=requestAnimationFrame(animStars);
-  }
-  animStars();
+    starRaf=requestAnimationFrame(anim);
+  })();
 }
 
-function drawSpiral() {
-  resizeCanvas(spiralCanvas);
-  const W=spiralCanvas.width, H=spiralCanvas.height;
+function drawSpiral(){
+  rc(spiralC);
+  const W=spiralC.width,H=spiralC.height;
   sctx.clearRect(0,0,W,H);
-  const cx=W/2, cy=H/2;
-  const bRaw = parseInt(document.getElementById('spiralB').value);
-  const b = bRaw/100;
+  const cx=W/2,cy=H/2;
+  const b=parseInt(document.getElementById('spiralB').value)/100;
 
-  // galaxy bg arms
+  // galaxy arms bg
   for(let arm=0;arm<2;arm++){
     sctx.beginPath();
-    for(let t=0;t<6*Math.PI;t+=0.05){
-      const r=12*Math.exp(0.20*t);
-      const a=t+arm*Math.PI;
-      const x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
-      t===0 ? sctx.moveTo(x,y) : sctx.lineTo(x,y);
+    let first=true;
+    for(let t=0;t<7*Math.PI;t+=0.06){
+      const r=8*Math.exp(0.18*t);
+      if(r>Math.min(W,H)*0.54)break;
+      const x=cx+r*Math.cos(t+arm*Math.PI),y=cy+r*Math.sin(t+arm*Math.PI);
+      first?sctx.moveTo(x,y):sctx.lineTo(x,y);first=false;
     }
-    sctx.strokeStyle='rgba(140,80,220,0.12)'; sctx.lineWidth=18; sctx.stroke();
+    sctx.strokeStyle='rgba(120,60,200,0.1)';sctx.lineWidth=20;sctx.stroke();
   }
+
   // galaxy core glow
-  const rg=sctx.createRadialGradient(cx,cy,0,cx,cy,70);
-  rg.addColorStop(0,'rgba(255,248,200,0.25)'); rg.addColorStop(1,'transparent');
-  sctx.fillStyle=rg; sctx.fillRect(0,0,W,H);
+  const cg=sctx.createRadialGradient(cx,cy,0,cx,cy,80);
+  cg.addColorStop(0,'rgba(255,240,180,0.22)');cg.addColorStop(1,'transparent');
+  sctx.fillStyle=cg;sctx.fillRect(0,0,W,H);
 
   // Fibonacci rectangles
   if(showFib){
-    sctx.save();
-    sctx.translate(cx,cy);
-    const sizes=[1,1,2,3,5,8,13,21,34,55].map(n=>n*9);
-    const cols=['rgba(255,215,0,0.12)','rgba(255,215,0,0.09)','rgba(255,215,0,0.07)'];
+    sctx.save();sctx.translate(cx,cy);
+    const sz=[1,1,2,3,5,8,13,21,34].map(n=>n*10);
     let ox=0,oy=0,dir=0;
-    sizes.forEach((s,i)=>{
-      sctx.strokeStyle=cols[i%3]||'rgba(255,215,0,0.05)'; sctx.lineWidth=1;
+    sz.forEach((s,i)=>{
+      sctx.strokeStyle=`rgba(255,215,0,${0.12-i*0.009})`;sctx.lineWidth=1;
       sctx.strokeRect(ox,oy,s,s);
-      if(dir===0){ox+=s;dir=1}
-      else if(dir===1){oy+=s;dir=2}
-      else if(dir===2){ox-=sizes[i];dir=3}
-      else{oy-=sizes[i];dir=0}
+      if(dir===0){ox+=s;dir=1}else if(dir===1){oy+=s;dir=2}
+      else if(dir===2){ox-=sz[i];dir=3}else{oy-=sz[i];dir=0}
     });
     sctx.restore();
   }
 
-  // Golden spiral
+  // golden spiral
   sctx.beginPath();
   let first=true;
-  for(let t=0;t<6*Math.PI;t+=0.03){
-    const r=5*Math.exp(b*t);
-    if(r>Math.min(W,H)*0.52) break;
-    const x=cx+r*Math.cos(t), y=cy+r*Math.sin(t);
-    first ? sctx.moveTo(x,y) : sctx.lineTo(x,y);
-    first=false;
+  for(let t=0;t<7*Math.PI;t+=0.025){
+    const r=4*Math.exp(b*t);
+    if(r>Math.min(W,H)*0.52)break;
+    const x=cx+r*Math.cos(t),y=cy+r*Math.sin(t);
+    first?sctx.moveTo(x,y):sctx.lineTo(x,y);first=false;
   }
-  // glow pass
-  sctx.strokeStyle='rgba(255,215,0,0.15)'; sctx.lineWidth=10; sctx.stroke();
-  sctx.strokeStyle='rgba(255,215,0,0.9)'; sctx.lineWidth=2.5; sctx.stroke();
+  sctx.strokeStyle='rgba(255,215,0,0.14)';sctx.lineWidth=12;sctx.stroke();
+  sctx.strokeStyle='rgba(255,215,0,0.92)';sctx.lineWidth=2.2;sctx.stroke();
 
-  // phi label
-  sctx.fillStyle='rgba(255,215,0,0.6)';
-  sctx.font=`bold ${13*devicePixelRatio}px 'Space Mono'`;
+  sctx.fillStyle='rgba(255,215,0,0.55)';
+  sctx.font=`bold ${11*devicePixelRatio}px 'Space Mono'`;
   sctx.textAlign='center';
-  sctx.fillText('φ = 1.618  ·  b = '+b.toFixed(2), cx, H-16);
+  sctx.fillText('φ = 1.618  ·  r = e^('+b.toFixed(2)+'θ)',cx,H-14);
 }
 
 document.getElementById('spiralB').addEventListener('input',e=>{
-  const v=(parseInt(e.target.value)/100).toFixed(2);
-  document.getElementById('spiralBVal').textContent=v;
+  document.getElementById('spiralBV').textContent=(parseInt(e.target.value)/100).toFixed(2);
   drawSpiral();
 });
-document.getElementById('btnFibRect').addEventListener('click',()=>{
-  showFib=!showFib; drawSpiral();
-});
+document.getElementById('btnFib').addEventListener('click',()=>{showFib=!showFib;drawSpiral()});
 
-
-// ══════════════════════════════════════
-// TAB 4 — REACTION-DIFFUSION
-// ══════════════════════════════════════
-const rdCanvas = document.getElementById('rdCanvas');
-const rdctx = rdCanvas.getContext('2d');
-const N = 100;
-let U = new Float32Array(N*N);
-let V = new Float32Array(N*N);
-let rdF_val = 0.035, rdK_val = 0.065;
-const Du=0.16, Dv=0.08;
-let rdRunning=false, rdTimer;
-
-const PRESETS={
-  zebra:  {f:0.035,k:0.065},
-  leopard:{f:0.025,k:0.055},
-  giraffe:{f:0.022,k:0.051},
-  fish:   {f:0.029,k:0.057},
-};
+// ══════════════════════════════════════════
+// TAB 4 — REACTION DIFFUSION
+// ══════════════════════════════════════════
+const rdC=document.getElementById('rdC');
+const rdctx=rdC.getContext('2d');
+const N=100;
+let U=new Float32Array(N*N),V=new Float32Array(N*N);
+let rdFv=0.035,rdKv=0.065,rdRunning=false,rdTick;
+const Du=0.16,Dv=0.08;
+const PRESETS={Z:{f:0.035,k:0.065},L:{f:0.025,k:0.055},G:{f:0.022,k:0.051},F:{f:0.029,k:0.057}};
 
 function initRD(){
-  clearTimeout(rdTimer);
-  rdRunning=false;
-  U.fill(1); V.fill(0);
-  // random seeds
-  for(let i=0;i<12;i++){
-    const cx=Math.floor(Math.random()*(N-10)+5);
-    const cy=Math.floor(Math.random()*(N-10)+5);
-    for(let dx=-3;dx<=3;dx++) for(let dy=-3;dy<=3;dy++){
+  clearTimeout(rdTick);rdRunning=false;
+  U.fill(1);V.fill(0);
+  for(let i=0;i<15;i++){
+    const cx=Math.floor(Math.random()*(N-12)+6),cy=Math.floor(Math.random()*(N-12)+6);
+    for(let dx=-3;dx<=3;dx++)for(let dy=-3;dy<=3;dy++){
       const idx=(cy+dy)*N+(cx+dx);
-      if(idx>=0&&idx<N*N){U[idx]=0.5+Math.random()*0.1;V[idx]=0.25+Math.random()*0.1;}
+      if(idx>=0&&idx<N*N){U[idx]=0.5+Math.random()*0.08;V[idx]=0.25+Math.random()*0.08;}
     }
   }
-  rdRunning=true;
-  rdStep();
+  rdRunning=true;rdStep();
 }
 
-function laplacian(arr,i,j){
-  const l=arr[i*N+Math.max(j-1,0)];
-  const r=arr[i*N+Math.min(j+1,N-1)];
-  const u=arr[Math.max(i-1,0)*N+j];
-  const d=arr[Math.min(i+1,N-1)*N+j];
-  return l+r+u+d-4*arr[i*N+j];
+function lap(arr,i,j){
+  return arr[i*N+Math.max(j-1,0)]+arr[i*N+Math.min(j+1,N-1)]+
+         arr[Math.max(i-1,0)*N+j]+arr[Math.min(i+1,N-1)*N+j]-4*arr[i*N+j];
 }
 
 function rdStep(){
   if(!rdRunning)return;
-  const f=rdF_val,k=rdK_val;
-  const nU=new Float32Array(N*N), nV=new Float32Array(N*N);
-  for(let i=0;i<N;i++) for(let j=0;j<N;j++){
-    const idx=i*N+j;
-    const u=U[idx],v=V[idx];
-    const uvv=u*v*v;
-    nU[idx]=Math.max(0,Math.min(1, u+Du*laplacian(U,i,j)-uvv+f*(1-u)));
-    nV[idx]=Math.max(0,Math.min(1, v+Dv*laplacian(V,i,j)+uvv-(f+k)*v));
+  const f=rdFv,k=rdKv;
+  const nU=new Float32Array(N*N),nV=new Float32Array(N*N);
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){
+    const idx=i*N+j,u=U[idx],v=V[idx],uvv=u*v*v;
+    nU[idx]=Math.max(0,Math.min(1,u+Du*lap(U,i,j)-uvv+f*(1-u)));
+    nV[idx]=Math.max(0,Math.min(1,v+Dv*lap(V,i,j)+uvv-(f+k)*v));
   }
-  U=nU; V=nV;
-  renderRD();
-  rdTimer=setTimeout(rdStep,16);
+  U=nU;V=nV;renderRD();
+  rdTick=setTimeout(rdStep,16);
 }
 
 function renderRD(){
-  resizeCanvas(rdCanvas);
-  const W=rdCanvas.width,H=rdCanvas.height;
+  rc(rdC);
+  const W=rdC.width,H=rdC.height;
   const img=rdctx.createImageData(W,H);
   const cw=W/N,ch=H/N;
-  for(let i=0;i<N;i++) for(let j=0;j<N;j++){
-    const val=U[i*N+j];
-    const c=Math.floor(val*255);
-    // map to animal colors: low U = pattern (dark), high U = background (light)
-    const r=Math.floor(30+c*0.85), g=Math.floor(20+c*0.75), b=Math.floor(10+c*0.6);
-    for(let di=0;di<ch;di++) for(let dj=0;dj<cw;dj++){
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){
+    const val=U[i*N+j],c=Math.floor(val*255);
+    for(let di=0;di<ch;di++)for(let dj=0;dj<cw;dj++){
       const px=((Math.floor(i*ch)+di)*W+(Math.floor(j*cw)+dj))*4;
-      img.data[px]=r; img.data[px+1]=g; img.data[px+2]=b; img.data[px+3]=255;
+      img.data[px]=Math.floor(28+c*0.82);
+      img.data[px+1]=Math.floor(18+c*0.70);
+      img.data[px+2]=Math.floor(8+c*0.55);
+      img.data[px+3]=255;
     }
   }
   rdctx.putImageData(img,0,0);
 }
 
-function setPreset(name){
-  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('preset'+name.charAt(0).toUpperCase()+name.slice(1)).classList.add('active');
-  const p=PRESETS[name];
-  rdF_val=p.f; rdK_val=p.k;
+function setPreset(key,btnId){
+  document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('on'));
+  document.getElementById(btnId).classList.add('on');
+  const p=PRESETS[key];rdFv=p.f;rdKv=p.k;
   document.getElementById('rdF').value=Math.round(p.f*1000);
   document.getElementById('rdK').value=Math.round(p.k*1000);
-  document.getElementById('rdFVal').textContent=p.f.toFixed(3);
-  document.getElementById('rdKVal').textContent=p.k.toFixed(3);
+  document.getElementById('rdFV').textContent=p.f.toFixed(3);
+  document.getElementById('rdKV').textContent=p.k.toFixed(3);
   initRD();
 }
 
-document.getElementById('presetZebra').addEventListener('click',()=>setPreset('zebra'));
-document.getElementById('presetLeopard').addEventListener('click',()=>setPreset('leopard'));
-document.getElementById('presetGiraffe').addEventListener('click',()=>setPreset('giraffe'));
-document.getElementById('presetFish').addEventListener('click',()=>setPreset('fish'));
-
+document.getElementById('pZ').addEventListener('click',()=>setPreset('Z','pZ'));
+document.getElementById('pL').addEventListener('click',()=>setPreset('L','pL'));
+document.getElementById('pG').addEventListener('click',()=>setPreset('G','pG'));
+document.getElementById('pF').addEventListener('click',()=>setPreset('F','pF'));
 document.getElementById('rdF').addEventListener('input',e=>{
-  rdF_val=parseInt(e.target.value)/1000;
-  document.getElementById('rdFVal').textContent=rdF_val.toFixed(3);
-  initRD();
+  rdFv=parseInt(e.target.value)/1000;
+  document.getElementById('rdFV').textContent=rdFv.toFixed(3);initRD();
 });
 document.getElementById('rdK').addEventListener('input',e=>{
-  rdK_val=parseInt(e.target.value)/1000;
-  document.getElementById('rdKVal').textContent=rdK_val.toFixed(3);
-  initRD();
+  rdKv=parseInt(e.target.value)/1000;
+  document.getElementById('rdKV').textContent=rdKv.toFixed(3);initRD();
 });
 
-
-// ══════════════════════════════════════
+// ══════════════════════════════════════════
 // TAB 5 — TESSELLATION
-// ══════════════════════════════════════
-const tessCanvas = document.getElementById('tessCanvas');
-const tectx = tessCanvas.getContext('2d');
-let activeShape='hex';
+// ══════════════════════════════════════════
+const tessC=document.getElementById('tessC');
+const tectx=tessC.getContext('2d');
+let tessMode='hex';
 
-document.querySelectorAll('.shape-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const shape = btn.id.replace('shape','').toLowerCase();
-    activeShape=shape;
-    drawTessellation(shape);
-  });
-});
-
-function drawTessellation(shape){
-  resizeCanvas(tessCanvas);
-  const W=tessCanvas.width, H=tessCanvas.height;
+function drawTess(shape){
+  rc(tessC);
+  const W=tessC.width,H=tessC.height;
   tectx.clearRect(0,0,W,H);
 
   if(shape==='hex'){
-    const r=44*devicePixelRatio, h=r*Math.sqrt(3)/2;
-    const cols=['#0d1e20','#122628','#0a1a1c'];
+    const r=42*devicePixelRatio,hh=r*Math.sqrt(3)/2;
+    const palette=['#0b1e20','#0e2428','#091a1c'];
     let row=0;
-    for(let y=-r; y<H+r; y+=h){
+    for(let y=-r;y<H+r;y+=hh,row++){
       let col=0;
-      for(let x=row%2===0?0:-r*1.5; x<W+r*2; x+=r*3){
-        const cx=x, cy=y;
+      for(let x=(row%2===0?0:-r*1.5);x<W+r*2;x+=r*3,col++){
         tectx.beginPath();
         for(let i=0;i<6;i++){
-          const a=Math.PI/180*(60*i+30);
-          i===0?tectx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a))
-               :tectx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+          const a=Math.PI/3*i+Math.PI/6;
+          i?tectx.lineTo(x+r*Math.cos(a),y+r*Math.sin(a)):tectx.moveTo(x+r*Math.cos(a),y+r*Math.sin(a));
         }
         tectx.closePath();
-        tectx.fillStyle=cols[(row+col)%cols.length]; tectx.fill();
-        tectx.strokeStyle='rgba(120,201,201,0.25)'; tectx.lineWidth=1; tectx.stroke();
-        col++;
-      }
-      row++;
-    }
-    tectx.fillStyle='rgba(120,201,201,0.7)';
-    tectx.font=`bold ${13*devicePixelRatio}px 'Josefin Sans'`;
-    tectx.textAlign='center';
-    tectx.fillText('HEXAGONAL TESSELLATION — No gaps ✓  No overlaps ✓', W/2, H-18);
-
-  } else if(shape==='square'){
-    const s=56*devicePixelRatio;
-    const cols=['#101820','#141e28'];
-    for(let y=0;y<H;y+=s) for(let x=0;x<W;x+=s){
-      tectx.fillStyle=cols[((x/s)+(y/s))%2]; tectx.fillRect(x,y,s,s);
-      tectx.strokeStyle='rgba(120,201,201,0.2)'; tectx.lineWidth=1; tectx.strokeRect(x,y,s,s);
-    }
-    tectx.fillStyle='rgba(120,201,201,0.7)';
-    tectx.font=`bold ${13*devicePixelRatio}px 'Josefin Sans'`;
-    tectx.textAlign='center';
-    tectx.fillText('SQUARE TESSELLATION — No gaps ✓  Less efficient than hexagon', W/2, H-18);
-
-  } else if(shape==='triangle'){
-    const s=60*devicePixelRatio;
-    const h=s*Math.sqrt(3)/2;
-    for(let row=0; row*h<H+h; row++){
-      for(let col=0; col*s/2<W+s; col++){
-        const x=col*s/2, y=row*h;
-        const up=(col+row)%2===0;
-        tectx.beginPath();
-        if(up){tectx.moveTo(x,y+h);tectx.lineTo(x+s/2,y);tectx.lineTo(x+s,y+h);}
-        else{tectx.moveTo(x,y);tectx.lineTo(x+s/2,y+h);tectx.lineTo(x+s,y);}
-        tectx.closePath();
-        tectx.fillStyle=(col+row)%3===0?'#101a18':(col+row)%3===1?'#0c1614':'#0a1412';
-        tectx.fill();
-        tectx.strokeStyle='rgba(120,201,201,0.2)'; tectx.lineWidth=1; tectx.stroke();
+        tectx.fillStyle=palette[(row+col)%palette.length];tectx.fill();
+        tectx.strokeStyle='rgba(120,201,201,0.22)';tectx.lineWidth=1;tectx.stroke();
       }
     }
     tectx.fillStyle='rgba(120,201,201,0.7)';
-    tectx.font=`bold ${13*devicePixelRatio}px 'Josefin Sans'`;
+    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
     tectx.textAlign='center';
-    tectx.fillText('TRIANGLE TESSELLATION — No gaps ✓  Least area-efficient', W/2, H-18);
+    tectx.fillText('HEXAGONAL TESSELLATION  ·  No gaps ✓  No overlaps ✓  Most efficient ✓',W/2,H-16);
 
-  } else if(shape==='circle'){
-    const r=36*devicePixelRatio;
-    for(let y=r; y<H+r; y+=r*2) for(let x=r; x<W+r; x+=r*2){
-      tectx.beginPath(); tectx.arc(x,y,r,0,Math.PI*2);
-      tectx.fillStyle='#0d1a28'; tectx.fill();
-      tectx.strokeStyle='rgba(120,201,201,0.4)'; tectx.lineWidth=1.5; tectx.stroke();
+  }else if(shape==='sq'){
+    const s=54*devicePixelRatio;
+    for(let y=0;y<H;y+=s)for(let x=0;x<W;x+=s){
+      tectx.fillStyle=((x/s+y/s)%2)?'#101820':'#141e28';
+      tectx.fillRect(x,y,s,s);
+      tectx.strokeStyle='rgba(120,201,201,0.18)';tectx.lineWidth=1;tectx.strokeRect(x,y,s,s);
     }
-    // show gaps in red
-    tectx.fillStyle='rgba(255,80,80,0.15)';
-    tectx.fillRect(0,0,W,H);
-    for(let y=r; y<H+r; y+=r*2) for(let x=r; x<W+r; x+=r*2){
-      tectx.beginPath(); tectx.arc(x,y,r,0,Math.PI*2);
-      tectx.fillStyle='#0d1a28'; tectx.fill();
-      tectx.strokeStyle='rgba(120,201,201,0.4)'; tectx.lineWidth=1.5; tectx.stroke();
-    }
-    tectx.fillStyle='rgba(255,100,100,0.9)';
-    tectx.font=`bold ${13*devicePixelRatio}px 'Josefin Sans'`;
+    tectx.fillStyle='rgba(120,201,201,0.7)';
+    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
     tectx.textAlign='center';
-    tectx.fillText('CIRCLES — Cannot tessellate ✗  Gaps appear (shown in red)', W/2, H-18);
+    tectx.fillText('SQUARE TESSELLATION  ·  No gaps ✓  Less efficient than hexagon',W/2,H-16);
+
+  }else if(shape==='tri'){
+    const s=58*devicePixelRatio,th=s*Math.sqrt(3)/2;
+    for(let row=0;row*th<H+th;row++)for(let col=0;col*s/2<W+s;col++){
+      const x=col*s/2,y=row*th,up=(col+row)%2===0;
+      tectx.beginPath();
+      if(up){tectx.moveTo(x,y+th);tectx.lineTo(x+s/2,y);tectx.lineTo(x+s,y+th);}
+      else{tectx.moveTo(x,y);tectx.lineTo(x+s/2,y+th);tectx.lineTo(x+s,y);}
+      tectx.closePath();
+      tectx.fillStyle=(col+row)%3?'#0c1614':'#101a18';tectx.fill();
+      tectx.strokeStyle='rgba(120,201,201,0.18)';tectx.lineWidth=1;tectx.stroke();
+    }
+    tectx.fillStyle='rgba(120,201,201,0.7)';
+    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
+    tectx.textAlign='center';
+    tectx.fillText('TRIANGLE TESSELLATION  ·  No gaps ✓  Least area-efficient',W/2,H-16);
+
+  }else if(shape==='circ'){
+    const r=34*devicePixelRatio;
+    // red gap background
+    tectx.fillStyle='rgba(180,40,40,0.18)';tectx.fillRect(0,0,W,H);
+    for(let y=r;y<H+r;y+=r*2)for(let x=r;x<W+r;x+=r*2){
+      tectx.beginPath();tectx.arc(x,y,r,0,Math.PI*2);
+      tectx.fillStyle='#0c1820';tectx.fill();
+      tectx.strokeStyle='rgba(120,201,201,0.35)';tectx.lineWidth=1.5;tectx.stroke();
+    }
+    tectx.fillStyle='rgba(255,100,100,0.85)';
+    tectx.font=`bold ${12*devicePixelRatio}px 'Josefin Sans'`;
+    tectx.textAlign='center';
+    tectx.fillText('CIRCLES — Cannot tessellate ✗  Gaps between every circle (shown in red)',W/2,H-16);
   }
 }
 
+document.getElementById('shH').addEventListener('click',()=>{tessMode='hex';setShBtn('shH');drawTess('hex')});
+document.getElementById('shS').addEventListener('click',()=>{tessMode='sq';setShBtn('shS');drawTess('sq')});
+document.getElementById('shT').addEventListener('click',()=>{tessMode='tri';setShBtn('shT');drawTess('tri')});
+document.getElementById('shC').addEventListener('click',()=>{tessMode='circ';setShBtn('shC');drawTess('circ')});
+function setShBtn(id){document.querySelectorAll('.shbtn').forEach(b=>b.classList.remove('on'));document.getElementById(id).classList.add('on')}
 
-// ══════════════════════════════════════
-// TAB 6 — ANATOMY
-// ══════════════════════════════════════
-const bodyCanvas = document.getElementById('bodyCanvas');
-const bctx = bodyCanvas.getContext('2d');
-let bodyMode='both', showGolden=false;
-let bodyAnimFrame, bodyAnimT=0;
+// ══════════════════════════════════════════
+// TAB 6 — BODY SYMMETRY
+// ══════════════════════════════════════════
+const bodyC=document.getElementById('bodyC');
+const bctx=bodyC.getContext('2d');
+let bodyMode='both',bodyRaf,showGold=false,bodyT=0;
 
 function drawBody(mode){
-  cancelAnimationFrame(bodyAnimFrame);
-  resizeCanvas(bodyCanvas);
-  const W=bodyCanvas.width, H=bodyCanvas.height;
-  const cx=W/2;
+  cancelAnimationFrame(bodyRaf);
+  rc(bodyC);
+  const W=bodyC.width,H=bodyC.height;
   bctx.clearRect(0,0,W,H);
+  const cx=W/2;
 
-  // figure proportions
-  const headR=W*0.085;
-  const headY=H*0.10;
-  const shoulderY=H*0.20, shoulderW=W*0.30;
-  const hipY=H*0.54, hipW=W*0.22;
-  const kneeY=H*0.72; const footY=H*0.92;
-  const elbowY=H*0.38, wristY=H*0.54;
-  const handY=H*0.60;
-
-  function drawFigureSide(side){
-    const col = side==='left'?'rgba(192,57,43,0.25)':side==='right'?'rgba(41,128,185,0.25)':'rgba(100,100,100,0.08)';
-    const stroke = side==='left'?'#c0392b':side==='right'?'#2980b9':'#2c3e50';
-    bctx.strokeStyle=stroke; bctx.lineWidth=2.5*devicePixelRatio; bctx.fillStyle=col;
-
-    if(side==='left'||side==='both'){
-      // left arm
-      bctx.beginPath();
-      bctx.moveTo(cx-shoulderW, shoulderY);
-      bctx.lineTo(cx-shoulderW-W*0.05, elbowY);
-      bctx.lineTo(cx-shoulderW+W*0.02, wristY);
-      bctx.lineTo(cx-shoulderW+W*0.04, handY);
-      bctx.strokeStyle=side==='left'?'#c0392b':'rgba(44,62,80,0.6)'; bctx.stroke();
-      // left leg
-      bctx.beginPath();
-      bctx.moveTo(cx-hipW*0.5, hipY);
-      bctx.lineTo(cx-hipW*0.6, kneeY);
-      bctx.lineTo(cx-hipW*0.55, footY);
-      bctx.stroke();
-    }
-    if(side==='right'||side==='both'){
-      bctx.strokeStyle=side==='right'?'#2980b9':'rgba(44,62,80,0.6)';
-      // right arm
-      bctx.beginPath();
-      bctx.moveTo(cx+shoulderW, shoulderY);
-      bctx.lineTo(cx+shoulderW+W*0.05, elbowY);
-      bctx.lineTo(cx+shoulderW-W*0.02, wristY);
-      bctx.lineTo(cx+shoulderW-W*0.04, handY);
-      bctx.stroke();
-      // right leg
-      bctx.beginPath();
-      bctx.moveTo(cx+hipW*0.5, hipY);
-      bctx.lineTo(cx+hipW*0.6, kneeY);
-      bctx.lineTo(cx+hipW*0.55, footY);
-      bctx.stroke();
-    }
-  }
+  // proportions
+  const hR=W*0.082;
+  const hY=H*0.09;
+  const shY=H*0.195,shW=W*0.27;
+  const hipY=H*0.52,hipW=W*0.19;
+  const elbY=H*0.37,wriY=H*0.52,hanY=H*0.59;
+  const kneY=H*0.70,fooY=H*0.91;
 
   // torso
   bctx.beginPath();
-  bctx.moveTo(cx-shoulderW, shoulderY);
-  bctx.bezierCurveTo(cx-shoulderW, H*0.35, cx-hipW, H*0.45, cx-hipW, hipY);
-  bctx.lineTo(cx+hipW, hipY);
-  bctx.bezierCurveTo(cx+hipW, H*0.45, cx+shoulderW, H*0.35, cx+shoulderW, shoulderY);
+  bctx.moveTo(cx-shW,shY);
+  bctx.bezierCurveTo(cx-shW,H*0.33,cx-hipW,H*0.44,cx-hipW,hipY);
+  bctx.lineTo(cx+hipW,hipY);
+  bctx.bezierCurveTo(cx+hipW,H*0.44,cx+shW,H*0.33,cx+shW,shY);
   bctx.closePath();
-  bctx.fillStyle='rgba(44,62,80,0.08)'; bctx.fill();
-  bctx.strokeStyle='#2c3e50'; bctx.lineWidth=2*devicePixelRatio; bctx.stroke();
+  bctx.fillStyle='rgba(50,40,30,0.08)';bctx.fill();
+  bctx.strokeStyle='rgba(50,40,30,0.5)';bctx.lineWidth=2*devicePixelRatio;bctx.stroke();
 
-  // highlight sides
-  if(mode==='left'||mode==='both') drawFigureSide('left');
-  if(mode==='right'||mode==='both') drawFigureSide('right');
-  if(mode==='both') drawFigureSide('both');
+  // limbs
+  function limb(x1,y1,x2,y2,x3,y3,col,lw){
+    bctx.beginPath();bctx.moveTo(x1,y1);bctx.lineTo(x2,y2);bctx.lineTo(x3,y3);
+    bctx.strokeStyle=col;bctx.lineWidth=lw;bctx.stroke();
+  }
+  const lc=mode==='left'?'rgba(176,48,32,0.85)':mode==='both'?'rgba(176,48,32,0.6)':'rgba(50,40,30,0.25)';
+  const rc2=mode==='right'?'rgba(32,96,160,0.85)':mode==='both'?'rgba(32,96,160,0.6)':'rgba(50,40,30,0.25)';
+  const lw=3*devicePixelRatio;
+
+  // left arm & leg
+  limb(cx-shW,shY,cx-shW-W*0.06,elbY,cx-shW-W*0.01,wriY,lc,lw);
+  bctx.beginPath();bctx.moveTo(cx-shW-W*0.01,wriY);bctx.lineTo(cx-shW+W*0.02,hanY);
+  bctx.strokeStyle=lc;bctx.lineWidth=lw;bctx.stroke();
+  limb(cx-hipW*0.5,hipY,cx-hipW*0.6,kneY,cx-hipW*0.55,fooY,lc,lw);
+
+  // right arm & leg
+  limb(cx+shW,shY,cx+shW+W*0.06,elbY,cx+shW+W*0.01,wriY,rc2,lw);
+  bctx.beginPath();bctx.moveTo(cx+shW+W*0.01,wriY);bctx.lineTo(cx+shW-W*0.02,hanY);
+  bctx.strokeStyle=rc2;bctx.lineWidth=lw;bctx.stroke();
+  limb(cx+hipW*0.5,hipY,cx+hipW*0.6,kneY,cx+hipW*0.55,fooY,rc2,lw);
 
   // head
-  bctx.beginPath(); bctx.arc(cx, headY, headR, 0, Math.PI*2);
-  bctx.fillStyle='rgba(44,62,80,0.08)'; bctx.fill();
-  bctx.strokeStyle='#2c3e50'; bctx.lineWidth=2*devicePixelRatio; bctx.stroke();
-  // face details
-  bctx.beginPath(); bctx.arc(cx-headR*0.32, headY-headR*0.1, headR*0.1, 0, Math.PI*2);
-  bctx.beginPath(); bctx.arc(cx+headR*0.32, headY-headR*0.1, headR*0.1, 0, Math.PI*2);
-  bctx.fillStyle='rgba(44,62,80,0.4)'; bctx.fill();
+  bctx.beginPath();bctx.arc(cx,hY,hR,0,Math.PI*2);
+  bctx.fillStyle='rgba(50,40,30,0.07)';bctx.fill();
+  bctx.strokeStyle='rgba(50,40,30,0.5)';bctx.lineWidth=2*devicePixelRatio;bctx.stroke();
+  // eyes
+  bctx.fillStyle='rgba(50,40,30,0.45)';
+  bctx.beginPath();bctx.arc(cx-hR*0.3,hY-hR*0.08,hR*0.09,0,Math.PI*2);bctx.fill();
+  bctx.beginPath();bctx.arc(cx+hR*0.3,hY-hR*0.08,hR*0.09,0,Math.PI*2);bctx.fill();
   // neck
   bctx.beginPath();
-  bctx.moveTo(cx-headR*0.35, headY+headR);
-  bctx.lineTo(cx-headR*0.35, shoulderY);
-  bctx.lineTo(cx+headR*0.35, shoulderY);
-  bctx.lineTo(cx+headR*0.35, headY+headR);
-  bctx.fillStyle='rgba(44,62,80,0.06)'; bctx.fill();
-  bctx.strokeStyle='rgba(44,62,80,0.3)'; bctx.stroke();
+  bctx.moveTo(cx-hR*0.32,hY+hR);bctx.lineTo(cx-hR*0.32,shY);
+  bctx.lineTo(cx+hR*0.32,shY);bctx.lineTo(cx+hR*0.32,hY+hR);
+  bctx.strokeStyle='rgba(50,40,30,0.35)';bctx.lineWidth=2*devicePixelRatio;bctx.stroke();
 
   // symmetry axis
-  bctx.setLineDash([8,5]);
-  bctx.beginPath(); bctx.moveTo(cx,8); bctx.lineTo(cx,H-8);
-  bctx.strokeStyle='rgba(192,57,43,0.4)'; bctx.lineWidth=1.5; bctx.stroke();
+  bctx.setLineDash([9,6]);
+  bctx.beginPath();bctx.moveTo(cx,6);bctx.lineTo(cx,H-6);
+  bctx.strokeStyle='rgba(176,48,32,0.35)';bctx.lineWidth=1.5;bctx.stroke();
   bctx.setLineDash([]);
-  bctx.fillStyle='rgba(192,57,43,0.6)';
+  bctx.fillStyle='rgba(176,48,32,0.55)';
   bctx.font=`${9*devicePixelRatio}px 'Space Mono'`;
-  bctx.textAlign='center'; bctx.fillText('AXIS OF BILATERAL SYMMETRY', cx, H-6);
+  bctx.textAlign='center';
+  bctx.fillText('AXIS OF BILATERAL SYMMETRY',cx,H-6);
 
   // golden ratio lines
-  if(showGolden){
-    const navelY = headY + (footY-headY)/1.618;
-    const alpha = Math.min(1, (Date.now() % 2000)/600);
+  if(showGold){
+    const navY=hY+hR+(fooY-(hY+hR))/1.618;
     // navel line
-    bctx.beginPath(); bctx.moveTo(cx-W*0.4, navelY); bctx.lineTo(cx+W*0.4, navelY);
-    bctx.strokeStyle=`rgba(212,160,23,${0.8*alpha})`; bctx.lineWidth=2; bctx.setLineDash([6,3]); bctx.stroke(); bctx.setLineDash([]);
-    bctx.fillStyle=`rgba(212,160,23,${alpha})`;
-    bctx.font=`bold ${10*devicePixelRatio}px 'Space Mono'`; bctx.textAlign='right';
-    bctx.fillText('φ = 1.618', cx+W*0.4, navelY-6);
-    bctx.font=`${9*devicePixelRatio}px 'Space Mono'`;
-    bctx.fillText('Height to navel ÷ navel to floor', cx+W*0.4, navelY+14);
-
+    bctx.setLineDash([7,4]);
+    bctx.beginPath();bctx.moveTo(cx-W*0.38,navY);bctx.lineTo(cx+W*0.38,navY);
+    bctx.strokeStyle='rgba(192,128,0,0.75)';bctx.lineWidth=2;bctx.stroke();
+    bctx.setLineDash([]);
+    bctx.fillStyle='rgba(192,128,0,0.85)';
+    bctx.font=`bold ${9*devicePixelRatio}px 'Space Mono'`;
+    bctx.textAlign='right';
+    bctx.fillText('φ = 1.618',cx+W*0.38,navY-6);
+    bctx.font=`${8*devicePixelRatio}px 'Space Mono'`;
+    bctx.fillText('height ÷ navel height',cx+W*0.38,navY+13);
     // forearm line
-    const forearmTop=elbowY+(wristY-elbowY)*0.1, forearmBot=wristY;
-    bctx.beginPath(); bctx.moveTo(cx-W*0.48, forearmTop); bctx.lineTo(cx-W*0.48, forearmBot);
-    bctx.strokeStyle=`rgba(212,160,23,${0.7*alpha})`; bctx.lineWidth=2; bctx.stroke();
-    bctx.fillStyle=`rgba(212,160,23,${alpha})`; bctx.textAlign='left';
-    bctx.font=`${9*devicePixelRatio}px 'Space Mono'`;
-    bctx.fillText('Forearm ÷ Hand ≈ φ', cx-W*0.46, (forearmTop+forearmBot)/2);
+    bctx.setLineDash([5,4]);
+    bctx.beginPath();
+    bctx.moveTo(cx-shW-W*0.07,elbY);bctx.lineTo(cx-shW-W*0.07,wriY);
+    bctx.strokeStyle='rgba(192,128,0,0.6)';bctx.lineWidth=2;bctx.stroke();
+    bctx.setLineDash([]);
+    bctx.textAlign='left';
+    bctx.font=`${8*devicePixelRatio}px 'Space Mono'`;
+    bctx.fillText('forearm÷hand≈φ',cx-shW-W*0.04,elbY+(wriY-elbY)/2);
+  }
+
+  if(mode==='animate'){
+    bodyT+=0.035;
+    const a=Math.max(0,Math.sin(bodyT));
+    bctx.fillStyle=`rgba(176,48,32,${a*0.12})`;bctx.fillRect(0,0,W/2,H);
+    bctx.fillStyle=`rgba(32,96,160,${(1-a)*0.12})`;bctx.fillRect(W/2,0,W/2,H);
+    bodyRaf=requestAnimationFrame(()=>drawBody('animate'));
   }
 }
 
-// body animation for "both" mode
-function animateBody(){
-  cancelAnimationFrame(bodyAnimFrame);
-  if(bodyMode!=='animate') return;
-  bodyAnimT += 0.04;
-  const phase = Math.sin(bodyAnimT);
-  resizeCanvas(bodyCanvas);
-  drawBody('both');
-  // alternating highlight pulse
-  const W=bodyCanvas.width;
-  const alpha=Math.max(0,(phase));
-  bctx.fillStyle=`rgba(192,57,43,${alpha*0.15})`;
-  bctx.fillRect(0,0,W/2,bodyCanvas.height);
-  bctx.fillStyle=`rgba(41,128,185,${(1-alpha)*0.15})`;
-  bctx.fillRect(W/2,0,W/2,bodyCanvas.height);
-  bodyAnimFrame=requestAnimationFrame(animateBody);
-}
+document.getElementById('bLeft').addEventListener('click',()=>{bodyMode='left';showGold=false;cancelAnimationFrame(bodyRaf);drawBody('left')});
+document.getElementById('bRight').addEventListener('click',()=>{bodyMode='right';showGold=false;cancelAnimationFrame(bodyRaf);drawBody('right')});
+document.getElementById('bBoth').addEventListener('click',()=>{bodyMode='animate';showGold=false;drawBody('animate')});
+document.getElementById('bGold').addEventListener('click',()=>{showGold=!showGold;bodyMode='both';cancelAnimationFrame(bodyRaf);drawBody('both')});
 
-document.getElementById('btnLeft').addEventListener('click',()=>{bodyMode='left';showGolden=false;drawBody('left')});
-document.getElementById('btnRight').addEventListener('click',()=>{bodyMode='right';showGolden=false;drawBody('right')});
-document.getElementById('btnBoth').addEventListener('click',()=>{bodyMode='animate';showGolden=false;animateBody()});
-document.getElementById('btnGolden').addEventListener('click',()=>{
-  showGolden=!showGolden;
-  bodyMode='both';
-  cancelAnimationFrame(bodyAnimFrame);
-  drawBody('both');
-  if(showGolden) requestAnimationFrame(()=>drawBody('both'));
-});
-
-document.getElementById('heightSlider').addEventListener('input',e=>{
+document.getElementById('hSlide').addEventListener('input',e=>{
   const h=parseInt(e.target.value);
-  document.getElementById('heightVal').textContent=h;
-  const navel=(h/1.618).toFixed(1);
-  const forearm=(h*0.157).toFixed(1);
-  const hand=(h*0.097).toFixed(1);
-  const ratio=(forearm/hand).toFixed(3);
-  document.getElementById('phiOutput').innerHTML=
-    `Height: ${h} cm<br>Navel height: ${navel} cm from floor<br>Ratio: ${h} ÷ ${navel} = <strong>1.618 φ</strong><br>Forearm estimate: ${forearm} cm<br>Hand estimate: ${hand} cm<br>Forearm ÷ Hand ≈ <strong>${ratio} φ</strong>`;
+  document.getElementById('hV').textContent=h;
+  const nav=(h/1.618).toFixed(1);
+  const fa=(h*0.157).toFixed(1),ha=(h*0.097).toFixed(1);
+  const ratio=(fa/ha).toFixed(3);
+  document.getElementById('phiOut').innerHTML=
+    `Height: ${h} cm<br>Navel height: ${nav} cm from floor<br>${h} ÷ ${nav} = <strong>1.618 φ</strong><br>Forearm ≈ ${fa} cm  ·  Hand ≈ ${ha} cm<br>Forearm ÷ Hand ≈ <strong>${ratio} φ</strong>`;
 });
 
-
-// ══════════════════════════════════════
-// INIT ON LOAD
-// ══════════════════════════════════════
-window.addEventListener('load', ()=>{
+// ══ INIT ══
+window.addEventListener('load',()=>{
   setTimeout(()=>{
-    drawFish(false);
-    drawLightning();
-    drawTree();
-    drawTessellation('hex');
+    drawFish('bilateral');
+    drawLightning();drawTree();
+    drawTess('hex');
     drawBody('both');
-  }, 150);
+  },150);
 });
 
-window.addEventListener('resize', ()=>{
-  const active = document.querySelector('.panel.active').id.replace('tab-','');
-  if(active==='marine') drawFish(isRadial);
-  if(active==='meteo'){drawLightning();drawTree();}
-  if(active==='astro'){drawStars();drawSpiral();}
-  if(active==='geo') drawTessellation(activeShape);
-  if(active==='anatomy') drawBody(bodyMode==='animate'?'both':bodyMode);
+window.addEventListener('resize',()=>{
+  const at=document.querySelector('.panel.active').id.replace('tab-','');
+  if(at==='m'){cancelAnimationFrame(fishRaf);drawFish(fishMode)}
+  if(at==='f'){drawLightning();drawTree()}
+  if(at==='s'){startStars();drawSpiral()}
+  if(at==='g')drawTess(tessMode);
+  if(at==='a'){cancelAnimationFrame(bodyRaf);drawBody(bodyMode==='animate'?'both':bodyMode)}
 });
 </script>
 </body>
